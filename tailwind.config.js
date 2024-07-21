@@ -9,6 +9,9 @@ export default {
         web3: "#708871",
         web4: "#606676",
       },
+      fontSize: {
+        xxs: "10px",
+      },
     },
   },
   plugins: [],
