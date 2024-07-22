@@ -11,6 +11,12 @@ export default {
       },
       fontSize: {
         xxs: "10px",
+        xxxs: "8px",
+      },
+      inset: {
+        "23%": "23%",
+        "7%": "7%",
+        "13%":"13%"
       },
     },
   },

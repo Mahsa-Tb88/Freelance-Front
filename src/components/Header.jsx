@@ -35,7 +35,7 @@ export default function Header() {
             </NavLink>
           </div>
           <div className="flex justify-between items-center">
-            <div className="md:hidden mr-1">
+            <div className="lg:hidden mr-1">
               <span
                 className="text-xl"
                 onClick={() => setIsOpenMenu(!isOpenMenu)}
@@ -82,43 +82,6 @@ export default function Header() {
             </Link>
           </div>
         </nav>
-        <div className=" md:max-w-5xl mx-auto mt-4  md:mt-7 flex justify-between items-center gap-12">
-          <div className="w-3/5 md:mb-16">
-            <h2 className="md:text-4xl font-semibold md:mb-20">
-              Find the perfect freelance services for your business
-            </h2>
-            <div className=" my-4 md:mt-8 w-full flex justify-center items-center border rounded-md border-web4 overflow-hidden">
-              <input className="w-full h-5 text-xs px-1 md:h-10 rounded-l-sm md:rounded-l-md" />
-              <button className="text-xxs h-5 md:text-base px-1 md:px-2  md:h-10 font-bold bg-web2 rounded-r-md hover:bg-web3 hover:text-web1">
-                Search
-              </button>
-            </div>
-            <div className="flex justify-start  items-center my-8 ">
-              <h3 className="text-xxs md:text-sm  font-semibold mr-1  md:mr-3">
-                popular:
-              </h3>
-              <div className="grid grid-cols-2 md:flex justify-start gap-2 ">
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm  md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Desing
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Fronend
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Backend
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Logo
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="w-2/5">
-            <div className=" float-end ">
-              <img src="././public/img/girl.png" />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
