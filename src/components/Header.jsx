@@ -70,12 +70,12 @@ export default function Header() {
             </NavLink>
           </div>
           <div className="">
-            <Link>
+            <Link to="login">
               <button className="border-web2 hover:bg-web3 hover:text-web1 border md:px-3 md:py-1 rounded-md font-semibold  px-1 py-0.5 text-xs md:text-lg mx-1 md:mx-2">
                 Sign in
               </button>
             </Link>
-            <Link>
+            <Link to="signUp">
               <button className="bg-web2 hover:bg-web3 hover:text-web1 font-semibold text-xs md:text-lg border md:px-3 px-1 py-0.5  md:py-1 rounded-md">
                 Join us
               </button>

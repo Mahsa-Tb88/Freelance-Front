@@ -58,10 +58,10 @@ export default function Home() {
           <span className="text-gray-400 px-1">Meta</span>
         </div>
       </div>
-      <div className="bg-web2 mt-40">
+      <div className=" mt-40">
         <div className="lg:w-5/6 mx-auto py-14 px-4 lg:px-0">
           <div className="flex flex-col  lg:flex-row-reverse justify-center items-center gap-4">
-            <h3 className="lg:hidden text-web1 text-xl text-center lg:text-left md:text-3xl font-bold mb-10 ">
+            <h3 className="lg:hidden text-web3 text-xl text-center lg:text-left md:text-3xl font-bold mb-10 ">
               A whole world of freelance talent at your fingertips
             </h3>
             <div className="lg:w-5/12 ">
@@ -71,12 +71,12 @@ export default function Home() {
               />
             </div>
             <div className="lg:w-7/12 px-2 text-center lg:px-0 lg:text-left">
-              <h3 className="hidden lg:block text-web1 text-xl text-center lg:text-left md:text-3xl font-bold mb-10 ">
+              <h3 className="hidden lg:block text-web3 text-xl text-center lg:text-left md:text-3xl font-bold mb-10 ">
                 A whole world of freelance talent at your fingertips
               </h3>
               <div>
-                <div className="mb-6 lg:mb-3 ">
-                  <h5 className="text-web1 text-xl font-bold">
+                <div className="mb-6 lg:mb-10 ">
+                  <h5 className="text-web3 text-xl font-bold">
                     The best for every budget
                   </h5>
                   <p className="text-web4 text-lg">
@@ -85,8 +85,8 @@ export default function Home() {
                     quibusdam.
                   </p>
                 </div>
-                <div className="mb-6 lg:mb-3 ">
-                  <h5 className="text-web1 text-xl font-bold">
+                <div className="mb-6 lg:mb-10 ">
+                  <h5 className="text-web3 text-xl font-bold">
                     Quality work done quickly
                   </h5>
                   <p className="text-web4 text-lg">
@@ -95,8 +95,8 @@ export default function Home() {
                     dolor sit amet Aut similique explicabo
                   </p>
                 </div>
-                <div className="mb-6 lg:mb-3 ">
-                  <h5 className="text-web1 text-xl font-bold">
+                <div className="mb-6 lg:mb-10 ">
+                  <h5 className="text-web3 text-xl font-bold">
                     Protected payments, every time
                   </h5>
                   <p className="text-web4 text-lg">
@@ -104,8 +104,8 @@ export default function Home() {
                     perferendis quibusdam.
                   </p>
                 </div>
-                <div className="mb-6 lg:mb-3 ">
-                  <h5 className="text-web1 text-xl font-bold">
+                <div className="mb-6 lg:mb-10 ">
+                  <h5 className="text-web3 text-xl font-bold">
                     Protected payments, every time
                   </h5>
                   <p className="text-web4 text-lg">
@@ -125,8 +125,8 @@ export default function Home() {
               FREELANCE BUSINESS
             </h3>
           </div>
-          <div className="lg:w-5/6 mx-auto  flex flex-col lg:flex-row-reverse">
-            <div className="lg:w-5/12 relative ">
+          <div className="lg:w-5/6 mx-auto  flex flex-col lg:flex-row-reverse ">
+            <div className="lg:w-1/2 relative ">
               <img src="../../public/img/ax.png" />
               <div className="absolute text-xxxs md:text-xs top-0 left-1/4  w-20 md:w-36 bg-orange-200 text-web4  rounded-md px-0.5 py-0.5 md:px-1 md:py-1">
                 <span>Lorem ipsum or dolor sit amet bsbs...</span>
@@ -138,7 +138,7 @@ export default function Home() {
                 <span>Lorem ipsum or dolor sit amet bsbs...</span>
               </div>
             </div>
-            <div className="lg:w-7/12 mt-7 lg:mt-0">
+            <div className="lg:w-1/2 mt-7 lg:mt-0">
               <h4 className="text-web1 text-2xl  md:text-2xl font-bold mb-10 ">
                 A business solution for design teams
               </h4>
