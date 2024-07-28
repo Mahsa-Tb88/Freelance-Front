@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { IoMdMenu } from "react-icons/io";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { useSelector } from "react-redux";
+import UserMenu from "./UserMenu.jsx";
 
 export default function Header() {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const user = useSelector((state) => state.user.user);
   return (
     <div className="bg-web1 text-web4 relative">
       <div className="md:w-11/12 mx-auto px-3 md:px-0">
@@ -70,16 +74,42 @@ export default function Header() {
             </NavLink>
           </div>
           <div className="">
-            <Link to="login">
-              <button className="border-web2 hover:bg-web3 hover:text-web1 border md:px-3 md:py-1 rounded-md font-semibold  px-1 py-0.5 text-xs md:text-lg mx-1 md:mx-2">
-                Sign in
-              </button>
-            </Link>
-            <Link to="signUp">
-              <button className="bg-web2 hover:bg-web3 hover:text-web1 font-semibold text-xs md:text-lg border md:px-3 px-1 py-0.5  md:py-1 rounded-md">
-                Join us
-              </button>
-            </Link>
+            {user.username ? (
+              <div className="relative">
+                <div
+                  className="flex justify-between items-center cursor-pointer   px-2 py-2"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                >
+                  <div>
+                    <img
+                      src={user.profileImg}
+                      className="rounded-full border border-web2 w-6 mr-1 md:mr-2 md:w-9"
+                    />
+                  </div>
+                  <p className="text-web3 font-bold text-sm md:text-base">
+                    {user.username}
+                  </p>
+                </div>
+                {showUserMenu && (
+                  <div className="absolute bg-web2 px-3 py-2 rounded-md">
+                    <UserMenu />
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div>
+                <Link to="login">
+                  <button className="border-web2 hover:bg-web3 hover:text-web1 border md:px-3 md:py-1 rounded-md font-semibold  px-1 py-0.5 text-xs md:text-lg mx-1 md:mx-2">
+                    Sign in
+                  </button>
+                </Link>
+                <Link to="signUp">
+                  <button className="bg-web2 hover:bg-web3 hover:text-web1 font-semibold text-xs md:text-lg border md:px-3 px-1 py-0.5  md:py-1 rounded-md">
+                    Join us
+                  </button>
+                </Link>
+              </div>
+            )}
           </div>
         </nav>
       </div>
