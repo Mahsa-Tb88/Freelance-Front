@@ -8,8 +8,9 @@ import { CiFlag1 } from "react-icons/ci";
 import { MdLocalPhone } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import authAxios, { uploadFile } from "../utils/queries";
+import { uploadFile } from "../utils/queries";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function () {
   const [showPassword, setShowPassword] = useState(false);
@@ -57,7 +58,7 @@ export default function () {
   }
 
   const mutation = useMutation({
-    mutationFn: (variable) => authAxios.post("/auth/register", variable),
+    mutationFn: (variable) => axios.post("/auth/register", variable),
     onSuccess() {
       setSuccessMessage(
         "Congratulations, your account has been successfully created."

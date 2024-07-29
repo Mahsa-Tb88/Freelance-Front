@@ -1,20 +1,75 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { userActions } from "../store/slices/userSlices";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function UserMenu() {
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isSignOut, setIsSignOut] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: ["signOut"],
+    queryFn: () => axios.post("/auth/signOut"),
+    enabled: isSignOut,
+  });
+
+  async function handlerSignOut() {
+    setIsSignOut(true);
+
+    if (data?.data.success) {
+      dispatch(
+        userActions.setUser({
+          isLoggedIn: false,
+          isSeller: false,
+          username: "",
+          profileImg: "",
+          desc: "",
+        })
+      );
+      navigate("/login");
+    }
+  }
+
   return (
     <div className="flex flex-col justify-center items-start gap-3 py-2 ">
       {user.isSeller && (
-        <div className="flex flex-col">
-          <Link className="text-web1 hover:text-web4 hover:bg-web1 px-2 rounded-md">My Products</Link>
-          <Link className="text-web1 hover:text-web4 hover:bg-web1 px-2 rounded-md">Add New Product</Link>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <Link
+            to={"/myProducts/" + user.id}
+            className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+          >
+            My Products
+          </Link>
+          <Link
+            to="addProduct"
+            className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+          >
+            Add New Product
+          </Link>
         </div>
       )}
-      <Link className="text-web1 hover:text-web4 hover:bg-web1 px-2 rounded-md">Orders</Link>
-      <Link className="text-web1 hover:text-web4 hover:bg-web1 px-2 rounded-md">Messages</Link>
-      <Link className="text-web1 hover:text-web4 hover:bg-web1 px-2 rounded-md">SignOut</Link>
+      <Link
+        to="/orders"
+        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+      >
+        Orders
+      </Link>
+      <Link
+        to="/messages"
+        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+      >
+        Messages
+      </Link>
+      <Link
+        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+        onClick={() => handlerSignOut()}
+      >
+        SignOut
+      </Link>
     </div>
   );
 }

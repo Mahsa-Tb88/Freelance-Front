@@ -5,43 +5,44 @@ import { PiEyesDuotone } from "react-icons/pi";
 import { PiEyeClosedLight } from "react-icons/pi";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
-import authAxios from "../utils/queries";
 import { useDispatch } from "react-redux";
+import { useLogin } from "../utils/queries";
 import { userActions } from "../store/slices/userSlices";
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm();
-
   const [failMessage, setFailMessage] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const mutation = useMutation({
-    mutationFn: (variables) => authAxios.post("/auth/login", variables),
-    onError(data) {
-      setFailMessage(data.response.data.message);
-      window.scrollTo({ top: 0, behavior: "instant" });
-    },
-    onSuccess(data) {
-      const user = data.data.body.user;
-      const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
-      dispatch(
-        userActions.setUser({
-          isLoggedIn: true,
-          isSeller: user.isSeller,
-          username: user.username,
-          profileImg: user.profileImg ? SERVER_URL + user.profileImg : noImage,
-          desc: user.desc,
-        })
-      );
+  const mutation = useLogin();
 
-      navigate("/");
-    },
-  });
-
-  async function onSubmit(data) {
-    mutation.mutate(data);
+  function onSubmit(data) {
+    mutation.mutate(data, {
+      onError(data) {
+        setFailMessage(data.response.data.message);
+        window.scrollTo({ top: 0, behavior: "instant" });
+      },
+      onSuccess(data) {
+        const user = data.data.body.user;
+        const noImage =
+          SERVER_URL + "/uploads/profiles/profile1722016584144.png";
+        dispatch(
+          userActions.setUser({
+            isLoggedIn: true,
+            isSeller: user.isSeller,
+            username: user.username,
+            id: user._id,
+            profileImg: user.profileImg
+              ? SERVER_URL + user.profileImg
+              : noImage,
+            desc: user.desc,
+          })
+        );
+        navigate("/");
+      },
+    });
   }
 
   return (

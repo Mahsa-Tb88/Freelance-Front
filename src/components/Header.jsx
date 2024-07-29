@@ -73,17 +73,17 @@ export default function Header() {
               </span>
             </NavLink>
           </div>
-          <div className="">
+          <div>
             {user.username ? (
-              <div className="relative">
+              <div>
                 <div
-                  className="flex justify-between items-center cursor-pointer   px-2 py-2"
+                  className="flex justify-between items-center cursor-pointer   px-2 py-1 md:py-2"
                   onClick={() => setShowUserMenu(!showUserMenu)}
                 >
                   <div>
                     <img
                       src={user.profileImg}
-                      className="rounded-full border border-web2 w-6 mr-1 md:mr-2 md:w-9"
+                      className="rounded-full border border-web2 w-6 h-6  mr-1 md:mr-2 md:w-9 md:h-9"
                     />
                   </div>
                   <p className="text-web3 font-bold text-sm md:text-base">
@@ -91,7 +91,11 @@ export default function Header() {
                   </p>
                 </div>
                 {showUserMenu && (
-                  <div className="absolute bg-web2 px-3 py-2 rounded-md">
+                  <div
+                    className={`absolute   right-10 bg-web2 w-36  px-1 py-2 rounded-md  transitionMenuUser  ${
+                      showUserMenu ? "top-14 md:top-20" : "-top-64"
+                    } `}
+                  >
                     <UserMenu />
                   </div>
                 )}

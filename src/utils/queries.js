@@ -1,18 +1,17 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { userActions } from "../store/slices/userSlices";
+import { useNavigate } from "react-router-dom";
 
 axios.defaults.baseURL = SERVER_URL;
-const authAxios = axios.create({
-  baseURL: SERVER_URL,
-});
-
-export default authAxios;
+axios.defaults.withCredentials = true;
 
 export async function uploadFile(file) {
   try {
     const form = new FormData();
     form.append("file", file);
-    const { data } = await authAxios.post("/uploads", form);
+    const { data } = await axios.post("/uploads", form);
     return data;
   } catch (e) {
     console.log(e);
@@ -23,8 +22,24 @@ export async function uploadFile(file) {
   }
 }
 
-export async function registerUser() {
+export function useLogin() {
   return useMutation({
-    mutationFn: (data) => authAxios.post("/auth/register", data),
+    mutationFn: (variables) => axios.post("/auth/login", variables),
+  });
+}
+
+export function useInitialized() {
+  return useQuery({
+    queryKey: ["initialize"],
+    queryFn: () => axios.get("/misc/initialize"),
+    staleTime: Infinity,
+  });
+}
+
+export function useSignOut() {
+  return useQuery({
+    queryKey: ["signOut"],
+    queryFn: () => axios.post("/auth/signOut"),
+    
   });
 }

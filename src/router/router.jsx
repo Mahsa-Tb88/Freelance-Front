@@ -31,7 +31,7 @@ const router = createBrowserRouter([
       { path: "orders", element: <Orders /> },
       { path: "messages", element: <MessageList /> },
       { path: "chat", element: <Chat /> },
-      { path: "myProducts", element: <MyProducts /> },
+      { path: "myProducts/:id", element: <MyProducts /> },
     ],
   },
 ]);
