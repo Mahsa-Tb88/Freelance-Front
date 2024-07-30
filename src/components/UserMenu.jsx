@@ -16,14 +16,16 @@ export default function UserMenu() {
     queryFn: () => axios.post("/auth/signOut"),
     enabled: isSignOut,
   });
-
+  console.log(isSignOut);
   async function handlerSignOut() {
     setIsSignOut(true);
+    console.log(data);
 
     if (data?.data.success) {
       dispatch(
         userActions.setUser({
           isLoggedIn: false,
+          id: "",
           isSeller: false,
           username: "",
           profileImg: "",
@@ -35,18 +37,18 @@ export default function UserMenu() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-start gap-3 py-2 ">
+    <div className=" flex flex-col justify-center items-start gap-1 md:gap-3 py-3 ">
       {user.isSeller && (
-        <div className="flex flex-col items-center justify-center gap-3">
+        <div className="flex flex-col items-center justify-center gap-1 md:gap-3">
           <Link
             to={"/myProducts/" + user.id}
-            className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+            className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
           >
             My Products
           </Link>
           <Link
             to="addProduct"
-            className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+            className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
           >
             Add New Product
           </Link>
@@ -54,18 +56,18 @@ export default function UserMenu() {
       )}
       <Link
         to="/orders"
-        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+        className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
       >
         Orders
       </Link>
       <Link
         to="/messages"
-        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+        className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
       >
         Messages
       </Link>
       <Link
-        className="text-web1 hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+        className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
         onClick={() => handlerSignOut()}
       >
         SignOut

@@ -1,9 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { userActions } from "../store/slices/userSlices";
-import { useNavigate } from "react-router-dom";
-
 axios.defaults.baseURL = SERVER_URL;
 axios.defaults.withCredentials = true;
 

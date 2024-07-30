@@ -10,6 +10,8 @@ const initialState = {
     desc: "",
   },
   initialized: false,
+  isOpenMenu: false,
+  isOpenUserMenu: false,
 };
 
 const userSlice = createSlice({
@@ -18,6 +20,12 @@ const userSlice = createSlice({
   reducers: {
     setUser(state, action) {
       state.user = action.payload;
+    },
+    setOpenMenu(state, action) {
+      state.isOpenMenu = action.payload;
+    },
+    setOpenUserMenu(state, action) {
+      state.isOpenUserMenu = action.payload;
     },
   },
 });

@@ -1,21 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { IoMdMenu } from "react-icons/io";
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu.jsx";
+import { userActions } from "../store/slices/userSlices.js";
 
 export default function Header() {
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
+  const menuRef = useRef();
+  const userMenuRef = useRef();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handlerMenu);
+    return () => removeEventListener("mousedown", handlerMenu);
+  }, []);
+
+  function handlerMenu(e) {
+    if (
+      !menuRef.current?.contains(e.target) &&
+      !userMenuRef.current?.contains(e.target)
+    ) {
+      console.log("menu");
+      dispatch(userActions.setOpenMenu(false));
+    }
+    if (
+      !userMenuRef.current?.contains(e.target) &&
+      !menuRef.current?.contains(e.target)
+    ) {
+      console.log("usermenu");
+      dispatch(userActions.setOpenUserMenu(false));
+    }
+  }
+
+  console.log("isOpenUserMenu", user.isOpenUserMenu);
+
   return (
-    <div className="bg-web1 text-web4 relative">
-      <div className="md:w-11/12 mx-auto px-3 md:px-0">
+    <div className="bg-web1 text-web4 relative ">
+      <div className="md:w-11/12 mx-auto px-3 md:px-0 ">
         <nav className=" h-14 md:h-20 mx-auto  justify-between items-center flex ">
           <div
+            ref={menuRef}
             className={`flex lg:hidden flex-col transitionMenu   justify-center items-center gap-6 absolute top-14 py-5 bg-web3 text-web1
-              ${isOpenMenu ? "left-0" : "-left-40"}`}
+              ${user.isOpenMenu ? "left-0" : "-left-40"}`}
           >
             <NavLink to="/" className="relative rounded-md   ">
               <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
@@ -39,12 +67,14 @@ export default function Header() {
             </NavLink>
           </div>
           <div className="flex justify-between items-center">
-            <div className="lg:hidden mr-1">
-              <span
-                className="text-xl"
-                onClick={() => setIsOpenMenu(!isOpenMenu)}
-              >
-                {isOpenMenu ? <IoIosCloseCircleOutline /> : <IoMdMenu />}
+            <div
+              className="lg:hidden mr-1"
+              onClick={() =>
+                dispatch(userActions.setOpenMenu(!user.isOpenMenu))
+              }
+            >
+              <span className="text-xl">
+                {user.isOpenMenu ? <IoIosCloseCircleOutline /> : <IoMdMenu />}
               </span>
             </div>
             <Link to="/" className="font-extrabold md:text-xl text-md">
@@ -74,31 +104,42 @@ export default function Header() {
             </NavLink>
           </div>
           <div>
-            {user.username ? (
+            {user.user.username ? (
               <div>
                 <div
                   className="flex justify-between items-center cursor-pointer   px-2 py-1 md:py-2"
-                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  onClick={() =>
+                    dispatch(userActions.setOpenUserMenu(!user.isOpenUserMenu))
+                  }
                 >
                   <div>
                     <img
-                      src={user.profileImg}
+                      src={user.user.profileImg}
                       className="rounded-full border border-web2 w-6 h-6  mr-1 md:mr-2 md:w-9 md:h-9"
                     />
                   </div>
                   <p className="text-web3 font-bold text-sm md:text-base">
-                    {user.username}
+                    {user.user.username}
                   </p>
                 </div>
-                {showUserMenu && (
-                  <div
-                    className={`absolute   right-10 bg-web2 w-36  px-1 py-2 rounded-md  transitionMenuUser  ${
-                      showUserMenu ? "top-14 md:top-20" : "-top-64"
-                    } `}
-                  >
-                    <UserMenu />
-                  </div>
-                )}
+
+                <div
+                  ref={userMenuRef}
+                  className={`absolute top-14 md:top-20 right-3  md:right-10 bg-web2 w-36  px-1  rounded-md  transitionMenu  ${
+                    user.isOpenUserMenu && user.user.isSeller
+                      ? "h-40 md:h-60"
+                      : "h-0"
+                  }
+                  ${
+                    user.isOpenUserMenu && !user.user.isSeller
+                      ? "h-102 md:h-40"
+                      : "h-0"
+                  }
+                  
+                  `}
+                >
+                  {user.isOpenUserMenu && <UserMenu />}
+                </div>
               </div>
             ) : (
               <div>
