@@ -26,6 +26,7 @@ export default function Login() {
       },
       onSuccess(data) {
         const user = data.data.body.user;
+        console.log(user);
         const noImage =
           SERVER_URL + "/uploads/profiles/profile1722016584144.png";
         dispatch(

@@ -11,6 +11,7 @@ import MessageList from "../pages/MessageList";
 import Chat from "../pages/Chat";
 import MyProducts from "../pages/MyProducts";
 import FormProduct from "../pages/FormProduct";
+import AddProduct from "../pages/AddProduct";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       { path: "login", element: <Login /> },
       { path: "signUp", element: <SignUp /> },
-      { path: "addProduct", element: <FormProduct /> },
+      { path: "addProduct", element: <AddProduct /> },
       { path: "editProduct", element: <FormProduct /> },
       { path: "blogs", element: <Blogs /> },
       { path: "contactUs", element: <ContactUs /> },

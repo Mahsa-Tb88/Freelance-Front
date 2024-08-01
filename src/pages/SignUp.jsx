@@ -69,13 +69,14 @@ export default function () {
       }, 2000);
     },
   });
+
   async function onSubmit(data) {
     if (data.profileImg?.length) {
       data.profileImg = selectedImage.substring(21);
     } else {
       data.profileImg = "";
     }
-    console.log(data);
+    // console.log(data);
     mutation.mutate(data);
   }
 

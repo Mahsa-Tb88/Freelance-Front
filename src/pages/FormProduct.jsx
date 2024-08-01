@@ -1,32 +1,134 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { uploadFile } from "../utils/queries";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function FormProduct() {
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [failMessage, setFailMessage] = useState(false);
+  const [failImgCoverMsg, setImgCoverMsg] = useState(false);
+  const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
+  const [coverImageSelected, setCoverImageSelected] = useState(noImage);
+  const [coverImageChanged, setCoverImageChanged] = useState(false);
+
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+  } = useForm({ defaultValues: {} });
+
+  const coverImage = { ...register("coverImage") };
+
+  async function handleImageCover(e) {
+    setImgCoverMsg(false);
+    coverImage.onChange(e);
+    const file = e.target.files[0];
+    if (file) {
+      setCoverImageChanged(true);
+      const result = await uploadFile(file);
+      if (result.success) {
+        setCoverImageSelected(SERVER_URL + result.body.url);
+      } else {
+        setImgCoverMsg(result.message);
+        return;
+      }
+    }
+  }
+
+  const mutation = useMutation({
+    mutationFn: (variable) => axios.post("/api/products", variable),
+    onSuccess() {
+      setSuccessMessage(
+        "Congratulations, your Prodcut has been successfully created."
+      );
+      window.scrollTo({ top: 0, behavior: "instant" });
+    },
+    onError() {
+      setFailMessage("Something");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    },
+  });
+  async function onSubmit(data) {
+    console.log(data);
+    if (data.coverImage?.length) {
+      data.coverImage = coverImageSelected.substring(21);
+    } else {
+      data.coverImage = "";
+    }
+    mutation.mutate(data);
+  }
+  console.log("data...", mutation.data);
+
   return (
-    <div className="w-5/6 mx-auto my-20">
-      <h1 className="text-web3 text-3xl sm:text-4xl">Add New Product</h1>
+    <div className="">
       <div className="my-10">
-        <form className="grid md:grid-cols-2  gap-10 md:gap-16">
-          <div className="">
+        {successMessage ? (
+          <div className="bg-green-500 px-2 py-1 my-10 rounded-md text-center font-bold text-lg  md:text-3xl">
+            <p className="text-white">{successMessage}</p>
+          </div>
+        ) : failMessage ? (
+          <div className="bg-red-700 px-2 py-2 my-10 rounded-md text-center font-bold text-lg  md:text-3xl">
+            <p className="text-white">{failMessage}</p>
+          </div>
+        ) : (
+          ""
+        )}
+        <form
+          className="grid md:grid-cols-2  gap-10 md:gap-16"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1">Title</label>
               <input
                 className="border  px-2 py-1 rounded-md"
                 placeholder="Enter a title of product"
+                {...register("title", {
+                  required: "Please enter a title for your product.",
+                  minLength: {
+                    value: 3,
+                    message: "title must be 3 Characters at least",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "title must be 20 Characters at most",
+                  },
+                })}
               />
+              {errors.title && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.title.message}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col mb-10">
-              <label className=" mr-2 mb-1 text-web3 text-xl">Category</label>
-              <select className="border text-web4 outline-none   px-2 py-2 rounded-md">
-                <option className="my-2 hover:bg-web2">Web Design</option>
-                <option className="my-2 hover:bg-web2">Programming</option>
-                <option className="my-2 hover:bg-web2">Logo</option>
+              <label className="  mr-2 mb-1 text-web3 text-xl">Category</label>
+              <select
+                className="border bg-white text-web4 outline-none px-2 py-2 rounded-md"
+                {...register("category", {
+                  required: "Select the category",
+                })}
+              >
+                <option className="my-2  ">Web Design</option>
+                <option className="my-2  ">Programming</option>
+                <option className="my-2  ">Logo</option>
               </select>
+              {errors.catgory && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.category.message}</p>
+                </div>
+              )}
             </div>
             <div className=" flex justify-around items-center  mb-10">
               <div className="w-1/3">
                 <img
                   className="bg-red-200  rounded-md"
-                  src="../../public/img/profile.png"
+                  src={coverImageSelected}
                 />
               </div>
               <div>
@@ -37,6 +139,8 @@ export default function FormProduct() {
                     type="file"
                     id="cover"
                     accept="image/*"
+                    {...coverImage}
+                    onChange={handleImageCover}
                   />
                   <label
                     htmlFor="cover"
@@ -58,7 +162,6 @@ export default function FormProduct() {
                 <div className="flex mb-4">
                   <input
                     className="outline-none  hidden "
-                    placeholder="Enter your password again"
                     type="files"
                     id="images"
                     accept="image/*"
@@ -67,7 +170,7 @@ export default function FormProduct() {
                     htmlFor="images"
                     className="text-base sm:text-lg cursor-pointer border w-36 sm:w-44 text-center  py-1 rounded-md bg-web2 hover:bg-web3 text-web4 hover:text-web1"
                   >
-                    Upload Images
+                    Upload Album
                   </label>
                 </div>
                 <div className="flex">
@@ -96,7 +199,23 @@ export default function FormProduct() {
                 className="rounded-md border px-2 py-1 w-full  "
                 placeholder="Description"
                 rows={10}
+                {...register("desc", {
+                  required: "Please enter a description for your product.",
+                  minLength: {
+                    value: 20,
+                    message: "description must be 20 Characters at least",
+                  },
+                  maxLength: {
+                    value: 500,
+                    message: "description must be 500 Characters at most",
+                  },
+                })}
               ></textarea>
+              {errors.desc && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.desc.message}</p>
+                </div>
+              )}
             </div>
           </div>
           <div className="">
@@ -107,7 +226,23 @@ export default function FormProduct() {
               <input
                 className="border  px-2 py-1 rounded-md"
                 placeholder="e.g. One-page web design"
+                {...register("serviceTitle", {
+                  required: "Please enter a Service Title for your product.",
+                  minLength: {
+                    value: 3,
+                    message: "Service Title must be 3 Characters at least",
+                  },
+                  maxLength: {
+                    value: 20,
+                    message: "Service Title must be 20 Characters at most",
+                  },
+                })}
               />
+              {errors.serviceTitle && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.serviceTitle.message}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1">
@@ -117,8 +252,25 @@ export default function FormProduct() {
                 className="border  px-2 py-1 rounded-md outline-web3"
                 placeholder="Short description of your product"
                 rows={5}
+                {...register("shortDesc", {
+                  required: "Please enter a shortDesc for your product.",
+                  minLength: {
+                    value: 10,
+                    message: "shortDesc must be 10 Characters at least",
+                  },
+                  maxLength: {
+                    value: 70,
+                    message: "shortDesc must be 70 Characters at most",
+                  },
+                })}
               ></textarea>
+              {errors.shortDesc && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.shortDesc.message}</p>
+                </div>
+              )}
             </div>
+
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">
                 Delivery Time
@@ -126,7 +278,15 @@ export default function FormProduct() {
               <input
                 className="border outline-web3 px-2 py-1 rounded-md"
                 type="number"
+                {...register("deliveryTime", {
+                  required: "Please enter a deliveryTime for your product.",
+                })}
               />
+              {errors.deliveryTime && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.deliveryTime.message}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">
@@ -135,7 +295,15 @@ export default function FormProduct() {
               <input
                 className="border outline-web3 px-2 py-1 rounded-md"
                 type="number"
+                {...register("revisionNumber", {
+                  required: "Please enter a revisionNumber for your product.",
+                })}
               />
+              {errors.revisionNumber && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.revisionNumber.message}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">
@@ -147,13 +315,26 @@ export default function FormProduct() {
                   Add
                 </span>
               </div>
+              {errors.title && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.title.message}</p>
+                </div>
+              )}
             </div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">Price</label>
               <input
                 className="border outline-web3 px-2 py-1 rounded-md"
                 type="number"
+                {...register("price", {
+                  required: "Please enter a price for your product.",
+                })}
               />
+              {errors.price && (
+                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                  <p>{errors.price.message}</p>
+                </div>
+              )}
             </div>
           </div>
           <button

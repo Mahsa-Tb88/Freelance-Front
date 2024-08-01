@@ -10,7 +10,6 @@ export async function uploadFile(file) {
     const { data } = await axios.post("/uploads", form);
     return data;
   } catch (e) {
-    console.log(e);
     return {
       success: false,
       message: e.response.data.message,
@@ -36,6 +35,12 @@ export function useSignOut() {
   return useQuery({
     queryKey: ["signOut"],
     queryFn: () => axios.post("/auth/signOut"),
-    
+  });
+}
+
+export function useGetAllProductsOfSeller(id) {
+  return useQuery({
+    queryKey: ["products", id],
+    queryFn: () => axios.get(`/api/products/seller/${id}`),
   });
 }

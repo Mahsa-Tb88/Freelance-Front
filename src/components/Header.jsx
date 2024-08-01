@@ -22,19 +22,18 @@ export default function Header() {
       !menuRef.current?.contains(e.target) &&
       !userMenuRef.current?.contains(e.target)
     ) {
-      console.log("menu");
+      // console.log("menu");
       dispatch(userActions.setOpenMenu(false));
     }
+
     if (
       !userMenuRef.current?.contains(e.target) &&
       !menuRef.current?.contains(e.target)
     ) {
-      console.log("usermenu");
+      // console.log("usermenu");
       dispatch(userActions.setOpenUserMenu(false));
     }
   }
-
-  console.log("isOpenUserMenu", user.isOpenUserMenu);
 
   return (
     <div className="bg-web1 text-web4 relative ">
