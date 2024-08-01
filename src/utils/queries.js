@@ -31,16 +31,25 @@ export function useInitialized() {
   });
 }
 
-export function useSignOut() {
+export function useSignOut(isSignOut) {
   return useQuery({
     queryKey: ["signOut"],
     queryFn: () => axios.post("/auth/signOut"),
+    enabled: isSignOut,
   });
 }
-
+export function useGetProductById(id) {
+  return useQuery({
+    queryKey: ["product", id],
+    queryFn: () => axios.get(`/api/products/${id}`),
+  });
+}
 export function useGetAllProductsOfSeller(id) {
   return useQuery({
     queryKey: ["products", id],
     queryFn: () => axios.get(`/api/products/seller/${id}`),
   });
+}
+export function useGetAllProducts(){
+  
 }

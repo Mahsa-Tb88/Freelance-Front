@@ -5,25 +5,47 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function FormProduct() {
+export default function FormProduct({ product, type, id }) {
   const [successMessage, setSuccessMessage] = useState(false);
   const [failMessage, setFailMessage] = useState(false);
   const [failImgCoverMsg, setImgCoverMsg] = useState(false);
   const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
   const [coverImageSelected, setCoverImageSelected] = useState(noImage);
+  const [albumImage, setAlbumImage] = useState(noImage);
   const [coverImageChanged, setCoverImageChanged] = useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (type === "edit") {
+      if (product.coverImage) {
+        setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
+      } else {
+        setCoverImageSelected(noImage);
+      }
+    }
+  }, []);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm({ defaultValues: {} });
+  } = useForm({
+    defaultValues: {
+      title: type == "edit" ? product.title : "",
+      category: type == "edit" ? product.category : "",
+      coverImage: type == "edit" ? product.coverImage : "",
+      desc: type == "edit" ? product.desc : "",
+      serviceTitle: type == "edit" ? product.serviceTitle : "",
+      shortDesc: type == "edit" ? product.shortDesc : "",
+      deliveryTime: type == "edit" ? product.deliveryTime : "",
+      revisionNumber: type == "edit" ? product.revisionNumber : "",
+      price: type == "edit" ? product.price : "",
+    },
+  });
 
   const coverImage = { ...register("coverImage") };
-
   async function handleImageCover(e) {
     setImgCoverMsg(false);
     coverImage.onChange(e);
@@ -40,11 +62,26 @@ export default function FormProduct() {
     }
   }
 
-  const mutation = useMutation({
+  const mutationCreate = useMutation({
     mutationFn: (variable) => axios.post("/api/products", variable),
     onSuccess() {
       setSuccessMessage(
         "Congratulations, your Prodcut has been successfully created."
+      );
+      window.scrollTo({ top: 0, behavior: "instant" });
+      setTimeout(() => setSuccessMessage(""), 2000);
+    },
+    onError() {
+      setFailMessage("Something");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    },
+  });
+
+  const mutateEdit = useMutation({
+    mutationFn: (variable) => axios.put(`/api/products/${id}`, variable),
+    onSuccess() {
+      setSuccessMessage(
+        "Congratulations, your Prodcut has been successfully Upadted."
       );
       window.scrollTo({ top: 0, behavior: "instant" });
     },
@@ -53,17 +90,31 @@ export default function FormProduct() {
       window.scrollTo({ top: 0, behavior: "instant" });
     },
   });
-  async function onSubmit(data) {
-    console.log(data);
-    if (data.coverImage?.length) {
-      data.coverImage = coverImageSelected.substring(21);
-    } else {
-      data.coverImage = "";
-    }
-    mutation.mutate(data);
-  }
-  console.log("data...", mutation.data);
 
+  async function onSubmit(data) {
+    setFailMessage("");
+    setSuccessMessage("");
+    if (type == "edit") {
+      if (data.coverImage?.length) {
+        data.coverImage = coverImageSelected.substring(21);
+      } else {
+        data.coverImage = "";
+      }
+      mutateEdit.mutate(data);
+    } else {
+      if (data.coverImage?.length) {
+        data.coverImage = coverImageSelected.substring(21);
+      } else {
+        data.coverImage = "";
+      }
+      mutationCreate.mutate(data);
+    }
+  }
+
+  function handleRemoveImage() {
+    setAlbumImage(noImage);
+    // setValue("coverImage", "");
+  }
   return (
     <div className="">
       <div className="my-10">
@@ -118,7 +169,7 @@ export default function FormProduct() {
                 <option className="my-2  ">Programming</option>
                 <option className="my-2  ">Logo</option>
               </select>
-              {errors.catgory && (
+              {errors.category && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
                   <p>{errors.category.message}</p>
                 </div>
@@ -153,10 +204,7 @@ export default function FormProduct() {
             </div>
             <div className=" flex justify-around items-center  mb-10">
               <div className="w-1/3">
-                <img
-                  className="bg-red-200  rounded-md"
-                  src="../../public/img/profile.png"
-                />
+                <img className="bg-red-200  rounded-md" src={albumImage} />
               </div>
               <div>
                 <div className="flex mb-4">
@@ -183,6 +231,7 @@ export default function FormProduct() {
                   />
                   <label
                     htmlFor="removeImages"
+                    onClick={() => handleRemoveImage()}
                     className="text-base sm:text-lg cursor-pointer border w-36 sm:w-44 text-center  py-1 rounded-md bg-web1 hover:bg-web4 text-web4 hover:text-web1"
                   >
                     Remove Images
@@ -341,7 +390,7 @@ export default function FormProduct() {
             type="submit"
             className="bg-web2 hover:bg-web3 text-web4 hover:text-web1  w-full rounded-md text-base sm:text-xl font-bold py-2"
           >
-            Create Product
+            {type == "edit" ? "Update Product" : "Create Product"}
           </button>
         </form>
       </div>

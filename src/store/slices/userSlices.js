@@ -9,7 +9,6 @@ const initialState = {
     profileImg: "",
     desc: "",
   },
-  initialized: false,
   isOpenMenu: false,
   isOpenUserMenu: false,
 };

@@ -11,10 +11,12 @@ export default function App() {
   const { isPending, isError, data } = useInitialized();
   if (data) {
     const user = data.data.body.user;
+    console.log("initialize", user);
     const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
     dispatch(
       userActions.setUser({
         isLoggedIn: true,
+        id: user._id,
         isSeller: user.isSeller,
         username: user.username,
         profileImg: user.profileImg ? SERVER_URL + user.profileImg : noImage,

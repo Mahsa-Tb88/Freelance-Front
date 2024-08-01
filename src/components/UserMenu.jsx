@@ -2,25 +2,21 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { userActions } from "../store/slices/userSlices";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useSignOut } from "../utils/queries";
 
 export default function UserMenu() {
   const user = useSelector((state) => state.user.user);
+  console.log("userSlice", user);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSignOut, setIsSignOut] = useState(false);
 
-  const { data } = useQuery({
-    queryKey: ["signOut"],
-    queryFn: () => axios.post("/auth/signOut"),
-    enabled: isSignOut,
-  });
-  console.log(isSignOut);
+  const { data } = useSignOut(isSignOut);
+
   async function handlerSignOut() {
     setIsSignOut(true);
-    console.log(data);
-
     if (data?.data.success) {
       dispatch(
         userActions.setUser({

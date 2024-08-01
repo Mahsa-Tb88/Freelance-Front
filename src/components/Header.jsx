@@ -49,9 +49,9 @@ export default function Header() {
                 Home
               </span>
             </NavLink>
-            <NavLink className="relative rounded-md  " to="blogs">
+            <NavLink className="relative rounded-md  " to="AllProducts">
               <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
-                Blogs
+                Products
               </span>
             </NavLink>
             <NavLink className="relative rounded-md  " to="contactUs">
@@ -86,9 +86,9 @@ export default function Header() {
                 Home
               </span>
             </NavLink>
-            <NavLink className="relative rounded-md" to="blogs">
+            <NavLink className="relative rounded-md" to="AllProducts">
               <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
-                Blogs
+                Products
               </span>
             </NavLink>
             <NavLink className="relative rounded-md" to="contactUs">

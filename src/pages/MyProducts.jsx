@@ -1,6 +1,7 @@
 import React from "react";
 import { useGetAllProductsOfSeller } from "../utils/queries";
 import { useParams } from "react-router-dom";
+import CartProduct from "../components/CartProduct";
 
 export default function MyProducts() {
   const params = useParams();
@@ -11,13 +12,21 @@ export default function MyProducts() {
   return (
     <div>
       {isPending ? (
-        <div>is pending</div>
+        <div className="flex justify-center items-center font-bold text-xl text-web3 my-20">
+          <span>Loading</span>
+        </div>
       ) : isError ? (
-        <div>Error</div>
+        <div className="flex justify-center items-center font-bold text-xl text-red-700 my-20">
+          <span>Error</span>
+        </div>
       ) : (
-        data.data.body.map((p) => {
-          return <div key={p._id}>{p.title}</div>;
-        })
+        <div className="w-10/12 mx-auto my-32 ">
+          <div className="grid  md:grid-cols-4 gap-5">
+            {data.data.body.map((p) => {
+              return <CartProduct p={p} key={p._id} />;
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
