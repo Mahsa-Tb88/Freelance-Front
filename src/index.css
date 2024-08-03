@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.footer {
+  margin-top: auto;
+}
+
 html {
   font-family: "Kreon";
 }
@@ -11,11 +20,10 @@ html {
   color: #606676;
 }
 
-.transitionMenu{
+.transitionMenu {
   transition: all 1s ease-in-out;
 }
 
-.transitionMenuUser{
+.transitionMenuUser {
   transition: all 2s ease-in-out;
-
 }

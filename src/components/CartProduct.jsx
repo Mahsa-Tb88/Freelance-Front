@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
-  console.log(p);
+  console.log("p...", p);
 
   return (
-    <div className="overflow-hidden shadow-md rounded-md border cursor-pointer hover:">
+    <div className="overflow-hidden shadow-md rounded-md border cursor-pointer mb-16">
       <div className="rounded-md">
         <img src={SERVER_URL + p.coverImage} />
       </div>

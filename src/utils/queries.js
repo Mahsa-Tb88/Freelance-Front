@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 axios.defaults.baseURL = SERVER_URL;
 axios.defaults.withCredentials = true;
@@ -50,6 +50,20 @@ export function useGetAllProductsOfSeller(id) {
     queryFn: () => axios.get(`/api/products/seller/${id}`),
   });
 }
-export function useGetAllProducts(){
-  
+export function useInfinityProducts(limit) {
+  return useInfiniteQuery({
+    queryKey: ["products", limit],
+    queryFn: ({ pageParam }) =>
+      axios.get("/api/products", { params: { limit, page: pageParam } }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages, lastPageParam) => {
+      const filtered = lastPage.data.totalProducts.filtered;
+      const totalPages = Math.ceil(filtered / limit);
+      if (totalPages > pages.length) {
+        return lastPageParam + 1;
+      } else {
+        return undefined;
+      }
+    },
+  });
 }

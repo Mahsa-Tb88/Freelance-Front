@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 export default function () {
   return (
-    <div className="bg-web1 text-web4">
+    <div className="bg-web1 text-web4 footer">
       <div className="w-5/6 mx-auto py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
         <div className="">
           <h5 className="mb-5 font-bold text-lg">
