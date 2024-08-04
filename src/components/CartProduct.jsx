@@ -5,14 +5,13 @@ import { Link } from "react-router-dom";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
-  console.log("p...", p);
 
   return (
-    <div className="overflow-hidden shadow-md rounded-md border cursor-pointer mb-16">
-      <div className="rounded-md">
+    <div className="flex flex-col overflow-hidden shadow-md rounded-md border  mb-16 ">
+      <Link className="rounded-md cursor-pointer " to={`/product/${p._id}`}>
         <img src={SERVER_URL + p.coverImage} />
-      </div>
-      <div className="px-2 py-4 ">
+      </Link>
+      <div className="px-2 py-4 mt-auto">
         <div className="flex justify-between items-center">
           <h3 className="text-web4 font-bold text-xl">{p.title}</h3>
           <div className="flex justify-start items-center">

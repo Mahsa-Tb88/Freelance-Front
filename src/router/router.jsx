@@ -13,6 +13,7 @@ import FormProduct from "../pages/FormProduct";
 import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import AllProducts from "../pages/AllProducts";
+import Product from "../pages/Product";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "addProduct", element: <AddProduct /> },
       { path: "editProduct", element: <FormProduct /> },
       { path: "AllProducts", element: <AllProducts /> },
+      { path: "product/:id", element: <Product /> },
       { path: "contactUs", element: <ContactUs /> },
       { path: "aboutUs", element: <AboutUs /> },
       { path: "orders", element: <Orders /> },

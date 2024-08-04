@@ -5,6 +5,8 @@ import { useInView } from "react-intersection-observer";
 import Filter from "../components/Filter";
 
 export default function AllProducts() {
+
+  
   const { ref, inView } = useInView();
   useEffect(() => {
     if (inView && hasNextPage && !isFetching) {
@@ -12,7 +14,9 @@ export default function AllProducts() {
     }
   }, [inView]);
 
-  const limit = 3;
+
+
+  const limit = 4;
   const {
     isPending,
     isFetching,
@@ -22,14 +26,17 @@ export default function AllProducts() {
     fetchNextPage,
     hasNextPage,
   } = useInfinityProducts(limit);
+
+
+
   return (
     <div className="my-10 w-11/12 mx-auto">
       <h1 className="text-center text-3xl text-web3 my-10">Products</h1>
-      <div className="flex flex-col md:flex-row justify-between items-start gap-9" >
-        <div className="bg-red-400 w-1/4 h-svh">
+      <div className="flex flex-col  justify-between items-start gap-9">
+        <div className="bg-red-400">
           <Filter />
         </div>
-        <div className="w-3/4 bg-black h-svh overflow-auto">
+        <div className="">
           {isPending ? (
             <div>
               <h2>Loading</h2>
@@ -40,12 +47,12 @@ export default function AllProducts() {
             </div>
           ) : (
             <div>
-              <div className="grid  md:grid-cols-4 gap-5">
+              <div>
                 {data.pages.map((page, i) => {
                   return (
-                    <div key={i}>
+                    <div key={i} className="grid  grid-cols-4  gap-6">
                       {page.data.body.map((p, i) => (
-                        <CartProduct p={p} />
+                        <CartProduct p={p} key={i}/>
                       ))}
                     </div>
                   );

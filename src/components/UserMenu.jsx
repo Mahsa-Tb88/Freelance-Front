@@ -15,7 +15,7 @@ export default function UserMenu() {
 
   const { data } = useSignOut(isSignOut);
 
-  async function handlerSignOut() {
+  function handlerSignOut() {
     setIsSignOut(true);
     if (data?.data.success) {
       dispatch(
