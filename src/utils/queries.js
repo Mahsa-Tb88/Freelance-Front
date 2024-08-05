@@ -50,11 +50,42 @@ export function useGetAllProductsOfSeller(id) {
     queryFn: () => axios.get(`/api/products/seller/${id}`),
   });
 }
-export function useInfinityProducts(limit) {
+export function useInfinityProducts(
+  limit,
+  category,
+  star,
+  search,
+  sort,
+  order,
+  Min,
+  Max
+) {
   return useInfiniteQuery({
-    queryKey: ["products", limit],
+    queryKey: [
+      "products",
+      limit,
+      category,
+      star,
+      search,
+      sort,
+      order,
+      Min,
+      Max,
+    ],
     queryFn: ({ pageParam }) =>
-      axios.get("/api/products", { params: { limit, page: pageParam } }),
+      axios.get("/api/products", {
+        params: {
+          limit,
+          page: pageParam,
+          category,
+          star,
+          search,
+          sort,
+          order,
+          Min,
+          Max,
+        },
+      }),
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages, lastPageParam) => {
       const filtered = lastPage.data.totalProducts.filtered;

@@ -25,7 +25,11 @@ export default function CartProduct({ p }) {
           {p.desc.substring(1, 70)}...
         </p>
         <div className="text-web4 font-extrabold text-lg flex justify-between items-center mt-5">
-          <h5>Price</h5> <span>$ {p.price}</span>
+          <h5>Price</h5>{" "}
+          <span>
+            $ {p.price} {p.category}
+            {}
+          </span>
         </div>
         <div className="flex justify-start items-center mt-3">
           <h5 className="text-web3 text-sm font-semibold mr-2">
