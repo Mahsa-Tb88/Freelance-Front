@@ -16,9 +16,15 @@ export default function Filter() {
   const { category, star, search, sort, order, Min, Max } = useSelector(
     (state) => state.product
   );
-
+  useEffect(() => {
+    if (searchParams.get("category")) {
+      const categoryGroup = searchParams.get("category").split(",");
+      setCategories(categoryGroup);
+    }
+  }, []);
   function handlerSelectCategories(value) {
     let newCategories;
+
     if (categories.includes(value)) {
       newCategories = categories.filter((c) => c != value);
       setCategories(newCategories);
@@ -33,9 +39,20 @@ export default function Filter() {
     );
     setSearchParams(params);
   }
+  function getTypeCategory(value) {
+    const categoryGroup = searchParams.get("category");
+    if (categoryGroup) {
+      if (categoryGroup.includes(value)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 
   function handlerSearch(value) {
-    console.log(value);
     const params = getNewSearchParams(searchParams, "search", value);
     setSearchParams(params);
   }
@@ -114,13 +131,14 @@ export default function Filter() {
               return (
                 <div key={c}>
                   <input
-                    id="web"
+                    id={c}
                     type="checkbox"
                     className="mx-2 accent-web2 "
                     value={c}
                     onChange={(e) => handlerSelectCategories(e.target.value)}
+                    checked={getTypeCategory(c)}
                   />
-                  <label htmlFor="web">{c}</label>
+                  <label htmlFor={c}>{c}</label>
                 </div>
               );
             })}
@@ -206,7 +224,8 @@ export default function Filter() {
                     name="filter"
                     className="mx-2 accent-web2 "
                     onChange={(e) => handlerSort(e.target.value)}
-                    value={getSortType()}
+                    value={s}
+                    checked={getSortType() == s}
                   />
                   <label>{s}</label>
                 </div>

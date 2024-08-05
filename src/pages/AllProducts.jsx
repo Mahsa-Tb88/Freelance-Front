@@ -11,7 +11,6 @@ export default function AllProducts() {
   const { category, star, search, sort, order, Min, Max } = useSelector(
     (state) => state.product
   );
-  console.log(star);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
   const { ref, inView } = useInView();
@@ -29,7 +28,7 @@ export default function AllProducts() {
     const sort = searchParams.get("sort") || "updatedAt";
     const order = searchParams.get("order") || "desc";
     const Min = searchParams.get("Min") || 0;
-    const Max = searchParams.get("Max") || null;
+    const Max = searchParams.get("Max") || 20000;
     dispatch(
       productAction.setFilter({ category, star, search, sort, order, Min, Max })
     );
