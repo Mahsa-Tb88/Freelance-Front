@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { uploadFile } from "../utils/queries";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { RxCross2 } from "react-icons/rx";
 
 export default function FormProduct({ product, type, id }) {
   const [successMessage, setSuccessMessage] = useState(false);
@@ -13,8 +13,6 @@ export default function FormProduct({ product, type, id }) {
   const [coverImageSelected, setCoverImageSelected] = useState(noImage);
   const [albumImage, setAlbumImage] = useState(noImage);
   const [coverImageChanged, setCoverImageChanged] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (type === "edit") {
@@ -29,8 +27,11 @@ export default function FormProduct({ product, type, id }) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
     setValue,
+    getValues,
+    resetField,
   } = useForm({
     defaultValues: {
       title: type == "edit" ? product.title : "",
@@ -45,8 +46,23 @@ export default function FormProduct({ product, type, id }) {
     },
   });
 
+  const { fields, append, remove } = useFieldArray({
+    name: "feature",
+    control,
+  });
+
+  function addFeature() {
+    
+    const newFeature = getValues("feature");
+    if (newFeature) {
+      append({ value: newFeature });
+      resetField("feature");
+    }
+  }
+
   const coverImage = { ...register("coverImage") };
   async function handleImageCover(e) {
+    console.log(e);
     setImgCoverMsg(false);
     coverImage.onChange(e);
     const file = e.target.files[0];
@@ -110,11 +126,21 @@ export default function FormProduct({ product, type, id }) {
       mutationCreate.mutate(data);
     }
   }
-
+  console.log(fields);
   function handleRemoveImage() {
     setAlbumImage(noImage);
     // setValue("coverImage", "");
   }
+  // function handlerAddFeature(value) {
+  //   console.log("value", value);
+  //   setListFeature([...listFeature, value]);
+  //   setAddF("");
+  // }
+
+  // function handlerRemoveFeature(value) {
+  //   const newList = listFeature.filter((f) => f !== value);
+  //   setListFeature(newList);
+  // }
   return (
     <div className="">
       <div className="my-10">
@@ -319,7 +345,6 @@ export default function FormProduct({ product, type, id }) {
                 </div>
               )}
             </div>
-
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">
                 Delivery Time
@@ -358,11 +383,35 @@ export default function FormProduct({ product, type, id }) {
               <label className="text-web3 text-xl mr-2 mb-1 ">
                 Add Feature
               </label>
-              <div className="border focus-within:border-web3 flex justify-between items-start rounded-md overflow-hidden">
-                <input className=" px-2 py-1 rounded-md outline-none h-8" />
-                <span className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 h-8 flex items-center px-3 cursor-pointer">
+              <div className="border mb-2 focus-within:border-web3 flex justify-between items-start rounded-md overflow-hidden">
+                <input
+                  className=" px-2 py-1 rounded-md outline-none h-8"
+                  {...register("feature")}
+                />
+                <span
+                  className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 h-8 flex items-center px-3 cursor-pointer"
+                  onClick={addFeature}
+                >
                   Add
                 </span>
+              </div>
+              <div>
+                {fields.map((f, index) => {
+                  return (
+                    <div
+                      key={f.id}
+                      className="relative inline-block bg-web3 px-6 py-2 text-xs text-web1 mx-1 rounded-sm"
+                    >
+                      <span>{f.value}</span>
+                      <span
+                        className="text-xxs text-white border  absolute top-0.5 right-0.5 cursor-pointer hover:bg-web1 hover:text-web4 rounded-full"
+                        onClick={() => remove(index)}
+                      >
+                        <RxCross2 />
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
               {errors.title && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
