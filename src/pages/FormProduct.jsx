@@ -8,11 +8,13 @@ import { RxCross2 } from "react-icons/rx";
 export default function FormProduct({ product, type, id }) {
   const [successMessage, setSuccessMessage] = useState(false);
   const [failMessage, setFailMessage] = useState(false);
-  const [failImgCoverMsg, setImgCoverMsg] = useState(false);
+  const [imgCoverMsg, setImgCoverMsg] = useState(false);
   const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
   const [coverImageSelected, setCoverImageSelected] = useState(noImage);
-  const [albumImage, setAlbumImage] = useState(noImage);
+  const [albumImageSelected, setAlbumImageSelected] = useState(noImage);
   const [coverImageChanged, setCoverImageChanged] = useState(false);
+  const [albumImageChanged, setAlbumImageChanged] = useState(false);
+  const [featureValue, setFeatureValue] = useState("");
 
   useEffect(() => {
     if (type === "edit") {
@@ -27,11 +29,10 @@ export default function FormProduct({ product, type, id }) {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isSubmitting },
     setValue,
+    watch,
     getValues,
-    resetField,
   } = useForm({
     defaultValues: {
       title: type == "edit" ? product.title : "",
@@ -43,21 +44,19 @@ export default function FormProduct({ product, type, id }) {
       deliveryTime: type == "edit" ? product.deliveryTime : "",
       revisionNumber: type == "edit" ? product.revisionNumber : "",
       price: type == "edit" ? product.price : "",
+      features: type == "edit" ? product.features : [],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
-    name: "feature",
-    control,
-  });
-
   function addFeature() {
-    
-    const newFeature = getValues("feature");
-    if (newFeature) {
-      append({ value: newFeature });
-      resetField("feature");
+    if (featureValue) {
+      setFeatureValue("");
+      setValue("features", [...watch("features"), featureValue]);
     }
+  }
+  function removeFeature(value) {
+    const newList = watch("features").filter((f) => f !== value);
+    setValue("features", newList);
   }
 
   const coverImage = { ...register("coverImage") };
@@ -71,6 +70,24 @@ export default function FormProduct({ product, type, id }) {
       const result = await uploadFile(file);
       if (result.success) {
         setCoverImageSelected(SERVER_URL + result.body.url);
+      } else {
+        setImgCoverMsg(result.message);
+        return;
+      }
+    }
+  }
+  const albumImage = { ...register("albumImage") };
+  async function handleImageAlbum(e) {
+    // console.log(e);
+    setImgCoverMsg(false);
+    albumImage.onChange(e);
+    const files = e.target.files;
+    console.log(files);
+    if (files) {
+      setAlbumImageChanged(true);
+      const result = await uploadFile(files);
+      if (result.success) {
+        setAlbumImageSelected(SERVER_URL + result.body.url);
       } else {
         setImgCoverMsg(result.message);
         return;
@@ -126,21 +143,10 @@ export default function FormProduct({ product, type, id }) {
       mutationCreate.mutate(data);
     }
   }
-  console.log(fields);
   function handleRemoveImage() {
     setAlbumImage(noImage);
-    // setValue("coverImage", "");
   }
-  // function handlerAddFeature(value) {
-  //   console.log("value", value);
-  //   setListFeature([...listFeature, value]);
-  //   setAddF("");
-  // }
 
-  // function handlerRemoveFeature(value) {
-  //   const newList = listFeature.filter((f) => f !== value);
-  //   setListFeature(newList);
-  // }
   return (
     <div className="">
       <div className="my-10">
@@ -163,7 +169,7 @@ export default function FormProduct({ product, type, id }) {
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1">Title</label>
               <input
-                className="border  px-2 py-1 rounded-md"
+                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                 placeholder="Enter a title of product"
                 {...register("title", {
                   required: "Please enter a title for your product.",
@@ -186,11 +192,15 @@ export default function FormProduct({ product, type, id }) {
             <div className="flex flex-col mb-10">
               <label className="  mr-2 mb-1 text-web3 text-xl">Category</label>
               <select
-                className="border bg-white text-web4 outline-none px-2 py-2 rounded-md"
+                className="border bg-white text-web4 px-2 py-2 rounded-md focus-within:border-web3 outline-none"
                 {...register("category", {
                   required: "Select the category",
                 })}
               >
+                <option className="my-2" value={""}>
+                  {" "}
+                  Select a Category
+                </option>
                 <option className="my-2  ">Web Design</option>
                 <option className="my-2  ">Programming</option>
                 <option className="my-2  ">Logo</option>
@@ -236,9 +246,12 @@ export default function FormProduct({ product, type, id }) {
                 <div className="flex mb-4">
                   <input
                     className="outline-none  hidden "
-                    type="files"
+                    type="file"
                     id="images"
                     accept="image/*"
+                    {...albumImage}
+                    multiple
+                    onChange={handleImageAlbum}
                   />
                   <label
                     htmlFor="images"
@@ -271,7 +284,7 @@ export default function FormProduct({ product, type, id }) {
               </label>
 
               <textarea
-                className="rounded-md border px-2 py-1 w-full  "
+                className="rounded-md border focus-within:border-web3 outline-none px-2 py-1 w-full  "
                 placeholder="Description"
                 rows={10}
                 {...register("desc", {
@@ -285,7 +298,7 @@ export default function FormProduct({ product, type, id }) {
                     message: "description must be 500 Characters at most",
                   },
                 })}
-              ></textarea>
+              />
               {errors.desc && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
                   <p>{errors.desc.message}</p>
@@ -293,13 +306,13 @@ export default function FormProduct({ product, type, id }) {
               )}
             </div>
           </div>
-          <div className="">
+          <div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 outline-web3">
                 Service Title
               </label>
               <input
-                className="border  px-2 py-1 rounded-md"
+                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                 placeholder="e.g. One-page web design"
                 {...register("serviceTitle", {
                   required: "Please enter a Service Title for your product.",
@@ -324,7 +337,7 @@ export default function FormProduct({ product, type, id }) {
                 Short Description
               </label>
               <textarea
-                className="border  px-2 py-1 rounded-md outline-web3"
+                className="border  px-2 py-1 rounded-md  focus-within:border-web3 outline-none"
                 placeholder="Short description of your product"
                 rows={5}
                 {...register("shortDesc", {
@@ -338,7 +351,7 @@ export default function FormProduct({ product, type, id }) {
                     message: "shortDesc must be 70 Characters at most",
                   },
                 })}
-              ></textarea>
+              />
               {errors.shortDesc && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
                   <p>{errors.shortDesc.message}</p>
@@ -350,7 +363,7 @@ export default function FormProduct({ product, type, id }) {
                 Delivery Time
               </label>
               <input
-                className="border outline-web3 px-2 py-1 rounded-md"
+                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                 type="number"
                 {...register("deliveryTime", {
                   required: "Please enter a deliveryTime for your product.",
@@ -367,7 +380,7 @@ export default function FormProduct({ product, type, id }) {
                 Revision Number
               </label>
               <input
-                className="border outline-web3 px-2 py-1 rounded-md"
+                className="border px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                 type="number"
                 {...register("revisionNumber", {
                   required: "Please enter a revisionNumber for your product.",
@@ -383,10 +396,11 @@ export default function FormProduct({ product, type, id }) {
               <label className="text-web3 text-xl mr-2 mb-1 ">
                 Add Feature
               </label>
-              <div className="border mb-2 focus-within:border-web3 flex justify-between items-start rounded-md overflow-hidden">
+              <div className="border mb-2 focus-within:border-web3 outline-none flex justify-between items-start rounded-md overflow-hidden">
                 <input
                   className=" px-2 py-1 rounded-md outline-none h-8"
-                  {...register("feature")}
+                  onChange={(e) => setFeatureValue(e.target.value)}
+                  value={featureValue}
                 />
                 <span
                   className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 h-8 flex items-center px-3 cursor-pointer"
@@ -396,22 +410,23 @@ export default function FormProduct({ product, type, id }) {
                 </span>
               </div>
               <div>
-                {fields.map((f, index) => {
-                  return (
-                    <div
-                      key={f.id}
-                      className="relative inline-block bg-web3 px-6 py-2 text-xs text-web1 mx-1 rounded-sm"
-                    >
-                      <span>{f.value}</span>
-                      <span
-                        className="text-xxs text-white border  absolute top-0.5 right-0.5 cursor-pointer hover:bg-web1 hover:text-web4 rounded-full"
-                        onClick={() => remove(index)}
+                {watch("features") &&
+                  watch("features").map((f) => {
+                    return (
+                      <div
+                        key={f}
+                        className="relative inline-block bg-web3 px-6 py-2 text-xs text-web1 mx-1 rounded-sm"
                       >
-                        <RxCross2 />
-                      </span>
-                    </div>
-                  );
-                })}
+                        <span>{f}</span>
+                        <span
+                          className="text-xxs text-white border  absolute top-0.5 right-0.5 cursor-pointer hover:bg-web1 hover:text-web4 rounded-full"
+                          onClick={() => removeFeature(f)}
+                        >
+                          <RxCross2 />
+                        </span>
+                      </div>
+                    );
+                  })}
               </div>
               {errors.title && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
@@ -422,7 +437,7 @@ export default function FormProduct({ product, type, id }) {
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">Price</label>
               <input
-                className="border outline-web3 px-2 py-1 rounded-md"
+                className="border focus-within:border-web3 outline-none  px-2 py-1 rounded-md"
                 type="number"
                 {...register("price", {
                   required: "Please enter a price for your product.",
