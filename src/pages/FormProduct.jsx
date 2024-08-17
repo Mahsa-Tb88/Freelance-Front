@@ -11,7 +11,7 @@ export default function FormProduct({ product, type, id }) {
   const [imgCoverMsg, setImgCoverMsg] = useState(false);
   const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
   const [coverImageSelected, setCoverImageSelected] = useState(noImage);
-  const [albumImageSelected, setAlbumImageSelected] = useState(noImage);
+  const [albumImageSelected, setAlbumImageSelected] = useState([]);
   const [coverImageChanged, setCoverImageChanged] = useState(false);
   const [albumImageChanged, setAlbumImageChanged] = useState(false);
   const [featureValue, setFeatureValue] = useState("");
@@ -45,6 +45,7 @@ export default function FormProduct({ product, type, id }) {
       revisionNumber: type == "edit" ? product.revisionNumber : "",
       price: type == "edit" ? product.price : "",
       features: type == "edit" ? product.features : [],
+      albumImage: type == "edit" ? product.albumImage : [],
     },
   });
 
@@ -61,7 +62,6 @@ export default function FormProduct({ product, type, id }) {
 
   const coverImage = { ...register("coverImage") };
   async function handleImageCover(e) {
-    console.log(e);
     setImgCoverMsg(false);
     coverImage.onChange(e);
     const file = e.target.files[0];
@@ -76,18 +76,25 @@ export default function FormProduct({ product, type, id }) {
       }
     }
   }
+
   const albumImage = { ...register("albumImage") };
   async function handleImageAlbum(e) {
-    // console.log(e);
     setImgCoverMsg(false);
     albumImage.onChange(e);
-    const files = e.target.files;
-    console.log(files);
-    if (files) {
+    const file = e.target.files[0];
+
+    if (file && albumImageSelected.length <= 4) {
       setAlbumImageChanged(true);
-      const result = await uploadFile(files);
+      const result = await uploadFile(file);
       if (result.success) {
-        setAlbumImageSelected(SERVER_URL + result.body.url);
+        setAlbumImageSelected([
+          ...albumImageSelected,
+          SERVER_URL + result.body.url,
+        ]);
+        setValue("albumImage", [
+          ...albumImageSelected,
+          SERVER_URL + result.body.url,
+        ]);
       } else {
         setImgCoverMsg(result.message);
         return;
@@ -105,7 +112,7 @@ export default function FormProduct({ product, type, id }) {
       setTimeout(() => setSuccessMessage(""), 2000);
     },
     onError() {
-      setFailMessage("Something");
+      setFailMessage("Something Wrong");
       window.scrollTo({ top: 0, behavior: "instant" });
     },
   });
@@ -133,6 +140,13 @@ export default function FormProduct({ product, type, id }) {
       } else {
         data.coverImage = "";
       }
+      if (data.albumImage.length) {
+        albumImage.map((p) => {
+          const newlist = data.albumImage.map((p) => {
+            console.log("each image", p);
+          });
+        });
+      }
       mutateEdit.mutate(data);
     } else {
       if (data.coverImage?.length) {
@@ -140,11 +154,15 @@ export default function FormProduct({ product, type, id }) {
       } else {
         data.coverImage = "";
       }
+      console.log(data);
       mutationCreate.mutate(data);
     }
   }
-  function handleRemoveImage() {
-    setAlbumImage(noImage);
+
+  function handleRemoveImage(p) {
+    const list = [...albumImageSelected];
+    const newList = list.filter((image) => image !== p);
+    setAlbumImageSelected(newList);
   }
 
   return (
@@ -212,7 +230,7 @@ export default function FormProduct({ product, type, id }) {
               )}
             </div>
             <div className=" flex justify-around items-center  mb-10">
-              <div className="w-1/3">
+              <div className="w-1/6">
                 <img
                   className="bg-red-200  rounded-md"
                   src={coverImageSelected}
@@ -240,41 +258,56 @@ export default function FormProduct({ product, type, id }) {
             </div>
             <div className=" flex justify-around items-center  mb-10">
               <div className="w-1/3">
-                <img className="bg-red-200  rounded-md" src={albumImage} />
+                {albumImageSelected.length ? (
+                  albumImageSelected.map((p) => {
+                    return (
+                      <div
+                        key={p}
+                        className="border rounded-md p-2 mb-2 flex justify-between"
+                      >
+                        <span
+                          className="text-xs cursor-pointer hover:text-red-700"
+                          onClick={() => handleRemoveImage(p)}
+                        >
+                          <RxCross2 />
+                        </span>
+                        <div className="flex justify-end items-center">
+                          <span>Uploaded</span>
+                          <img className=" w-1/3  rounded-md ml-2" src={p} />
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <span className="border  p-2 rounded-md bg-gray-200 text-web4">
+                    ImageAlbum Empty
+                  </span>
+                )}
               </div>
               <div>
-                <div className="flex mb-4">
+                <div className=" ">
                   <input
                     className="outline-none  hidden "
                     type="file"
                     id="images"
                     accept="image/*"
                     {...albumImage}
-                    multiple
+                    disabled={albumImageSelected.length == 4}
                     onChange={handleImageAlbum}
                   />
                   <label
                     htmlFor="images"
-                    className="text-base sm:text-lg cursor-pointer border w-36 sm:w-44 text-center  py-1 rounded-md bg-web2 hover:bg-web3 text-web4 hover:text-web1"
+                    className={`${"text-base  sm:text-lg  border px-4  text-center  py-2 rounded-md   text-web4 "}${
+                      albumImageSelected.length == 4
+                        ? " bg-web1"
+                        : "bg-web2 hover:bg-web3 hover:text-web1 cursor-pointer"
+                    }`}
                   >
-                    Upload Album
+                    Upload Image of Album
                   </label>
-                </div>
-                <div className="flex">
-                  <input
-                    className="outline-none  hidden "
-                    placeholder="Enter your password again"
-                    type="files"
-                    id="removeImages"
-                    accept="image/*"
-                  />
-                  <label
-                    htmlFor="removeImages"
-                    onClick={() => handleRemoveImage()}
-                    className="text-base sm:text-lg cursor-pointer border w-36 sm:w-44 text-center  py-1 rounded-md bg-web1 hover:bg-web4 text-web4 hover:text-web1"
-                  >
-                    Remove Images
-                  </label>
+                  <p className="text-web4 text-sm text-center mt-2">
+                    Max 4 photos
+                  </p>
                 </div>
               </div>
             </div>
