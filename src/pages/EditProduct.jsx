@@ -8,7 +8,6 @@ export default function EditProduct() {
   const id = params.id;
 
   const { isPending, isError, data } = useGetProductById(id);
-  console.log(data?.data.body);
 
   return (
     <div className="w-5/6 mx-auto my-20">

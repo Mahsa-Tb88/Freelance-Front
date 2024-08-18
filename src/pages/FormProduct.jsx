@@ -16,15 +16,19 @@ export default function FormProduct({ product, type, id }) {
   const [albumImageChanged, setAlbumImageChanged] = useState(false);
   const [featureValue, setFeatureValue] = useState("");
 
+  console.log("product....", product);
+
   useEffect(() => {
     if (type === "edit") {
-      if (product.coverImage) {
-        setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
-      } else {
-        setCoverImageSelected(noImage);
-      }
+      console.log("edit");
+      setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
+      const newAlbumImage = product.albumImage.map((p) => {
+        return SERVER_URL + p;
+      });
+      setAlbumImageSelected(newAlbumImage);
     }
   }, []);
+  console.log(coverImageSelected);
 
   const {
     register,
@@ -60,7 +64,15 @@ export default function FormProduct({ product, type, id }) {
     setValue("features", newList);
   }
 
-  const coverImage = { ...register("coverImage") };
+  const coverImage = {
+    ...register(
+      "coverImage",
+      type != "edit" && {
+        required: "Please Upload a cover Image.",
+      }
+    ),
+  };
+
   async function handleImageCover(e) {
     setImgCoverMsg(false);
     coverImage.onChange(e);
@@ -101,6 +113,11 @@ export default function FormProduct({ product, type, id }) {
       }
     }
   }
+  function handleRemoveImage(p) {
+    const list = [...albumImageSelected];
+    const newList = list.filter((image) => image !== p);
+    setAlbumImageSelected(newList);
+  }
 
   const mutationCreate = useMutation({
     mutationFn: (variable) => axios.post("/api/products", variable),
@@ -135,18 +152,13 @@ export default function FormProduct({ product, type, id }) {
     setFailMessage("");
     setSuccessMessage("");
     if (type == "edit") {
-      if (data.coverImage?.length) {
-        data.coverImage = coverImageSelected.substring(21);
-      } else {
-        data.coverImage = "";
-      }
-      if (data.albumImage.length) {
-        albumImage.map((p) => {
-          const newlist = data.albumImage.map((p) => {
-            console.log("each image", p);
-          });
-        });
-      }
+      data.coverImage = coverImageSelected.substring(21);
+      let newAlbumImage;
+      newAlbumImage = albumImageSelected.map((p) => {
+        return p.substring(21);
+      });
+      data.albumImage = newAlbumImage;
+      console.log("dataaa", data);
       mutateEdit.mutate(data);
     } else {
       if (data.coverImage?.length) {
@@ -154,15 +166,15 @@ export default function FormProduct({ product, type, id }) {
       } else {
         data.coverImage = "";
       }
-      console.log(data);
+      let newAlbumImage = [];
+      if (data.albumImage.length) {
+        newAlbumImage = data.albumImage.map((p) => {
+          return p.substring(21);
+        });
+      }
+      data.albumImage = newAlbumImage;
       mutationCreate.mutate(data);
     }
-  }
-
-  function handleRemoveImage(p) {
-    const list = [...albumImageSelected];
-    const newList = list.filter((image) => image !== p);
-    setAlbumImageSelected(newList);
   }
 
   return (
@@ -254,6 +266,11 @@ export default function FormProduct({ product, type, id }) {
                     Upload Cover Image
                   </label>
                 </div>
+                {errors.coverImage && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.coverImage.message}</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className=" flex justify-around items-center  mb-10">
@@ -263,7 +280,7 @@ export default function FormProduct({ product, type, id }) {
                     return (
                       <div
                         key={p}
-                        className="border rounded-md p-2 mb-2 flex justify-between"
+                        className="border rounded-md p-2 mb-2 flex justify-between "
                       >
                         <span
                           className="text-xs cursor-pointer hover:text-red-700"
@@ -285,30 +302,28 @@ export default function FormProduct({ product, type, id }) {
                 )}
               </div>
               <div>
-                <div className=" ">
-                  <input
-                    className="outline-none  hidden "
-                    type="file"
-                    id="images"
-                    accept="image/*"
-                    {...albumImage}
-                    disabled={albumImageSelected.length == 4}
-                    onChange={handleImageAlbum}
-                  />
-                  <label
-                    htmlFor="images"
-                    className={`${"text-base  sm:text-lg  border px-4  text-center  py-2 rounded-md   text-web4 "}${
-                      albumImageSelected.length == 4
-                        ? " bg-web1"
-                        : "bg-web2 hover:bg-web3 hover:text-web1 cursor-pointer"
-                    }`}
-                  >
-                    Upload Image of Album
-                  </label>
-                  <p className="text-web4 text-sm text-center mt-2">
-                    Max 4 photos
-                  </p>
-                </div>
+                <input
+                  className="outline-none  hidden "
+                  type="file"
+                  id="images"
+                  accept="image/*"
+                  {...albumImage}
+                  disabled={albumImageSelected.length == 4}
+                  onChange={handleImageAlbum}
+                />
+                <label
+                  htmlFor="images"
+                  className={`${"text-base  sm:text-lg  border px-4  text-center  py-2 rounded-md   text-web4 "}${
+                    albumImageSelected.length == 4
+                      ? " bg-web1"
+                      : "bg-web2 hover:bg-web3 hover:text-web1 cursor-pointer"
+                  }`}
+                >
+                  Upload Image of Album
+                </label>
+                <p className="text-web4 text-sm text-center pt-2">
+                  Max 4 photos
+                </p>
               </div>
             </div>
             <div className=" flex flex-col justify-around items-start  mb-10">
