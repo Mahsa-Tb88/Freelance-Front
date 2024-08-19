@@ -17,8 +17,6 @@ export async function uploadFile(file) {
   }
 }
 
-
-
 export function useLogin() {
   return useMutation({
     mutationFn: (variables) => axios.post("/auth/login", variables),
@@ -29,7 +27,7 @@ export function useInitialized() {
   return useQuery({
     queryKey: ["initialize"],
     queryFn: () => axios.get("/misc/initialize"),
-    staleTime: Infinity,
+    // staleTime: Infinity,
   });
 }
 
@@ -44,6 +42,24 @@ export function useGetProductById(id) {
   return useQuery({
     queryKey: ["product", id],
     queryFn: () => axios.get(`/api/products/${id}`),
+  });
+}
+
+export function useEditProduct(id) {
+  return useMutation({
+    mutationFn: (variable) => axios.put(`/api/products/${id}`, variable),
+  });
+}
+
+export function useCreateProduct() {
+  return useMutation({
+    mutationFn: (variable) => axios.post("/api/products", variable),
+  });
+}
+
+export function useRemoveProductById(id) {
+  return useMutation({
+    mutationFn: () => axios.delete(`/api/products/${id}`),
   });
 }
 export function useGetAllProductsOfSeller(id) {

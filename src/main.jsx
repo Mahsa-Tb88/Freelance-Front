@@ -12,7 +12,16 @@ import { RouterProvider } from "react-router-dom";
 import store from "./store/store";
 import router from "./router/router";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      // gcTime: 100000,
+      // staleTime: 10000,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>

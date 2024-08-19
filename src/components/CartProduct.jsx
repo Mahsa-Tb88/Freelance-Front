@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { BiEdit } from "react-icons/bi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { useRemoveProductById } from "../utils/queries";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
+
+  const mutationDelete = useRemoveProductById(p._id);
+  
+
+  function removeCartHandler(id) {
+    if (!confirm("Are you sure for deleting the product?")) {
+      return;
+    }
+    mutationDelete.mutate();
+  }
 
   return (
     <div className="flex flex-col overflow-hidden shadow-md rounded-md border  mb-16 ">
@@ -49,13 +62,22 @@ export default function CartProduct({ p }) {
         </div>
       </div>
       {user.isSeller && (
-        <button className="w-full flex">
-          <Link
-            to={`/editProduct/${p._id}`}
-            className="bg-web2 text-web4 font-semibold hover:text-web1 hover:bg-web3 py-3 w-full"
+        <button className="w-full flex justify-between items-center bg-web2 hover:text-web1   py-3 px-2 ">
+          <div>
+            <Link
+              to={`/editProduct/${p._id}`}
+              className=" text-web4 hover:text-web3 font-semibold  text-xl"
+            >
+              <BiEdit />
+            </Link>
+          </div>
+
+          <div
+            className="text-web4 hover:text-red-700 text-xl"
+            onClick={() => removeCartHandler(p._id)}
           >
-            Edit
-          </Link>
+            <RiDeleteBin6Line />
+          </div>
         </button>
       )}
     </div>

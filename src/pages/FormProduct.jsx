@@ -1,8 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { uploadFile } from "../utils/queries";
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { uploadFile, useCreateProduct, useEditProduct } from "../utils/queries";
 import { RxCross2 } from "react-icons/rx";
 
 export default function FormProduct({ product, type, id }) {
@@ -16,11 +14,8 @@ export default function FormProduct({ product, type, id }) {
   const [albumImageChanged, setAlbumImageChanged] = useState(false);
   const [featureValue, setFeatureValue] = useState("");
 
-  console.log("product....", product);
-
   useEffect(() => {
     if (type === "edit") {
-      console.log("edit");
       setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
       const newAlbumImage = product.albumImage.map((p) => {
         return SERVER_URL + p;
@@ -28,7 +23,6 @@ export default function FormProduct({ product, type, id }) {
       setAlbumImageSelected(newAlbumImage);
     }
   }, []);
-  console.log(coverImageSelected);
 
   const {
     register,
@@ -72,7 +66,6 @@ export default function FormProduct({ product, type, id }) {
       }
     ),
   };
-
   async function handleImageCover(e) {
     setImgCoverMsg(false);
     coverImage.onChange(e);
@@ -119,35 +112,8 @@ export default function FormProduct({ product, type, id }) {
     setAlbumImageSelected(newList);
   }
 
-  const mutationCreate = useMutation({
-    mutationFn: (variable) => axios.post("/api/products", variable),
-    onSuccess() {
-      setSuccessMessage(
-        "Congratulations, your Prodcut has been successfully created."
-      );
-      window.scrollTo({ top: 0, behavior: "instant" });
-      setTimeout(() => setSuccessMessage(""), 2000);
-    },
-    onError() {
-      setFailMessage("Something Wrong");
-      window.scrollTo({ top: 0, behavior: "instant" });
-    },
-  });
-
-  const mutateEdit = useMutation({
-    mutationFn: (variable) => axios.put(`/api/products/${id}`, variable),
-    onSuccess() {
-      setSuccessMessage(
-        "Congratulations, your Prodcut has been successfully Upadted."
-      );
-      window.scrollTo({ top: 0, behavior: "instant" });
-    },
-    onError() {
-      setFailMessage("Something");
-      window.scrollTo({ top: 0, behavior: "instant" });
-    },
-  });
-
+  const mutationCreate = useCreateProduct();
+  const mutateEdit = useEditProduct(id);
   async function onSubmit(data) {
     setFailMessage("");
     setSuccessMessage("");
@@ -158,8 +124,18 @@ export default function FormProduct({ product, type, id }) {
         return p.substring(21);
       });
       data.albumImage = newAlbumImage;
-      console.log("dataaa", data);
-      mutateEdit.mutate(data);
+      mutateEdit.mutate(data, {
+        onSuccess() {
+          setSuccessMessage(
+            "Congratulations, your Prodcut has been successfully Upadted."
+          );
+          window.scrollTo({ top: 0, behavior: "instant" });
+        },
+        onError() {
+          setFailMessage("Something");
+          window.scrollTo({ top: 0, behavior: "instant" });
+        },
+      });
     } else {
       if (data.coverImage?.length) {
         data.coverImage = coverImageSelected.substring(21);
@@ -173,7 +149,19 @@ export default function FormProduct({ product, type, id }) {
         });
       }
       data.albumImage = newAlbumImage;
-      mutationCreate.mutate(data);
+      mutationCreate.mutate(data, {
+        onSuccess() {
+          setSuccessMessage(
+            "Congratulations, your Prodcut has been successfully created."
+          );
+          window.scrollTo({ top: 0, behavior: "instant" });
+          setTimeout(() => setSuccessMessage(""), 2000);
+        },
+        onError() {
+          setFailMessage("Something Wrong");
+          window.scrollTo({ top: 0, behavior: "instant" });
+        },
+      });
     }
   }
 
