@@ -42,13 +42,14 @@ export default function FormProduct({ product, type, id }) {
       deliveryTime: type == "edit" ? product.deliveryTime : "",
       revisionNumber: type == "edit" ? product.revisionNumber : "",
       price: type == "edit" ? product.price : "",
-      features: type == "edit" ? product.features : [],
+      features: type == "edit" ? product.features : ["ff"],
       albumImage: type == "edit" ? product.albumImage : [],
     },
   });
 
   function addFeature() {
     if (featureValue) {
+      console.log(watch("features"));
       setFeatureValue("");
       setValue("features", [...watch("features"), featureValue]);
     }
@@ -124,18 +125,21 @@ export default function FormProduct({ product, type, id }) {
         return p.substring(21);
       });
       data.albumImage = newAlbumImage;
-      mutateEdit.mutate(data, {
-        onSuccess() {
-          setSuccessMessage(
-            "Congratulations, your Prodcut has been successfully Upadted."
-          );
-          window.scrollTo({ top: 0, behavior: "instant" });
-        },
-        onError() {
-          setFailMessage("Something");
-          window.scrollTo({ top: 0, behavior: "instant" });
-        },
-      });
+      mutateEdit.mutate(
+        { FormData: data, id },
+        {
+          onSuccess() {
+            setSuccessMessage(
+              "Congratulations, your Prodcut has been successfully Upadted."
+            );
+            window.scrollTo({ top: 0, behavior: "instant" });
+          },
+          onError() {
+            setFailMessage("Something");
+            window.scrollTo({ top: 0, behavior: "instant" });
+          },
+        }
+      );
     } else {
       if (data.coverImage?.length) {
         data.coverImage = coverImageSelected.substring(21);
@@ -464,11 +468,11 @@ export default function FormProduct({ product, type, id }) {
                     );
                   })}
               </div>
-              {errors.title && (
+              {/* errors.features && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.title.message}</p>
+                  <p>{errors.features.message}</p>
                 </div>
-              )}
+              ) */}
             </div>
             <div className="flex flex-col mb-10">
               <label className="text-web3 text-xl mr-2 mb-1 ">Price</label>

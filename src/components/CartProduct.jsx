@@ -5,18 +5,31 @@ import { Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useRemoveProductById } from "../utils/queries";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
 
-  const mutationDelete = useRemoveProductById(p._id);
-  
+  const mutationDelete = useRemoveProductById();
 
-  function removeCartHandler(id) {
+  const querryClient = useQueryClient();
+  function removeCartHandler() {
     if (!confirm("Are you sure for deleting the product?")) {
       return;
     }
-    mutationDelete.mutate();
+    mutationDelete.mutate(p._id, {
+      onSuccess() {
+        console.log("successs");
+        querryClient.invalidateQueries({
+          queryKey: ["products"],
+        });
+        window.scrollTo({ top: 0, behavior: "instant" });
+      },
+      onError() {
+        console.log("error");
+        window.scrollTo({ top: 0, behavior: "instant" });
+      },
+    });
   }
 
   return (

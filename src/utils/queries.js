@@ -45,9 +45,10 @@ export function useGetProductById(id) {
   });
 }
 
-export function useEditProduct(id) {
+export function useEditProduct() {
   return useMutation({
-    mutationFn: (variable) => axios.put(`/api/products/${id}`, variable),
+    mutationFn: (variable) =>
+      axios.put(`/api/products/${variable.id}`, variable.FormData),
   });
 }
 
@@ -57,9 +58,9 @@ export function useCreateProduct() {
   });
 }
 
-export function useRemoveProductById(id) {
+export function useRemoveProductById() {
   return useMutation({
-    mutationFn: () => axios.delete(`/api/products/${id}`),
+    mutationFn: (variable) => axios.delete(`/api/products/${variable}`),
   });
 }
 export function useGetAllProductsOfSeller(id) {
