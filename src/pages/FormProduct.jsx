@@ -42,7 +42,7 @@ export default function FormProduct({ product, type, id }) {
       deliveryTime: type == "edit" ? product.deliveryTime : "",
       revisionNumber: type == "edit" ? product.revisionNumber : "",
       price: type == "edit" ? product.price : "",
-      features: type == "edit" ? product.features : ["ff"],
+      features: type == "edit" ? product.features : [],
       albumImage: type == "edit" ? product.albumImage : [],
     },
   });
@@ -153,6 +153,7 @@ export default function FormProduct({ product, type, id }) {
         });
       }
       data.albumImage = newAlbumImage;
+      console.log("create product..." , data)
       mutationCreate.mutate(data, {
         onSuccess() {
           setSuccessMessage(

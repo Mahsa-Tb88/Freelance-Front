@@ -53,6 +53,7 @@ export function useEditProduct() {
 }
 
 export function useCreateProduct() {
+  console.log("lsls");
   return useMutation({
     mutationFn: (variable) => axios.post("/api/products", variable),
   });

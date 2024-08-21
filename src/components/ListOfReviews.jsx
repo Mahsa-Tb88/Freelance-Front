@@ -22,9 +22,9 @@ export default function ListOfReviews() {
         <div className="flex mt-4">
           {Array(3)
             .fill("0")
-            .map((i) => {
+            .map((i,index) => {
               return (
-                <span className=" text-yellow-500 mx-px" key={i}>
+                <span className=" text-yellow-500 mx-px" key={index}>
                   <FaStar />
                 </span>
               );
@@ -35,7 +35,7 @@ export default function ListOfReviews() {
           <h3>helpful?</h3>
           <div className="flex items-center">
             <SlLike className="hover:text-web4  cursor-pointer" />
-            <spna>Yes</spna>
+            <span>Yes</span>
           </div>
           <div className="flex items-center">
             <SlDislike className="hover:text-web4 cursor-pointer" />
@@ -60,9 +60,9 @@ export default function ListOfReviews() {
         <div className="flex mt-4">
           {Array(3)
             .fill("0")
-            .map((i) => {
+            .map((i, index) => {
               return (
-                <span className=" text-yellow-500 mx-px" key={i}>
+                <span className=" text-yellow-500 mx-px" key={index}>
                   <FaStar />
                 </span>
               );
@@ -73,7 +73,7 @@ export default function ListOfReviews() {
           <h3>helpful?</h3>
           <div className="flex items-center">
             <SlLike className="hover:text-web4  cursor-pointer" />
-            <spna>Yes</spna>
+            <span>Yes</span>
           </div>
           <div className="flex items-center">
             <SlDislike className="hover:text-web4 cursor-pointer" />
