@@ -7,7 +7,6 @@ import { useSignOut } from "../utils/queries";
 
 export default function UserMenu() {
   const user = useSelector((state) => state.user.user);
-  console.log("userSlice", user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

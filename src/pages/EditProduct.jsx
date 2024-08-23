@@ -23,7 +23,7 @@ export default function EditProduct() {
         </div>
       ) : (
         <div>
-          <h1 className="text-web3 text-3xl sm:text-4xl">Edit Product</h1>
+          
           <FormProduct product={data.data.body} type="edit" id={id} />
         </div>
       )}

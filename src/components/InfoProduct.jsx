@@ -1,31 +1,32 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { BiRevision } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa6";
-export default function InfoProduct({ data }) {
+import { BsArrowRepeat } from "react-icons/bs";
+import { Link } from "react-router-dom";
+export default function InfoProduct({ data, id }) {
   return (
     <div className="border px-2 py-4 rounded-md bg-web1">
       <div className="flex items-center justify-between">
-        <h2 className="text-web4 text-lg">{data.serviceTitle}</h2>
-        <span className="text-web4 text-lg">${data.price}</span>
+        <h2 className="text-web4 text-lg font-bold">{data.serviceTitle}</h2>
+        <span className="text-web4 text-lg font-bold">${data.price}</span>
       </div>
       <p className="my-5 text-web4">{data.shortDesc}</p>
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <CiDeliveryTruck className="text-web3 font-bold text-lg" />
-          <span className="text-web4 text-sm">Days Delivery: </span>
+          <CiDeliveryTruck className="text-web3 font-bold text-lg mr-1" />
+          <span className="text-web4 text-sm mr-0.5">Days Delivery: </span>
           <span className="text-web4 text-sm">{data.deliveryTime} </span>
         </div>
         <div className="flex items-center">
-          <BiRevision className="text-web3 font-bold " />
-          <span className="text-web4 text-sm">{data.deliveryTime} </span>
+          <BsArrowRepeat className="text-web3 font-bold mr-1" />
+          <span className="text-web4 text-sm mr-0.5">{data.deliveryTime} </span>
           <span className="text-web4 text-sm">Revisions</span>
         </div>
       </div>
       <div className="mt-3">
         {data.features.map((p) => {
           return (
-            <div className="flex items-center">
+            <div className="flex items-center" key={p}>
               <span className="text-web3 text-sm">
                 <FaCheck />
               </span>
@@ -34,7 +35,9 @@ export default function InfoProduct({ data }) {
           );
         })}
       </div>
-      <button className="bg-web3 mt-4 w-full text-web1 py-2 rounded-md text-lg hover:bg-web4">Continue</button>
+      <div className="bg-web3 mt-7 w-full text-center text-web1 py-2 rounded-md text-lg hover:bg-web4">
+        <Link to={`/pay/${id}`}>Continue</Link>
+      </div>
     </div>
   );
 }

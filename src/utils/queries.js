@@ -53,7 +53,6 @@ export function useEditProduct() {
 }
 
 export function useCreateProduct() {
-  console.log("lsls");
   return useMutation({
     mutationFn: (variable) => axios.post("/api/products", variable),
   });
@@ -116,5 +115,19 @@ export function useInfinityProducts(
         return undefined;
       }
     },
+  });
+}
+
+export function usePayment() {
+  return useMutation({
+    mutationFn: (variable) =>
+      axios.post(`/api/orders/create-payment-intent/${variable.id}`, variable),
+  });
+}
+
+export function useOrderConfirm() {
+  return useMutation({
+    mutationFn: (variable) =>
+      axios.put(`/api/orders/`, variable.payment_intent),
   });
 }

@@ -14,6 +14,8 @@ import AddProduct from "../pages/AddProduct";
 import EditProduct from "../pages/EditProduct";
 import AllProducts from "../pages/AllProducts";
 import Product from "../pages/Product";
+import Pay from "../pages/Pay";
+import SuccessPayment from "../pages/SuccessPayment";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +39,8 @@ const router = createBrowserRouter([
       { path: "chat", element: <Chat /> },
       { path: "myProducts/:id", element: <MyProducts /> },
       { path: "editProduct/:id", element: <EditProduct /> },
+      { path: "pay/:id", element: <Pay /> },
+      { path: "successPayment", element: <SuccessPayment /> },
     ],
   },
 ]);

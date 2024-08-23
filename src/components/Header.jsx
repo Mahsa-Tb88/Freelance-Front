@@ -30,7 +30,7 @@ export default function Header() {
       !userMenuRef.current?.contains(e.target) &&
       !menuRef.current?.contains(e.target)
     ) {
-      // console.log("usermenu");
+      console.log("usermenu");
       dispatch(userActions.setOpenUserMenu(false));
     }
   }
@@ -123,21 +123,24 @@ export default function Header() {
                 </div>
 
                 <div
-                  ref={userMenuRef}
-                  className={`absolute top-14 md:top-20 right-3  md:right-10 bg-web2 w-36  px-1  rounded-md  transitionMenu  ${
-                    user.isOpenUserMenu && user.user.isSeller
-                      ? "h-40 md:h-60"
-                      : "h-0"
-                  }
-                  ${
-                    user.isOpenUserMenu && !user.user.isSeller
-                      ? "h-102 md:h-40"
-                      : "h-0"
-                  }
-                  
-                  `}
+                  className={`absolute top-14 md:top-20 right-3  md:right-10 bg-web2 w-36  px-1  rounded-md  transitionMenu
+                    ${
+                      user.isOpenUserMenu && user.user.isSeller
+                        ? "h-40 md:h-60 overflow-hidden"
+                        : "h-0 "
+                    }
+                    ${
+                      user.isOpenUserMenu && !user.user.isSeller
+                        ? "h-105 md:h-40 overflow-hidden "
+                        : "h-0  "
+                    }
+                    `}
                 >
-                  {user.isOpenUserMenu && <UserMenu />}
+                  {user.isOpenUserMenu && (
+                    <div ref={userMenuRef}>
+                      <UserMenu />
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (

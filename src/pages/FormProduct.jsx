@@ -114,7 +114,8 @@ export default function FormProduct({ product, type, id }) {
   }
 
   const mutationCreate = useCreateProduct();
-  const mutateEdit = useEditProduct(id);
+  const mutateEdit = useEditProduct();
+
   async function onSubmit(data) {
     setFailMessage("");
     setSuccessMessage("");
@@ -128,14 +129,14 @@ export default function FormProduct({ product, type, id }) {
       mutateEdit.mutate(
         { FormData: data, id },
         {
-          onSuccess() {
+          onSuccess(data) {
             setSuccessMessage(
               "Congratulations, your Prodcut has been successfully Upadted."
             );
             window.scrollTo({ top: 0, behavior: "instant" });
           },
-          onError() {
-            setFailMessage("Something");
+          onError(error) {
+            setFailMessage(error);
             window.scrollTo({ top: 0, behavior: "instant" });
           },
         }
@@ -153,7 +154,6 @@ export default function FormProduct({ product, type, id }) {
         });
       }
       data.albumImage = newAlbumImage;
-      console.log("create product..." , data)
       mutationCreate.mutate(data, {
         onSuccess() {
           setSuccessMessage(
@@ -174,329 +174,339 @@ export default function FormProduct({ product, type, id }) {
     <div className="">
       <div className="my-10">
         {successMessage ? (
-          <div className="bg-green-500 px-2 py-1 my-10 rounded-md text-center font-bold text-lg  md:text-3xl">
+          <div className="bg-green-500 px-2 py-2 my-20 rounded text-center font-bold text-lg  md:text-3xl">
             <p className="text-white">{successMessage}</p>
           </div>
         ) : failMessage ? (
-          <div className="bg-red-700 px-2 py-2 my-10 rounded-md text-center font-bold text-lg  md:text-3xl">
+          <div className="bg-red-700 px-2 py-2 my-20 rounded text-center font-bold text-lg  md:text-3xl">
             <p className="text-white">{failMessage}</p>
           </div>
         ) : (
           ""
         )}
-        <form
-          className="grid md:grid-cols-2  gap-10 md:gap-16"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1">Title</label>
-              <input
-                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
-                placeholder="Enter a title of product"
-                {...register("title", {
-                  required: "Please enter a title for your product.",
-                  minLength: {
-                    value: 3,
-                    message: "title must be 3 Characters at least",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "title must be 20 Characters at most",
-                  },
-                })}
-              />
-              {errors.title && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.title.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col mb-10">
-              <label className="  mr-2 mb-1 text-web3 text-xl">Category</label>
-              <select
-                className="border bg-white text-web4 px-2 py-2 rounded-md focus-within:border-web3 outline-none"
-                {...register("category", {
-                  required: "Select the category",
-                })}
-              >
-                <option className="my-2" value={""}>
-                  {" "}
-                  Select a Category
-                </option>
-                <option className="my-2  ">Web Design</option>
-                <option className="my-2  ">Programming</option>
-                <option className="my-2  ">Logo</option>
-              </select>
-              {errors.category && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.category.message}</p>
-                </div>
-              )}
-            </div>
-            <div className=" flex justify-around items-center  mb-10">
-              <div className="w-1/6">
-                <img
-                  className="bg-red-200  rounded-md"
-                  src={coverImageSelected}
+        <form className="" onSubmit={handleSubmit(onSubmit)}>
+          {type == "edit" ? (
+            <h1 className="text-web3 text-3xl sm:text-4xl mb-16">
+              Edit Product
+            </h1>
+          ) : (
+            <h1 className="text-web3 text-3xl sm:text-4xl mb-16">
+              Add New Product
+            </h1>
+          )}
+          <div className="grid md:grid-cols-2  gap-10 md:gap-16">
+            <div>
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1">Title</label>
+                <input
+                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  placeholder="Enter a title of product"
+                  {...register("title", {
+                    required: "Please enter a title for your product.",
+                    minLength: {
+                      value: 3,
+                      message: "title must be 3 Characters at least",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "title must be 20 Characters at most",
+                    },
+                  })}
                 />
+                {errors.title && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.title.message}</p>
+                  </div>
+                )}
               </div>
-              <div>
-                <div className="flex mb-4">
+              <div className="flex flex-col mb-10">
+                <label className="  mr-2 mb-1 text-web3 text-xl">
+                  Category
+                </label>
+                <select
+                  className="border bg-white text-web4 px-2 py-2 rounded-md focus-within:border-web3 outline-none"
+                  {...register("category", {
+                    required: "Select the category",
+                  })}
+                >
+                  <option className="my-2" value={""}>
+                    {" "}
+                    Select a Category
+                  </option>
+                  <option className="my-2  ">Web Design</option>
+                  <option className="my-2  ">Programming</option>
+                  <option className="my-2  ">Logo</option>
+                </select>
+                {errors.category && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.category.message}</p>
+                  </div>
+                )}
+              </div>
+              <div className=" flex justify-around items-center  mb-10">
+                <div className="w-1/6">
+                  <img
+                    className="bg-red-200  rounded-md"
+                    src={coverImageSelected}
+                  />
+                </div>
+                <div>
+                  <div className="flex mb-4">
+                    <input
+                      className="outline-none  hidden "
+                      placeholder="Enter your password again"
+                      type="file"
+                      id="cover"
+                      accept="image/*"
+                      {...coverImage}
+                      onChange={handleImageCover}
+                    />
+                    <label
+                      htmlFor="cover"
+                      className="text-base sm:text-lg cursor-pointer border  w-36 sm:w-44 text-center  py-1 rounded-md bg-web2 hover:bg-web3 text-web4 hover:text-web1"
+                    >
+                      Upload Cover Image
+                    </label>
+                  </div>
+                  {errors.coverImage && (
+                    <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                      <p>{errors.coverImage.message}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className=" flex justify-around items-center  mb-10">
+                <div className="w-1/3">
+                  {albumImageSelected.length ? (
+                    albumImageSelected.map((p) => {
+                      return (
+                        <div
+                          key={p}
+                          className="border rounded-md p-2 mb-2 flex justify-between "
+                        >
+                          <span
+                            className="text-xs cursor-pointer hover:text-red-700"
+                            onClick={() => handleRemoveImage(p)}
+                          >
+                            <RxCross2 />
+                          </span>
+                          <div className="flex justify-end items-center">
+                            <span>Uploaded</span>
+                            <img className=" w-1/3  rounded-md ml-2" src={p} />
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <span className="border  p-2 rounded-md bg-gray-200 text-web4">
+                      ImageAlbum Empty
+                    </span>
+                  )}
+                </div>
+                <div>
                   <input
                     className="outline-none  hidden "
-                    placeholder="Enter your password again"
                     type="file"
-                    id="cover"
+                    id="images"
                     accept="image/*"
-                    {...coverImage}
-                    onChange={handleImageCover}
+                    {...albumImage}
+                    disabled={albumImageSelected.length == 4}
+                    onChange={handleImageAlbum}
                   />
                   <label
-                    htmlFor="cover"
-                    className="text-base sm:text-lg cursor-pointer border  w-36 sm:w-44 text-center  py-1 rounded-md bg-web2 hover:bg-web3 text-web4 hover:text-web1"
+                    htmlFor="images"
+                    className={`${"text-base  sm:text-lg  border px-4  text-center  py-2 rounded-md   text-web4 "}${
+                      albumImageSelected.length == 4
+                        ? " bg-web1"
+                        : "bg-web2 hover:bg-web3 hover:text-web1 cursor-pointer"
+                    }`}
                   >
-                    Upload Cover Image
+                    Upload Image of Album
                   </label>
+                  <p className="text-web4 text-sm text-center pt-2">
+                    Max 4 photos
+                  </p>
                 </div>
-                {errors.coverImage && (
+              </div>
+              <div className=" flex flex-col justify-around items-start  mb-10">
+                <label className=" mr-2 mb-2 text-web3 text-xl">
+                  Description of Product
+                </label>
+
+                <textarea
+                  className="rounded-md border focus-within:border-web3 outline-none px-2 py-1 w-full  "
+                  placeholder="Description"
+                  rows={10}
+                  {...register("desc", {
+                    required: "Please enter a description for your product.",
+                    minLength: {
+                      value: 20,
+                      message: "description must be 20 Characters at least",
+                    },
+                    maxLength: {
+                      value: 500,
+                      message: "description must be 500 Characters at most",
+                    },
+                  })}
+                />
+                {errors.desc && (
                   <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                    <p>{errors.coverImage.message}</p>
+                    <p>{errors.desc.message}</p>
                   </div>
                 )}
               </div>
             </div>
-            <div className=" flex justify-around items-center  mb-10">
-              <div className="w-1/3">
-                {albumImageSelected.length ? (
-                  albumImageSelected.map((p) => {
-                    return (
-                      <div
-                        key={p}
-                        className="border rounded-md p-2 mb-2 flex justify-between "
-                      >
-                        <span
-                          className="text-xs cursor-pointer hover:text-red-700"
-                          onClick={() => handleRemoveImage(p)}
-                        >
-                          <RxCross2 />
-                        </span>
-                        <div className="flex justify-end items-center">
-                          <span>Uploaded</span>
-                          <img className=" w-1/3  rounded-md ml-2" src={p} />
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <span className="border  p-2 rounded-md bg-gray-200 text-web4">
-                    ImageAlbum Empty
-                  </span>
+            <div>
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1 outline-web3">
+                  Service Title
+                </label>
+                <input
+                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  placeholder="e.g. One-page web design"
+                  {...register("serviceTitle", {
+                    required: "Please enter a Service Title for your product.",
+                    minLength: {
+                      value: 3,
+                      message: "Service Title must be 3 Characters at least",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Service Title must be 20 Characters at most",
+                    },
+                  })}
+                />
+                {errors.serviceTitle && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.serviceTitle.message}</p>
+                  </div>
                 )}
               </div>
-              <div>
-                <input
-                  className="outline-none  hidden "
-                  type="file"
-                  id="images"
-                  accept="image/*"
-                  {...albumImage}
-                  disabled={albumImageSelected.length == 4}
-                  onChange={handleImageAlbum}
-                />
-                <label
-                  htmlFor="images"
-                  className={`${"text-base  sm:text-lg  border px-4  text-center  py-2 rounded-md   text-web4 "}${
-                    albumImageSelected.length == 4
-                      ? " bg-web1"
-                      : "bg-web2 hover:bg-web3 hover:text-web1 cursor-pointer"
-                  }`}
-                >
-                  Upload Image of Album
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1">
+                  Short Description
                 </label>
-                <p className="text-web4 text-sm text-center pt-2">
-                  Max 4 photos
-                </p>
-              </div>
-            </div>
-            <div className=" flex flex-col justify-around items-start  mb-10">
-              <label className=" mr-2 mb-2 text-web3 text-xl">
-                Description of Product
-              </label>
-
-              <textarea
-                className="rounded-md border focus-within:border-web3 outline-none px-2 py-1 w-full  "
-                placeholder="Description"
-                rows={10}
-                {...register("desc", {
-                  required: "Please enter a description for your product.",
-                  minLength: {
-                    value: 20,
-                    message: "description must be 20 Characters at least",
-                  },
-                  maxLength: {
-                    value: 500,
-                    message: "description must be 500 Characters at most",
-                  },
-                })}
-              />
-              {errors.desc && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.desc.message}</p>
-                </div>
-              )}
-            </div>
-          </div>
-          <div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1 outline-web3">
-                Service Title
-              </label>
-              <input
-                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
-                placeholder="e.g. One-page web design"
-                {...register("serviceTitle", {
-                  required: "Please enter a Service Title for your product.",
-                  minLength: {
-                    value: 3,
-                    message: "Service Title must be 3 Characters at least",
-                  },
-                  maxLength: {
-                    value: 20,
-                    message: "Service Title must be 20 Characters at most",
-                  },
-                })}
-              />
-              {errors.serviceTitle && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.serviceTitle.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1">
-                Short Description
-              </label>
-              <textarea
-                className="border  px-2 py-1 rounded-md  focus-within:border-web3 outline-none"
-                placeholder="Short description of your product"
-                rows={5}
-                {...register("shortDesc", {
-                  required: "Please enter a shortDesc for your product.",
-                  minLength: {
-                    value: 10,
-                    message: "shortDesc must be 10 Characters at least",
-                  },
-                  maxLength: {
-                    value: 70,
-                    message: "shortDesc must be 70 Characters at most",
-                  },
-                })}
-              />
-              {errors.shortDesc && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.shortDesc.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1 ">
-                Delivery Time
-              </label>
-              <input
-                className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
-                type="number"
-                {...register("deliveryTime", {
-                  required: "Please enter a deliveryTime for your product.",
-                })}
-              />
-              {errors.deliveryTime && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.deliveryTime.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1 ">
-                Revision Number
-              </label>
-              <input
-                className="border px-2 py-1 rounded-md focus-within:border-web3 outline-none"
-                type="number"
-                {...register("revisionNumber", {
-                  required: "Please enter a revisionNumber for your product.",
-                })}
-              />
-              {errors.revisionNumber && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.revisionNumber.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1 ">
-                Add Feature
-              </label>
-              <div className="border mb-2 focus-within:border-web3 outline-none flex justify-between items-start rounded-md overflow-hidden">
-                <input
-                  className=" px-2 py-1 rounded-md outline-none h-8"
-                  onChange={(e) => setFeatureValue(e.target.value)}
-                  value={featureValue}
-                />
-                <span
-                  className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 h-8 flex items-center px-3 cursor-pointer"
-                  onClick={addFeature}
-                >
-                  Add
-                </span>
-              </div>
-              <div>
-                {watch("features") &&
-                  watch("features").map((f) => {
-                    return (
-                      <div
-                        key={f}
-                        className="relative inline-block bg-web3 px-6 py-2 text-xs text-web1 mx-1 rounded-sm"
-                      >
-                        <span>{f}</span>
-                        <span
-                          className="text-xxs text-white border  absolute top-0.5 right-0.5 cursor-pointer hover:bg-web1 hover:text-web4 rounded-full"
-                          onClick={() => removeFeature(f)}
-                        >
-                          <RxCross2 />
-                        </span>
-                      </div>
-                    );
+                <textarea
+                  className="border  px-2 py-1 rounded-md  focus-within:border-web3 outline-none"
+                  placeholder="Short description of your product"
+                  rows={5}
+                  {...register("shortDesc", {
+                    required: "Please enter a shortDesc for your product.",
+                    minLength: {
+                      value: 10,
+                      message: "shortDesc must be 10 Characters at least",
+                    },
+                    maxLength: {
+                      value: 70,
+                      message: "shortDesc must be 70 Characters at most",
+                    },
                   })}
+                />
+                {errors.shortDesc && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.shortDesc.message}</p>
+                  </div>
+                )}
               </div>
-              {/* errors.features && (
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1 ">
+                  Delivery Time
+                </label>
+                <input
+                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  type="number"
+                  {...register("deliveryTime", {
+                    required: "Please enter a deliveryTime for your product.",
+                  })}
+                />
+                {errors.deliveryTime && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.deliveryTime.message}</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1 ">
+                  Revision Number
+                </label>
+                <input
+                  className="border px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  type="number"
+                  {...register("revisionNumber", {
+                    required: "Please enter a revisionNumber for your product.",
+                  })}
+                />
+                {errors.revisionNumber && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.revisionNumber.message}</p>
+                  </div>
+                )}
+              </div>
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1 ">
+                  Add Feature
+                </label>
+                <div className="border mb-2 focus-within:border-web3 outline-none flex justify-between items-start rounded-md overflow-hidden">
+                  <input
+                    className=" px-2 py-1 rounded-md outline-none h-8"
+                    onChange={(e) => setFeatureValue(e.target.value)}
+                    value={featureValue}
+                  />
+                  <span
+                    className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 h-8 flex items-center px-3 cursor-pointer"
+                    onClick={addFeature}
+                  >
+                    Add
+                  </span>
+                </div>
+                <div>
+                  {watch("features") &&
+                    watch("features").map((f) => {
+                      return (
+                        <div
+                          key={f}
+                          className="relative inline-block bg-web3 px-6 py-2 text-xs text-web1 mx-1 rounded-sm"
+                        >
+                          <span>{f}</span>
+                          <span
+                            className="text-xxs text-white border  absolute top-0.5 right-0.5 cursor-pointer hover:bg-web1 hover:text-web4 rounded-full"
+                            onClick={() => removeFeature(f)}
+                          >
+                            <RxCross2 />
+                          </span>
+                        </div>
+                      );
+                    })}
+                </div>
+                {/* errors.features && (
                 <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
                   <p>{errors.features.message}</p>
                 </div>
               ) */}
+              </div>
+              <div className="flex flex-col mb-10">
+                <label className="text-web3 text-xl mr-2 mb-1 ">Price</label>
+                <input
+                  className="border focus-within:border-web3 outline-none  px-2 py-1 rounded-md"
+                  type="number"
+                  {...register("price", {
+                    required: "Please enter a price for your product.",
+                  })}
+                />
+                {errors.price && (
+                  <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
+                    <p>{errors.price.message}</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex flex-col mb-10">
-              <label className="text-web3 text-xl mr-2 mb-1 ">Price</label>
-              <input
-                className="border focus-within:border-web3 outline-none  px-2 py-1 rounded-md"
-                type="number"
-                {...register("price", {
-                  required: "Please enter a price for your product.",
-                })}
-              />
-              {errors.price && (
-                <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
-                  <p>{errors.price.message}</p>
-                </div>
-              )}
-            </div>
+            <button
+              type="submit"
+              className="bg-web2 hover:bg-web3 text-web4 hover:text-web1  w-full rounded-md text-base sm:text-xl font-bold py-2"
+            >
+              {type == "edit" ? "Update Product" : "Create Product"}
+            </button>
           </div>
-          <button
-            type="submit"
-            className="bg-web2 hover:bg-web3 text-web4 hover:text-web1  w-full rounded-md text-base sm:text-xl font-bold py-2"
-          >
-            {type == "edit" ? "Update Product" : "Create Product"}
-          </button>
         </form>
       </div>
     </div>

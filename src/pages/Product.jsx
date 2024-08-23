@@ -7,6 +7,7 @@ import { FaStar } from "react-icons/fa";
 import FormReviewSend from "../components/FormReviewSend";
 import ListOfReviews from "../components/ListOfReviews";
 import InfoProduct from "../components/InfoProduct";
+import { IoIosArrowForward } from "react-icons/io";
 
 export default function Product() {
   const params = useParams();
@@ -28,8 +29,18 @@ export default function Product() {
         <div>error</div>
       ) : (
         <div>
-          <div>prr</div>
-          <div className="flex flex-col md:flex-row px-20 justify-between gap-20 my-20">
+          <div className="px-20 mt-5 flex items-center gap-2 text-web2 font-extrabold">
+            <span>Product</span>
+            <span>
+              <IoIosArrowForward />
+            </span>
+            <span>{data.data.body.category}</span>
+            <span>
+              <IoIosArrowForward />
+            </span>
+            <span>{data.data.body.sellerId.username}</span>
+          </div>
+          <div className="flex flex-col md:flex-row px-20 justify-between gap-20 my-14">
             <div className=" w-2/3">
               <div>
                 <h1 className="mb-4 text-3xl text-web4">
@@ -131,7 +142,7 @@ export default function Product() {
                     </div>
                     <div>
                       <span className="text-web4 font-bold">
-                        Member Since:{" "}
+                        Member Since:
                       </span>
                       <span className="text-web3 font-bold">23 Aug 2021</span>
                     </div>
@@ -146,7 +157,7 @@ export default function Product() {
               </div>
             </div>
             <div className=" w-1/3">
-              <InfoProduct data={data.data.body} />
+              <InfoProduct data={data.data.body} id={params.id} />
             </div>
           </div>
         </div>
