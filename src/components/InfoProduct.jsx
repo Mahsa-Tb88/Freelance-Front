@@ -35,8 +35,10 @@ export default function InfoProduct({ data, id }) {
           );
         })}
       </div>
-      <div className="bg-web3 mt-7 w-full text-center text-web1 py-2 rounded-md text-lg hover:bg-web4">
-        <Link to={`/pay/${id}`}>Continue</Link>
+      <div className="bg-web3 mt-7 w-full text-center text-web1 rounded-md text-lg hover:bg-web4">
+        <Link className="w-full inline-block py-2" to={`/pay/${id}`}>
+          Continue
+        </Link>
       </div>
     </div>
   );

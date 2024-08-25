@@ -101,15 +101,21 @@ export default function () {
           <div className="flex flex-col justify-center items-cener gap-3">
             <div className="flex md:justify-center items-center">
               <IoIosArrowForward className="mr-2 text-web2" />
-              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">Project 1</Link>
+              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">
+                Project 1
+              </Link>
             </div>
             <div className="flex md:justify-center items-center">
               <IoIosArrowForward className="mr-2 text-web2" />
-              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">Project 2</Link>
+              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">
+                Project 2
+              </Link>
             </div>
             <div className="flex md:justify-center items-center">
               <IoIosArrowForward className="mr-2 text-web2" />
-              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">Project 3</Link>
+              <Link className="hover:bg-web2 px-2 rounded-md hover:text-web1">
+                Project 3
+              </Link>
             </div>
           </div>
         </div>

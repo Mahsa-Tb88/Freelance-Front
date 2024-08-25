@@ -16,31 +16,30 @@ export default function Pay() {
   const [failMessage, setFailMessage] = useState(false);
   const mutationPayment = usePayment();
 
-  // mutationPayment.mutate(
-  //   { id },
-  //   {
-  //     onSuccess(data) {
-  //
-  //       setClientSecret(data.body.clientSecret);
-  //     },
-  //     onError(error) {
-  //       setFailMessage(error);
-  //     },
-  //   }
-  // );
-
   useEffect(() => {
-    const makeRequest = async () => {
-      try {
-        const res = await axios.post(`/api/orders/create-payment-intent/${id}`);
-        setClientSecret(res.data.body.clientSecret);
-      } catch (err) {
-        setFailMessage(err.response.data.message);
+    mutationPayment.mutate(
+      { id },
+      {
+        onSuccess(data) {
+          setClientSecret(data.data.body.clientSecret);
+        },
+        onError(error) {
+          setFailMessage(error);
+        },
       }
-    };
-
-    makeRequest();
+    );
   }, []);
+  // useEffect(() => {
+  //   const makeRequest = async () => {
+  //     try {
+  //       const res = await axios.post(`/api/orders/create-payment-intent/${id}`);
+  //       setClientSecret(res.data.body.clientSecret);
+  //     } catch (err) {
+  //       setFailMessage(err.response.data.message);
+  //     }
+  //   };
+  //   makeRequest();
+  // }, []);
 
   const appearance = {
     theme: "stripe",

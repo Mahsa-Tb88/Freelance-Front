@@ -88,19 +88,34 @@ export default function CheckOutForm() {
         <button disabled={isLoading || !stripe || !elements} id="submit">
           <span
             id="button-text"
-            className="mt-7 bg-web3 text-web1 font-bold text-lg inline-block w-56 py-2 rounded-sm"
+            className="mt-7 bg-web3 hover:bg-web4 text-web1 font-bold text-lg inline-block w-56 py-2 rounded-sm"
           >
             {isLoading ? (
-              <div className="spinner" id="spinner"></div>
+              <div className="spinner" id="spinner">
+                Loading...
+              </div>
             ) : (
               "Pay now"
             )}
           </span>
         </button>
+        <div className="bg-web1 px-2 py-3 mt-5 w-1/3">
+          <h4 className="text-web3 font-bold">Testing</h4>
+          <p className="text-web4 font-sm">Card number: 4242 4242 4242 4242</p>
+          <p className="text-web4 font-sm">Expiration date: 12/34</p>
+          <p className="text-web4 font-sm">Security code: 123</p>
+          <p className="text-web4 font-sm">Postal Code: M5T 1T4</p>
+        </div>
         {/* Show any error or success messages */}
-        {message && <div id="payment-message" className="mt-4 bg-web1 px-4 text-web4 py-2 ">{message}</div>}
+        {message && (
+          <div
+            id="payment-message"
+            className="mt-4 bg-web1 px-4 text-web4 py-2 "
+          >
+            {message}
+          </div>
+        )}
       </form>
-      
     </div>
   );
 }

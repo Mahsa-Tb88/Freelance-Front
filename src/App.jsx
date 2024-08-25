@@ -25,7 +25,7 @@ export default function App() {
   }
 
   return (
-    <div className="">
+    <div>
       {isPending ? (
         <div>
           <h2>isPending</h2>
@@ -35,7 +35,7 @@ export default function App() {
           <h2>error...</h2>
         </div>
       ) : (
-        <div>
+        <div className="flex flex-col min-h-svh">
           <Header />
           <Outlet />
           <Footer />

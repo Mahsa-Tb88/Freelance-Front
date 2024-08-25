@@ -131,3 +131,11 @@ export function useOrderConfirm() {
       axios.put(`/api/orders/`, variable.payment_intent),
   });
 }
+
+
+export function useGetOrders() {
+  return useQuery({
+    queryKey: ["orders"],
+    queryFn: () => axios.get(`/api/orders/`),
+  });
+}
