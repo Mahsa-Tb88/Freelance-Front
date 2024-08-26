@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 
 const initialState = {
   user: {
@@ -8,6 +9,7 @@ const initialState = {
     username: "",
     profileImg: "",
     desc: "",
+    country: "",
   },
   isOpenMenu: false,
   isOpenUserMenu: false,

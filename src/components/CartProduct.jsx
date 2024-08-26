@@ -19,7 +19,6 @@ export default function CartProduct({ p }) {
     }
     mutationDelete.mutate(p._id, {
       onSuccess() {
-        console.log("successs");
         querryClient.invalidateQueries({
           queryKey: ["products"],
         });

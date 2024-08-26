@@ -7,7 +7,6 @@ export default function MyProducts() {
   const params = useParams();
   const id = params.id;
   const { isPending, isError, data } = useGetAllProductsOfSeller(id);
-  console.log(data?.data.body);
 
   return (
     <div>

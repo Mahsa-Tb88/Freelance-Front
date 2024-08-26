@@ -60,7 +60,8 @@ export function useCreateProduct() {
 
 export function useRemoveProductById() {
   return useMutation({
-    mutationFn: (variable) => axios.delete(`/api/products/${variable}`),
+    mutationFn: (variable) =>
+      axios.delete(`/api/products/${variable}`, variable),
   });
 }
 export function useGetAllProductsOfSeller(id) {
@@ -132,10 +133,24 @@ export function useOrderConfirm() {
   });
 }
 
-
 export function useGetOrders() {
   return useQuery({
     queryKey: ["orders"],
     queryFn: () => axios.get(`/api/orders/`),
+  });
+}
+
+export function useCreateReview() {
+  return useMutation({
+    mutationFn: (variable) =>
+      axios.post(`/api/reviews/${variable.id}`, variable),
+  });
+}
+
+export function useReviews(id) {
+  return useQuery({
+    queryKey: ["reviews"],
+    queryFn: () => axios.get(`/api/reviews/${id}`),
+    // staleTime: Infinity,
   });
 }

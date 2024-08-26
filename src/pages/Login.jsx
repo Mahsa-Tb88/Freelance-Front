@@ -20,13 +20,12 @@ export default function Login() {
 
   function onSubmit(data) {
     mutation.mutate(data, {
-      onError(data) {
-        setFailMessage(data.response.data.message);
-        window.scrollTo({ top: 0, behavior: "instant" });
+      onError(error) {
+        // setFailMessage(data.response.data.message);
+        // window.scrollTo({ top: 0, behavior: "instant" });
       },
       onSuccess(data) {
         const user = data.data.body.user;
-        console.log(user);
         const noImage =
           SERVER_URL + "/uploads/profiles/profile1722016584144.png";
         dispatch(
@@ -39,6 +38,7 @@ export default function Login() {
               ? SERVER_URL + user.profileImg
               : noImage,
             desc: user.desc,
+            country: user.country || "World",
           })
         );
         navigate("/");

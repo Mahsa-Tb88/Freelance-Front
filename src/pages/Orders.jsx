@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetOrders } from "../utils/queries";
-
+import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../store/slices/userSlices";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
-  console.log(error);
-  if (data) {
-  }
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+ 
+
+  useEffect(() => {
+    if (data) {
+      dispatch(userActions.setUser({ ...user, orders: data.data.body }));
+    }
+  }, []);
 
   function dateOfOrder(dateString) {
     const date = new Date(dateString);
@@ -30,7 +39,7 @@ export default function Orders() {
         </div>
       ) : (
         <div>
-          <table className="border-collapse table-auto border border-web3 ">
+          <table className="border-collapse table-auto  border border-web3 ">
             <thead>
               <tr>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
@@ -57,23 +66,36 @@ export default function Orders() {
               {data.data.body.map((item) => {
                 return (
                   <tr key={item._id}>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
-                      {item.title}
+                    <td className="border border-web2 text-web4 text-sm  hover:bg-web2 ">
+                      <Link
+                        to={`/product/` + item.productId}
+                        className=" flex justify-center items-center px-4 py-2 "
+                      >
+                        {item.title}
+                      </Link>
                     </td>
                     <td className="border  rounded-full border-web2 text-web4 text-sm px-4 py-2">
                       <img src={SERVER_URL + item.img} className="w-10" />
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
-                      {item.seller}
+                      <span className="flex justify-center items-center">
+                        {item.seller}
+                      </span>
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
-                      {item.payment_intent}
+                      <span className="flex justify-center items-center">
+                        {item.payment_intent.slice(3)}
+                      </span>
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
-                      {dateOfOrder(item.createdAt)}
+                      <span className="flex justify-center items-center">
+                        {dateOfOrder(item.createdAt)}
+                      </span>
                     </td>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
-                      Message
+                    <td className="border border-web2 text-web3 px-4 py-2 text-lg">
+                      <span className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer">
+                        <IoChatbubbleEllipsesOutline />
+                      </span>
                     </td>
                   </tr>
                 );

@@ -1,5 +1,5 @@
-import React from "react";
-import { useGetProductById } from "../utils/queries";
+import React, { useEffect, useState } from "react";
+import { useGetOrders, useGetProductById } from "../utils/queries";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FaStar } from "react-icons/fa";
@@ -12,7 +12,32 @@ import { IoIosArrowForward } from "react-icons/io";
 export default function Product() {
   const params = useParams();
   const { data, isPending, isError } = useGetProductById(params.id);
-  console.log("data of product....", data?.data.body);
+  // const [isAllowAedReview, setIsAllowAedReview] = useState(false);
+
+  const orders = useGetOrders();
+  let findOrder = [];
+  if (orders.data) {
+    console.log("insideee");
+
+    findOrder = orders.data.data.body.filter(
+      (order) => order.productId == params.id
+    );
+  }
+
+  console.log(findOrder.length);
+
+  // useEffect(() => {
+  //   let order;
+  //   console.log("orderrr",orders.data);
+  //   if (orders.data) {
+  //     console.log("dataorders", orders.data.data.body);
+  //     order = orders.data.data.body.filter(
+  //       (order) => order.productId == params.id
+  //     );
+  //     console.log("findorder......", order);
+  //      setIsAllowAedReview(findOrder);
+  //   }
+  // }, []);
 
   let settings = {
     dots: true,
@@ -115,9 +140,13 @@ export default function Product() {
                           );
                         })}
                     </div>
-                    <button className="bg-web1 text-web3 px-2 py-1 rounded-md hover:bg-web3 hover:text-web1">
-                      Contact me
-                    </button>
+                    {findOrder.length ? (
+                      <button className="bg-web1 border border-web3 text-web3 px-2 py-1 rounded-md hover:bg-web3 hover:text-web1">
+                        Contact me
+                      </button>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
                 <div className=" px-2 py-3 mt-3 rounded-md flex items-center justify-between">
@@ -141,9 +170,7 @@ export default function Product() {
                       <span className="text-web3 font-bold"> English</span>
                     </div>
                     <div>
-                      <span className="text-web4 font-bold">
-                        Member Since:
-                      </span>
+                      <span className="text-web4 font-bold">Member Since:</span>
                       <span className="text-web3 font-bold">23 Aug 2021</span>
                     </div>
                   </div>
@@ -151,9 +178,8 @@ export default function Product() {
               </div>
 
               <div className="my-9">
-                <h3 className="text-4xl text-web4 mb-8">Reviews</h3>
                 <ListOfReviews />
-                <FormReviewSend />
+                {findOrder.length ? <FormReviewSend /> : ""}
               </div>
             </div>
             <div className=" w-1/3">
