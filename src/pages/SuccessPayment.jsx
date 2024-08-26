@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useOrderConfirm } from "../utils/queries";
+import { useChat, useOrderConfirm } from "../utils/queries";
 
 export default function SuccessPayment() {
   const { search } = useLocation();
@@ -14,6 +14,7 @@ export default function SuccessPayment() {
 
   useEffect(() => {
     let timeOut;
+
     confirm.mutate(
       { payment_intent },
       {
@@ -23,11 +24,13 @@ export default function SuccessPayment() {
           }, 5000);
         },
         onError(error) {
-          setFailMessage(error);
+          setFailMessage(error.response.data.message);
+          console.log(error);
           // console.log("error...successPayment", error);
         },
       }
     );
+
     return () => clearTimeout(timeOut);
   }, []);
 
@@ -46,7 +49,13 @@ export default function SuccessPayment() {
   //   makeRequest();
   //   // return () => clearTimeout(orderTime);
   // }, []);
-
+  if (failMessage) {
+    return (
+      <div className="my-14 text-center">
+        <span className="text-red-700 text-lg text-center">{failMessage}</span>
+      </div>
+    );
+  }
   return (
     <div className="w-2/3 mx-auto  ">
       <div className=" rounded flex justify-center items-center mt-20   ">

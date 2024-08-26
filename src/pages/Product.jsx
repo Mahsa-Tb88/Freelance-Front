@@ -11,20 +11,22 @@ import { IoIosArrowForward } from "react-icons/io";
 
 export default function Product() {
   const params = useParams();
-  const { data, isPending, isError } = useGetProductById(params.id);
-  // const [isAllowAedReview, setIsAllowAedReview] = useState(false);
+  const { data, isPending, isError, error } = useGetProductById(params.id);
 
   const orders = useGetOrders();
   let findOrder = [];
   if (orders.data) {
-    console.log("insideee");
-
     findOrder = orders.data.data.body.filter(
       (order) => order.productId == params.id
     );
   }
 
-  console.log(findOrder.length);
+  if (data) {
+    console.log("dataaa", data.data.body);
+  }
+  if (error) {
+    console.log("error", error);
+  }
 
   // useEffect(() => {
   //   let order;
@@ -39,6 +41,13 @@ export default function Product() {
   //   }
   // }, []);
 
+  function dateMembership(dateString) {
+    const myDate = new Date(dateString);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
+
   let settings = {
     dots: true,
     infinite: true,
@@ -49,9 +58,17 @@ export default function Product() {
   return (
     <div>
       {isPending ? (
-        <div>Loading</div>
+        <div className="my-14">
+          <h2 className="text-web3 text-center font-bold text-3xl">
+            Loading...
+          </h2>
+        </div>
       ) : isError ? (
-        <div>error</div>
+        <div className="my-14 ">
+          <h2 className="text-web3 text-center font-bold text-3xl">
+            {error.response.data.message}
+          </h2>
+        </div>
       ) : (
         <div>
           <div className="px-20 mt-5 flex items-center gap-2 text-web2 font-extrabold">
@@ -114,7 +131,7 @@ export default function Product() {
                 <p className="text-web4 mt-3">{data.data.body.desc}</p>
               </div>
               <div className="border  px-2 py-5 rounded-md">
-                <h3 className="mb-4">About this Seller</h3>
+                <h3 className="mb-4 text-web4 font-bold">About this Seller</h3>
                 <div className="flex items-center">
                   <img
                     width={70}
@@ -125,7 +142,7 @@ export default function Product() {
                     }
                   />
                   <div className="flex flex-col ">
-                    <span>Seller</span>
+                    <span className="text-web4 font-bold">{data.data.body.sellerId.username}</span>
                     <div className="flex my-2">
                       {Array(data.data.body.totalStar)
                         .fill("0")
@@ -159,19 +176,26 @@ export default function Product() {
                     </div>
                     <div>
                       <span className="text-web4 font-bold">
-                        Ave Response Time:{" "}
+                        Ave Response Time:
                       </span>
-                      <span className="text-web3 font-bold">3</span>
+                      <span className="text-web3 font-bold">
+                        {data.data.body.sellerId.aveResponseTime}
+                      </span>
                     </div>
                   </div>
                   <div>
                     <div className="mb-3">
                       <span className="text-web4 font-bold">Language:</span>
-                      <span className="text-web3 font-bold"> English</span>
+                      <span className="text-web3 font-bold">
+                        {" "}
+                        {data.data.body.sellerId.language || "English"}
+                      </span>
                     </div>
                     <div>
                       <span className="text-web4 font-bold">Member Since:</span>
-                      <span className="text-web3 font-bold">23 Aug 2021</span>
+                      <span className="text-web3 font-bold">
+                        {dateMembership(data.data.body.sellerId.createdAt)}
+                      </span>
                     </div>
                   </div>
                 </div>

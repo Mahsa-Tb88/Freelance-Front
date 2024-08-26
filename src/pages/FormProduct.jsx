@@ -199,7 +199,7 @@ export default function FormProduct({ product, type, id }) {
               <div className="flex flex-col mb-10">
                 <label className="text-web3 text-xl mr-2 mb-1">Title</label>
                 <input
-                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  className="border text-web4  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                   placeholder="Enter a title of product"
                   {...register("title", {
                     required: "Please enter a title for your product.",
@@ -334,9 +334,9 @@ export default function FormProduct({ product, type, id }) {
                 </label>
 
                 <textarea
-                  className="rounded-md border focus-within:border-web3 outline-none px-2 py-1 w-full  "
-                  placeholder="Description"
                   rows={10}
+                  className="rounded-md border resize-none text-web4 focus-within:border-web3 outline-none px-2 py-1 w-full  "
+                  placeholder="Description"
                   {...register("desc", {
                     required: "Please enter a description for your product.",
                     minLength: {
@@ -362,7 +362,7 @@ export default function FormProduct({ product, type, id }) {
                   Service Title
                 </label>
                 <input
-                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  className="border text-web4  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
                   placeholder="e.g. One-page web design"
                   {...register("serviceTitle", {
                     required: "Please enter a Service Title for your product.",
@@ -387,7 +387,7 @@ export default function FormProduct({ product, type, id }) {
                   Short Description
                 </label>
                 <textarea
-                  className="border  px-2 py-1 rounded-md  focus-within:border-web3 outline-none"
+                  className="border resize-none  px-2 py-1 rounded-md text-web4  focus-within:border-web3 outline-none"
                   placeholder="Short description of your product"
                   rows={5}
                   {...register("shortDesc", {
@@ -413,7 +413,7 @@ export default function FormProduct({ product, type, id }) {
                   Delivery Time
                 </label>
                 <input
-                  className="border  px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  className="border  px-2 py-1 rounded-md text-web4 focus-within:border-web3 outline-none"
                   type="number"
                   {...register("deliveryTime", {
                     required: "Please enter a deliveryTime for your product.",
@@ -430,7 +430,7 @@ export default function FormProduct({ product, type, id }) {
                   Revision Number
                 </label>
                 <input
-                  className="border px-2 py-1 rounded-md focus-within:border-web3 outline-none"
+                  className="border px-2 py-1 rounded-md text-web4 focus-within:border-web3 outline-none"
                   type="number"
                   {...register("revisionNumber", {
                     required: "Please enter a revisionNumber for your product.",
@@ -448,7 +448,7 @@ export default function FormProduct({ product, type, id }) {
                 </label>
                 <div className="border mb-2 focus-within:border-web3 outline-none flex justify-between items-start rounded-md overflow-hidden">
                   <input
-                    className=" px-2 py-1 rounded-md outline-none h-8"
+                    className=" px-2 py-1 rounded-md outline-none h-8 text-web4  w-full"
                     onChange={(e) => setFeatureValue(e.target.value)}
                     value={featureValue}
                   />

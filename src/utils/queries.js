@@ -154,3 +154,9 @@ export function useReviews(id) {
     // staleTime: Infinity,
   });
 }
+
+export function useChat() {
+  return useMutation({
+    mutationFn: (variable) => axios.put(`/api/chat/${variable.id}`, variable),
+  });
+}

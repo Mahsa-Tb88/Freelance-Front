@@ -76,6 +76,7 @@ export default function Login() {
           <input
             className="outline-none sm:text-lg text-web4"
             placeholder="Enter your password"
+            type={showPassword ? "" : "password"}
             {...register("password")}
           />
           {!showPassword ? (

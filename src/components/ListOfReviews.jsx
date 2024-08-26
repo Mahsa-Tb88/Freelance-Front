@@ -30,7 +30,9 @@ export default function ListOfReviews() {
           {data.data.body.length ? (
             <h3 className="text-4xl text-web4 mb-8">Reviews</h3>
           ) : (
-            <div>No reviews yet</div>
+            <div className="text-lg font-bold text-web4 bg-web2 px-2 py-3 border rounded text-center mb-7">
+              No reviews yet
+            </div>
           )}
 
           {data.data.body.map((review) => {
@@ -71,7 +73,7 @@ export default function ListOfReviews() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <h3>helpful?</h3>
+                  <h3 className="text-web4">helpful?</h3>
                   <div className="flex items-center">
                     <span
                       onClick={() => setIsLike({ like: true, dislike: false })}
@@ -82,19 +84,19 @@ export default function ListOfReviews() {
                         <HiOutlineThumbUp className=" text-lg transform transition-transform duration-300 hover:scale-110 cursor-pointer" />
                       )}
                     </span>
-                    <span>Yes</span>
+                    <span className="text-web4">Yes</span>
                   </div>
                   <div className="flex items-center">
                     <span
                       onClick={() => setIsLike({ like: false, dislike: true })}
                     >
                       {isLike.dislike ? (
-                        <HiThumbDown className=" text-lg transform transition-transform duration-300 hover:scale-110 cursor-pointer" />
+                        <HiThumbDown className="text-lg transform transition-transform duration-300 hover:scale-110 cursor-pointer" />
                       ) : (
                         <HiOutlineThumbDown className="text-lg transform transition-transform duration-300 hover:scale-110 cursor-pointer" />
                       )}
                     </span>
-                    <span className="ml-0.5">No</span>
+                    <span className="ml-0.5 text-web4">No</span>
                   </div>
                 </div>
               </div>
