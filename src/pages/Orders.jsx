@@ -6,15 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/slices/userSlices";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
-  const user = useSelector((state) => state.user.user);
-  const dispatch = useDispatch();
- 
 
-  useEffect(() => {
-    if (data) {
-      dispatch(userActions.setUser({ ...user, orders: data.data.body }));
-    }
-  }, []);
+  // const user = useSelector((state) => state.user.user);
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   if (data) {
+  //     dispatch(userActions.setUser({ ...user, orders: data.data.body }));
+  //   }
+  // }, []);
 
   function dateOfOrder(dateString) {
     const date = new Date(dateString);
@@ -23,6 +23,10 @@ export default function Orders() {
     const month = date.getMonth() + 1; // Months are zero-based in JavaScript
     const day = date.getDate();
     return year + "/" + month + "/" + day;
+  }
+
+  if (data) {
+    console.log(data.data.body);
   }
 
   return (
@@ -93,9 +97,12 @@ export default function Orders() {
                       </span>
                     </td>
                     <td className="border border-web2 text-web3 px-4 py-2 text-lg">
-                      <span className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer">
+                      <Link
+                        to={"/chat/" + (item.productId + item.buyerId)}
+                        className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer"
+                      >
                         <IoChatbubbleEllipsesOutline />
-                      </span>
+                      </Link>
                     </td>
                   </tr>
                 );

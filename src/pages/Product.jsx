@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useGetOrders, useGetProductById } from "../utils/queries";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FaStar } from "react-icons/fa";
 
@@ -8,10 +8,12 @@ import FormReviewSend from "../components/FormReviewSend";
 import ListOfReviews from "../components/ListOfReviews";
 import InfoProduct from "../components/InfoProduct";
 import { IoIosArrowForward } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 export default function Product() {
   const params = useParams();
   const { data, isPending, isError, error } = useGetProductById(params.id);
+  const user = useSelector((state) => state.user.user);
 
   const orders = useGetOrders();
   let findOrder = [];
@@ -19,13 +21,6 @@ export default function Product() {
     findOrder = orders.data.data.body.filter(
       (order) => order.productId == params.id
     );
-  }
-
-  if (data) {
-    console.log("dataaa", data.data.body);
-  }
-  if (error) {
-    console.log("error", error);
   }
 
   // useEffect(() => {
@@ -142,7 +137,9 @@ export default function Product() {
                     }
                   />
                   <div className="flex flex-col ">
-                    <span className="text-web4 font-bold">{data.data.body.sellerId.username}</span>
+                    <span className="text-web4 font-bold">
+                      {data.data.body.sellerId.username}
+                    </span>
                     <div className="flex my-2">
                       {Array(data.data.body.totalStar)
                         .fill("0")
@@ -158,9 +155,12 @@ export default function Product() {
                         })}
                     </div>
                     {findOrder.length ? (
-                      <button className="bg-web1 border border-web3 text-web3 px-2 py-1 rounded-md hover:bg-web3 hover:text-web1">
+                      <Link
+                        to={"/chat/" + params.id + user.id}
+                        className="bg-web1 border border-web3 text-web3 px-2 py-1 rounded-md hover:bg-web3 hover:text-web1"
+                      >
                         Contact me
-                      </button>
+                      </Link>
                     ) : (
                       ""
                     )}

@@ -155,8 +155,16 @@ export function useReviews(id) {
   });
 }
 
-export function useChat() {
+export function usegetChatsById(id) {
+  return useQuery({
+    queryKey: ["singleChat"],
+    queryFn: () => axios.get(`/api/chats/${id}`),
+  });
+}
+
+export function usetextChat() {
   return useMutation({
-    mutationFn: (variable) => axios.put(`/api/chat/${variable.id}`, variable),
+    mutationFn: (variable) =>
+      axios.post(`/api/chats/`, variable),
   });
 }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useChat, useOrderConfirm } from "../utils/queries";
+import { useOrderConfirm } from "../utils/queries";
 
 export default function SuccessPayment() {
   const { search } = useLocation();
@@ -9,7 +9,6 @@ export default function SuccessPayment() {
   const [failMessage, setFailMessage] = useState(false);
   const params = new URLSearchParams(search);
   const payment_intent = params.get("payment_intent");
-  console.log(payment_intent);
   const confirm = useOrderConfirm();
 
   useEffect(() => {
