@@ -25,6 +25,7 @@ export default function Pay() {
         },
         onError(error) {
           setFailMessage(error);
+          console.log("error...", error);
         },
       }
     );

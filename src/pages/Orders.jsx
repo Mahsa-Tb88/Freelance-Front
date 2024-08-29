@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/slices/userSlices";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
 
   // const user = useSelector((state) => state.user.user);
   // const dispatch = useDispatch();
@@ -26,7 +28,7 @@ export default function Orders() {
   }
 
   if (data) {
-    console.log(data.data.body);
+    console.log("data orders", data.data.body);
   }
 
   return (
@@ -53,7 +55,7 @@ export default function Orders() {
                   Image
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
-                  Seller
+                  {user.isSeller ? "Buyer" : "Seller"}
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
                   Payment Id
@@ -83,7 +85,9 @@ export default function Orders() {
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
                       <span className="flex justify-center items-center">
-                        {item.seller}
+                        {user.isSeller
+                          ? item.buyerId.username
+                          : item.sellerId.username}
                       </span>
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
@@ -98,7 +102,7 @@ export default function Orders() {
                     </td>
                     <td className="border border-web2 text-web3 px-4 py-2 text-lg">
                       <Link
-                        to={"/chat/" + (item.productId + item.buyerId)}
+                        to={"/chat/" + (item.productId + item.buyerId._id)}
                         className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer"
                       >
                         <IoChatbubbleEllipsesOutline />

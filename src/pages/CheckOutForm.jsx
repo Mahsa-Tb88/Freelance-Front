@@ -9,7 +9,6 @@ export default function CheckOutForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  console.log("yeesss");
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);

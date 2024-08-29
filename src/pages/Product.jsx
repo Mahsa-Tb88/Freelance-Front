@@ -14,6 +14,7 @@ export default function Product() {
   const params = useParams();
   const { data, isPending, isError, error } = useGetProductById(params.id);
   const user = useSelector((state) => state.user.user);
+  console.log("....", params.id, user.id);
 
   const orders = useGetOrders();
   let findOrder = [];
