@@ -9,10 +9,6 @@ export default function MessageList() {
   const { data, isPending, isError, error } = useGetMessageList(id);
   const user = useSelector((state) => state.user.user);
 
-  if (data) {
-    console.log("data...", data.data.body);
-  }
-
   function dateOfOrder(dateString) {
     const date = new Date(dateString);
 
@@ -54,6 +50,9 @@ export default function MessageList() {
                   From
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                  to
+                </th>
+                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
                   Last Message
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
@@ -68,9 +67,17 @@ export default function MessageList() {
             <tbody>
               {data.data.body.map((item) => {
                 return (
-                  <tr key={item._id}>
+                  <tr
+                    key={item._id}
+                    className={
+                      !item.isSeen && item.to == user.username && "bg-red-300"
+                    }
+                  >
                     <td className="border text-center border-web2 text-web4 text-sm  hover:bg-web2 ">
-                      {item.toUserId.username}
+                      {item.from}
+                    </td>
+                    <td className="border text-center border-web2 text-web4 text-sm  hover:bg-web2 ">
+                      {item.to}
                     </td>
                     <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
                       {item.lastMsg}
@@ -81,7 +88,6 @@ export default function MessageList() {
                         {dateOfOrder(item.updatedAt)}
                       </span>
                     </td>
-
                     <td className="border border-web2 text-web3 px-4 py-2 text-lg">
                       <Link
                         to={"/chat/" + item.chatId}

@@ -11,9 +11,6 @@ export default function Chat() {
 
   const { data, isPending, isError, error } = usegetChatsById(params.id);
 
-  if (data) {
-    console.log(data.data.body);
-  }
   const querryClient = useQueryClient();
   const sentChat = usetextChat();
 
@@ -26,7 +23,6 @@ export default function Chat() {
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   }
-
   function getDate(dateString) {
     const myDate = new Date(dateString);
     const options = { day: "2-digit", month: "short", year: "numeric" };
@@ -65,43 +61,45 @@ export default function Chat() {
           </div>
         ) : data.data.body.length ? (
           <div>
-            {data.data.body.map((chat, index) => {
-              return (
-                <div key={chat._id} className="bg-web1  px-2 py-4 rounded">
-                  {getDate(chat.createdAt) ==
-                  getDate(data.data.body[index - 1]?.createdAt) ? (
-                    ""
-                  ) : (
-                    <div className="flex justify-center items-center">
-                      <span className="bg-gray-200 w-full h-px "></span>
-                      <span className="w-1/4 text-center text-gray-400">
-                        {getDate(chat.createdAt)}
-                      </span>
-                      <span className="bg-gray-200 w-full h-px "></span>
-                    </div>
-                  )}
-                  {chat.fromUserId == user.id ? (
-                    <div className="  text-right ">
-                      <div className="inline-block px-4 rounded-xl text-web4 py-1 my-1 bg-web2">
-                        <span className="">{chat.desc}</span>
-                        <p className="text-xs text-web1 mt-1">
-                          {getTime(chat.createdAt)}
-                        </p>
+            <div className="bg-web1 py-5 rounded" >
+              {data.data.body.map((chat, index) => {
+                return (
+                  <div key={chat._id} className="bg-web1  px-2   rounded">
+                    {getDate(chat.createdAt) ==
+                    getDate(data.data.body[index - 1]?.createdAt) ? (
+                      ""
+                    ) : (
+                      <div className="flex justify-center items-center">
+                        <span className="bg-gray-200 w-full h-px "></span>
+                        <span className="w-1/4 text-center text-gray-400">
+                          {getDate(chat.createdAt)}
+                        </span>
+                        <span className="bg-gray-200 w-full h-px "></span>
                       </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="bg-web3 inline-block px-4 rounded-xl text-web1 py-1 my-1">
-                        <span className="">{chat.desc}</span>
-                        <p className="text-xs text-web2 mt-1">
-                          {getTime(chat.createdAt)}
-                        </p>
+                    )}
+                    {chat.userId == user.id ? (
+                      <div className="text-right ">
+                        <div className="inline-block px-4 rounded-xl text-web4 py-1 my-1 bg-web2">
+                          <span className="">{chat.desc}</span>
+                          <p className="text-xs text-web1 mt-1">
+                            {getTime(chat.createdAt)}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                    ) : (
+                      <div>
+                        <div className="bg-web3 inline-block px-4 rounded-xl text-web1 py-1 my-1">
+                          <span className="">{chat.desc}</span>
+                          <p className="text-xs text-web2 mt-1">
+                            {getTime(chat.createdAt)}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
             <div>
               <textarea
                 className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
