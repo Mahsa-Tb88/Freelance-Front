@@ -14,9 +14,9 @@ export default function Product() {
   const params = useParams();
   const { data, isPending, isError, error } = useGetProductById(params.id);
   const user = useSelector((state) => state.user.user);
-  console.log("....", params.id, user.id);
-
   const orders = useGetOrders();
+
+
   let findOrder = [];
   if (orders.data) {
     findOrder = orders.data.data.body.filter(
@@ -32,7 +32,7 @@ export default function Product() {
   //     order = orders.data.data.body.filter(
   //       (order) => order.productId == params.id
   //     );
-  //     console.log("findorder......", order);
+  //
   //      setIsAllowAedReview(findOrder);
   //   }
   // }, []);

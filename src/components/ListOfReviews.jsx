@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { useReviews } from "../utils/queries";
+import { useDeleteReview, useReviews } from "../utils/queries";
 import { useParams } from "react-router-dom";
 import { HiThumbUp } from "react-icons/hi";
 import { HiThumbDown } from "react-icons/hi";
 import { HiOutlineThumbUp } from "react-icons/hi";
 import { HiOutlineThumbDown } from "react-icons/hi";
+import { RiDeleteBinLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ListOfReviews() {
   const params = useParams();
+  const user = useSelector((state) => state.user.user);
   const { data, isPending, isError, error } = useReviews(params.id);
   const [isLike, setIsLike] = useState({ like: false, dislike: false });
 
@@ -17,6 +21,29 @@ export default function ListOfReviews() {
     const options = { day: "2-digit", month: "short", year: "numeric" };
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
+  }
+  const deleteReviewMutation = useDeleteReview();
+  const querryClient = useQueryClient();
+  function deleteReviewHandler(id) {
+    if (!confirm("Are you sure for deleting the review?")) {
+      return;
+    }
+    deleteReviewMutation.mutate(
+      { id },
+      {
+        onSuccess() {
+          querryClient.invalidateQueries({
+            queryKey: ["reviews"],
+          });
+          querryClient.invalidateQueries({
+            queryKey: ["product", params.id],
+          });
+        },
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
   }
 
   return (
@@ -71,6 +98,14 @@ export default function ListOfReviews() {
                   <div className="text-web4 text-sm mt-3 flex justify-end">
                     {dateReview(review.createdAt)}
                   </div>
+                  {user.username == review.buyer && (
+                    <div
+                      className="text-web4 hover:text-red-700 cursor-pointer"
+                      onClick={() => deleteReviewHandler(review._id)}
+                    >
+                      <RiDeleteBinLine />
+                    </div>
+                  )}
                 </div>
                 <div className="flex gap-3">
                   <h3 className="text-web4">helpful?</h3>

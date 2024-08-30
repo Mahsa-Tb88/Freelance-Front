@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateReview } from "../utils/queries";
 import { useSelector } from "react-redux";
@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export default function FormReviewSend() {
   const { register, handleSubmit, setValue } = useForm();
   const user = useSelector((state) => state.user.user);
+  const [failMessage, setFailMessage] = useState(false);
   const params = useParams();
 
   const mutation = useCreateReview();
@@ -21,21 +22,30 @@ export default function FormReviewSend() {
     formData.id = params.id;
     mutation.mutate(formData, {
       onSuccess(data) {
-        console.log("success", data.data);
         setValue("rateStar", "1");
         setValue("desc", "");
         querryClient.invalidateQueries({
           queryKey: ["reviews"],
         });
+        querryClient.invalidateQueries({
+          queryKey: ["product",params.id],
+        });
       },
       onError(error) {
-        console.log(error);
+        setFailMessage(error.response.data.message);
       },
     });
   }
 
   return (
     <div>
+      <div>
+        {failMessage && (
+          <p className="text-red-700 my-4 px-2 py-3 text-lg font-bold">
+            ! {failMessage}
+          </p>
+        )}
+      </div>
       <form
         className="bg-web3 px-8 py-7 rounded-md"
         onSubmit={handleSubmit(onSubmit)}

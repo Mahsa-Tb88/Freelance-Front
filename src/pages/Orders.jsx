@@ -2,12 +2,10 @@ import React, { useEffect } from "react";
 import { useGetOrders } from "../utils/queries";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../store/slices/userSlices";
+import { useSelector } from "react-redux";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
   const user = useSelector((state) => state.user.user);
-  console.log(user);
 
   // const user = useSelector((state) => state.user.user);
   // const dispatch = useDispatch();
@@ -27,9 +25,7 @@ export default function Orders() {
     return year + "/" + month + "/" + day;
   }
 
-  if (data) {
-    console.log("data orders", data.data.body);
-  }
+  
 
   return (
     <div className="w-5/6 mx-auto my-20 flex justify-center items-center">

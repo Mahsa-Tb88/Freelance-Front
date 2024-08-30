@@ -56,7 +56,7 @@ export default function UserMenu() {
         Orders
       </Link>
       <Link
-        to="/messages"
+        to={`/messages/${user.id}`}
         className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
       >
         Messages

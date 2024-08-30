@@ -155,6 +155,13 @@ export function useReviews(id) {
   });
 }
 
+export function useDeleteReview(id) {
+  return useMutation({
+    mutationFn: (variable) =>
+      axios.delete(`/api/reviews/${variable.id}`, variable),
+  });
+}
+
 export function usegetChatsById(id) {
   return useQuery({
     queryKey: ["singleChat"],
@@ -164,7 +171,13 @@ export function usegetChatsById(id) {
 
 export function usetextChat() {
   return useMutation({
-    mutationFn: (variable) =>
-      axios.post(`/api/chats/`, variable),
+    mutationFn: (variable) => axios.post(`/api/chats/`, variable),
+  });
+}
+
+export function useGetMessageList(id) {
+  return useQuery({
+    queryKey: ["messageList"],
+    queryFn: () => axios.get(`/api/msgList/${id}`),
   });
 }

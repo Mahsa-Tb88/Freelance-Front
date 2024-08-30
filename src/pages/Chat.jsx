@@ -52,22 +52,22 @@ export default function Chat() {
   }
   return (
     <div className="w-5/6 mx-auto my-14 ">
-      <div className="bg-web1  px-2 py-4 rounded">
+      <div className="">
         {isPending ? (
-          <div>
+          <div className="bg-web1  px-2 py-4 rounded">
             <span className="text-center text-web3 font-bold text-lg">
               Loading ...
             </span>
           </div>
         ) : isError ? (
-          <div className="text-center text-red-700 text-lg font-bold">
+          <div className="text-center text-red-700 text-lg font-bold bg-web1  px-2 py-4 rounded">
             <span>{error.response.data.message}</span>
           </div>
         ) : data.data.body.length ? (
           <div>
             {data.data.body.map((chat, index) => {
               return (
-                <div key={chat._id}>
+                <div key={chat._id} className="bg-web1  px-2 py-4 rounded">
                   {getDate(chat.createdAt) ==
                   getDate(data.data.body[index - 1]?.createdAt) ? (
                     ""
@@ -82,7 +82,7 @@ export default function Chat() {
                   )}
                   {chat.fromUserId == user.id ? (
                     <div className="  text-right ">
-                      <div className="inline-block px-2 rounded-xl text-web4 py-1 my-1 bg-web2">
+                      <div className="inline-block px-4 rounded-xl text-web4 py-1 my-1 bg-web2">
                         <span className="">{chat.desc}</span>
                         <p className="text-xs text-web1 mt-1">
                           {getTime(chat.createdAt)}
@@ -91,7 +91,7 @@ export default function Chat() {
                     </div>
                   ) : (
                     <div>
-                      <div className="bg-web3 inline-block px-2 rounded-xl text-web1 py-1 my-1">
+                      <div className="bg-web3 inline-block px-4 rounded-xl text-web1 py-1 my-1">
                         <span className="">{chat.desc}</span>
                         <p className="text-xs text-web2 mt-1">
                           {getTime(chat.createdAt)}
@@ -102,26 +102,42 @@ export default function Chat() {
                 </div>
               );
             })}
+            <div>
+              <textarea
+                className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
+                onChange={(e) => setText(e.target.value)}
+                value={text}
+              />
+              <button
+                type="submit"
+                onClick={(e) => submitHandler(e)}
+                className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 rounded px-2 py-2 w-20 font-bold"
+              >
+                Send
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="text-center">
-            <span className="text-web4">There is no chat yet</span>
+          <div className="">
+            <p className="text-web4 bg-web1  px-2 py-4 rounded">
+              There is no chat yet
+            </p>
+            <div className="bg-transparent">
+              <textarea
+                className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
+                onChange={(e) => setText(e.target.value)}
+                value={text}
+              />
+              <button
+                type="submit"
+                onClick={(e) => submitHandler(e)}
+                className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 rounded px-2 py-2 w-20 font-bold"
+              >
+                Send
+              </button>
+            </div>
           </div>
         )}
-      </div>
-      <div>
-        <textarea
-          className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
-          onChange={(e) => setText(e.target.value)}
-          value={text}
-        />
-        <button
-          type="submit"
-          onClick={(e) => submitHandler(e)}
-          className="bg-web2 text-web4 hover:bg-web3 hover:text-web1 rounded px-2 py-2 w-20 font-bold"
-        >
-          Send
-        </button>
       </div>
     </div>
   );
