@@ -2,19 +2,19 @@ import React, { useEffect } from "react";
 import { useGetOrders } from "../utils/queries";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../store/slices/userSlices";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
-  // const user = useSelector((state) => state.user.user);
-  // const dispatch = useDispatch();
+ 
+  
 
-  // useEffect(() => {
-  //   if (data) {
-  //     dispatch(userActions.setUser({ ...user, orders: data.data.body }));
-  //   }
-  // }, []);
+  useEffect(() => {
+    dispatch(userActions.setOpenUserMenu(false));
+  }, []);
 
   function dateOfOrder(dateString) {
     const date = new Date(dateString);
@@ -24,8 +24,6 @@ export default function Orders() {
     const day = date.getDate();
     return year + "/" + month + "/" + day;
   }
-
-  
 
   return (
     <div className="w-5/6 mx-auto my-20 flex justify-center items-center">
@@ -68,7 +66,7 @@ export default function Orders() {
               {data.data.body.map((item) => {
                 return (
                   <tr key={item._id}>
-                    <td className="border border-web2 text-web4 text-sm  hover:bg-web2 ">
+                    <td className="border border-web2 text-web4 text-sm  hover:bg-web2 hover:text-web1 ">
                       <Link
                         to={`/product/` + item.productId}
                         className=" flex justify-center items-center px-4 py-2 "

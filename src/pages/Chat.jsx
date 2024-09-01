@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usegetChatsById, usetextChat } from "../utils/queries";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { userActions } from "../store/slices/userSlices";
 
 export default function Chat() {
   const [text, setText] = useState("");
   const params = useParams();
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
+  }, []);
 
   const { data, isPending, isError, error } = usegetChatsById(params.id);
 
@@ -35,7 +41,6 @@ export default function Chat() {
     const myData = { desc: text, chatId: params.id };
     sentChat.mutate(myData, {
       onSuccess(data) {
-        console.log("data...", data);
         setText("");
         querryClient.invalidateQueries({
           queryKey: ["singleChat"],
@@ -61,7 +66,7 @@ export default function Chat() {
           </div>
         ) : data.data.body.length ? (
           <div>
-            <div className="bg-web1 py-5 rounded" >
+            <div className="bg-web1 py-5 rounded">
               {data.data.body.map((chat, index) => {
                 return (
                   <div key={chat._id} className="bg-web1  px-2   rounded">

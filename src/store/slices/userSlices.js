@@ -10,6 +10,7 @@ const initialState = {
     profileImg: "",
     desc: "",
     country: "",
+    unreadMsgs: 0,
   },
   isOpenMenu: false,
   isOpenUserMenu: false,

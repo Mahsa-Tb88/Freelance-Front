@@ -11,8 +11,9 @@ export default function App() {
   const { isPending, isError, data } = useInitialized();
   if (data) {
     const user = data.data.body.user;
+    const unreadMsgs = data.data.body.unreadMsgs;
     const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
-
+    console.log(unreadMsgs);
     dispatch(
       userActions.setUser({
         isLoggedIn: true,
@@ -22,6 +23,7 @@ export default function App() {
         country: user.country || "World",
         profileImg: user.profileImg ? SERVER_URL + user.profileImg : noImage,
         desc: user.desc,
+        unreadMsgs,
       })
     );
   }

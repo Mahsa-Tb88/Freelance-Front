@@ -21,11 +21,12 @@ export default function Login() {
   function onSubmit(data) {
     mutation.mutate(data, {
       onError(error) {
-        // setFailMessage(data.response.data.message);
-        // window.scrollTo({ top: 0, behavior: "instant" });
+        setFailMessage(error.response.data.message);
+        window.scrollTo({ top: 0, behavior: "instant" });
       },
       onSuccess(data) {
         const user = data.data.body.user;
+        const unreadMsgs = data.data.body.unreadMsgs;
         const noImage =
           SERVER_URL + "/uploads/profiles/profile1722016584144.png";
         dispatch(
@@ -39,6 +40,7 @@ export default function Login() {
               : noImage,
             desc: user.desc,
             country: user.country || "World",
+            unreadMsgs,
           })
         );
         navigate("/");
@@ -65,7 +67,7 @@ export default function Login() {
         <div className="border flex justify-start items-center px-1 rounded-md py-2 focus-within:border-web3 mb-7 w">
           <IoPersonOutline className="mr-2 text-web2 text-lg" />
           <input
-            className="outline-none sm:text-lg text-web4"
+            className="outline-none sm:text-lg text-web4 w-full"
             placeholder="Enter your username"
             {...register("username")}
           />
@@ -74,7 +76,7 @@ export default function Login() {
         <div className="border flex justify-start items-center px-1 rounded-md py-2 focus-within:border-web3 mb-8">
           <RiLockPasswordLine className="mr-2 text-web2  text-lg" />
           <input
-            className="outline-none sm:text-lg text-web4"
+            className="outline-none sm:text-lg text-web4 w-full"
             placeholder="Enter your password"
             type={showPassword ? "" : "password"}
             {...register("password")}

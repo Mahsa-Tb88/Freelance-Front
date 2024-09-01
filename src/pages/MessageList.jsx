@@ -1,23 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetMessageList, useGetOrders } from "../utils/queries";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { userActions } from "../store/slices/userSlices";
 
 export default function MessageList() {
   const { id } = useParams();
   const { data, isPending, isError, error } = useGetMessageList(id);
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
-  function dateOfOrder(dateString) {
+  function dateOrder(dateString) {
     const date = new Date(dateString);
-
     const year = date.getFullYear();
     const month = date.getMonth() + 1; // Months are zero-based in JavaScript
     const day = date.getDate();
     return day + "/" + month + "/" + year;
   }
-  function getTime(time) {
+  function timeOrder(time) {
     const createdAt = new Date(time);
 
     const hours = createdAt.getHours().toString().padStart(2, "0");
@@ -26,6 +27,10 @@ export default function MessageList() {
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   }
+
+  useEffect(() => {
+    dispatch(userActions.setOpenUserMenu(false));
+  }, []);
 
   return (
     <div className="w-5/6 mx-auto my-20 flex justify-center items-center">
@@ -67,16 +72,11 @@ export default function MessageList() {
             <tbody>
               {data.data.body.map((item) => {
                 return (
-                  <tr
-                    key={item._id}
-                    className={
-                      !item.isSeen && item.to == user.username && "bg-red-300"
-                    }
-                  >
-                    <td className="border text-center border-web2 text-web4 text-sm  hover:bg-web2 ">
+                  <tr key={item._id}>
+                    <td className="border text-center border-web2 text-web4 text-sm  ">
                       {item.from}
                     </td>
-                    <td className="border text-center border-web2 text-web4 text-sm  hover:bg-web2 ">
+                    <td className="border text-center border-web2 text-web4 text-sm  ">
                       {item.to}
                     </td>
                     <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
@@ -84,16 +84,22 @@ export default function MessageList() {
                     </td>
                     <td className="border border-web2 text-web4 text-sm px-4 py-2">
                       <span className="flex justify-center items-center">
-                        {getTime(item.updatedAt)} -{" "}
-                        {dateOfOrder(item.updatedAt)}
+                        {timeOrder(item.updatedAt)}
+                        {dateOrder(item.updatedAt)}
                       </span>
                     </td>
                     <td className="border border-web2 text-web3 px-4 py-2 text-lg">
                       <Link
                         to={"/chat/" + item.chatId}
-                        className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer"
+                        className="flex justify-center items-center transform transition-transform duration-300 hover:scale-110  cursor-pointer"
                       >
-                        <IoChatbubbleEllipsesOutline />
+                        {!item.isSeen && item.to == user.username ? (
+                          <span className="text-red-700 text-base">
+                            New Message
+                          </span>
+                        ) : (
+                          <IoChatbubbleEllipsesOutline />
+                        )}
                       </Link>
                     </td>
                   </tr>

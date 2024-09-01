@@ -5,12 +5,11 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import UserMenu from "./UserMenu.jsx";
 import { userActions } from "../store/slices/userSlices.js";
-import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoNotificationsCircleOutline } from "react-icons/io5";
-import { TbNotification } from "react-icons/tb";
 
 export default function Header() {
   const user = useSelector((state) => state.user);
+
   const menuRef = useRef();
   const userMenuRef = useRef();
   const dispatch = useDispatch();
@@ -25,15 +24,12 @@ export default function Header() {
       !menuRef.current?.contains(e.target) &&
       !userMenuRef.current?.contains(e.target)
     ) {
-      // console.log("menu");
       dispatch(userActions.setOpenMenu(false));
     }
-
     if (
       !userMenuRef.current?.contains(e.target) &&
       !menuRef.current?.contains(e.target)
     ) {
-      console.log("usermenu");
       dispatch(userActions.setOpenUserMenu(false));
     }
   }
@@ -119,9 +115,11 @@ export default function Header() {
                       src={user.user.profileImg}
                       className="rounded-full border border-web2 w-6 h-6  mr-1 md:mr-2 md:w-9 md:h-9"
                     />
-                    <p className="absolute -top-2 -left-1">
-                      <IoNotificationsCircleOutline className="text-red-800 text-xl" />
-                    </p>
+                    {user.user.unreadMsgs > 0 && (
+                      <p className="absolute -top-2 -left-1">
+                        <IoNotificationsCircleOutline className="text-red-800 text-xl" />
+                      </p>
+                    )}
                   </div>
                   <p className="text-web3 font-bold text-sm md:text-base">
                     {user.user.username}
