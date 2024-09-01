@@ -13,10 +13,12 @@ import { useNavigate } from "react-router-dom";
 import { TbMessageLanguage } from "react-icons/tb";
 import { FiPhone } from "react-icons/fi";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function () {
   const [showPassword, setShowPassword] = useState(false);
   const [imageChanged, setImageChanged] = useState(false);
+  const user = useSelector((state) => state.user.user);
   const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
   const [selectedImage, setSelectedImage] = useState(noImage);
   const [failMessage, setFailMessage] = useState(false);
@@ -24,6 +26,9 @@ export default function () {
 
   const clearSwitch = useRef(null);
   useEffect(() => {
+    if (user.username) {
+      navigate("/");
+    }
     return () => clearTimeout(clearSwitch.current);
   }, []);
 

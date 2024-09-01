@@ -9,27 +9,35 @@ export default function UserMenu() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isSignOut, setIsSignOut] = useState(false);
 
-  const { data } = useSignOut(isSignOut);
+  const signOutMutation = useSignOut();
 
   function handlerSignOut() {
-    console.log("singOut");
-    setIsSignOut(true);
-    if (data?.data.success) {
-      dispatch(
-        userActions.setUser({
-          isLoggedIn: false,
-          isSeller: false,
-          id: "",
-          username: "",
-          profileImg: "",
-          desc: "",
-          country: "",
-        })
-      );
-      navigate("/login");
-    }
+    signOutMutation.mutate(
+      {},
+      {
+        onSuccess() {
+          dispatch(
+            userActions.setUser({
+              isLoggedIn: false,
+              isSeller: false,
+              id: "",
+              username: "",
+              profileImg: "",
+              desc: "",
+              country: "",
+              unreadMsgs: 0,
+              unSeenOrders: 0,
+            })
+          );
+          navigate("/");
+        },
+
+        onError(error) {
+          console.log(error);
+        },
+      }
+    );
   }
 
   return (
@@ -52,9 +60,16 @@ export default function UserMenu() {
       )}
       <Link
         to="/orders"
-        className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md"
+        className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md flex justify-between items-center"
       >
-        Orders
+        <span>Orders</span>
+        {user.unSeenOrders ? (
+          <span className="bg-red-500 text-web1 w-4 h-4 flex justify-center items-center rounded-full">
+            {user.unSeenOrders}
+          </span>
+        ) : (
+          ""
+        )}
       </Link>
       <Link
         to={`/messages/${user.id}`}
@@ -63,7 +78,7 @@ export default function UserMenu() {
         <span className="group-hover:text-web4">Messages</span>
         {user.unreadMsgs > 0 && (
           <span className="bg-red-500 h-4 w-4 rounded-full flex items-center justify-center text-sm ">
-            user.unreadMsgs
+            {user.unreadMsgs}
           </span>
         )}
       </Link>

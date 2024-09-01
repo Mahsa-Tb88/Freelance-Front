@@ -7,6 +7,7 @@ import { userActions } from "../store/slices/userSlices";
 
 export default function Chat() {
   const [text, setText] = useState("");
+  const [msg, setMsg] = useState(false);
   const params = useParams();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
@@ -36,9 +37,20 @@ export default function Chat() {
     return formattedDate;
   }
 
+  function textHandler(value) {
+    setText(value);
+    setMsg(false);
+  }
+
   function submitHandler(e) {
     e.preventDefault();
-    const myData = { desc: text, chatId: params.id };
+
+    let myData;
+    if (text) {
+      myData = { desc: text, chatId: params.id };
+    } else {
+      setMsg("Please write your words, the filed is empty!");
+    }
     sentChat.mutate(myData, {
       onSuccess(data) {
         setText("");
@@ -108,9 +120,11 @@ export default function Chat() {
             <div>
               <textarea
                 className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => textHandler(e.target.value)}
                 value={text}
               />
+              {msg && <p className="text-red-600 mb-3">{msg}</p>}
+
               <button
                 type="submit"
                 onClick={(e) => submitHandler(e)}
@@ -128,9 +142,10 @@ export default function Chat() {
             <div className="bg-transparent">
               <textarea
                 className="resize-none border my-4 w-full rounded px-2 py-3 outline-none focus-within:outline-web3 text-web4 text-lg"
-                onChange={(e) => setText(e.target.value)}
+                onChange={(e) => textHandler(e.target.value)}
                 value={text}
               />
+              {msg && <p className="text-red-600 mb-3">{msg}</p>}
               <button
                 type="submit"
                 onClick={(e) => submitHandler(e)}

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { uploadFile, useCreateProduct, useEditProduct } from "../utils/queries";
 import { RxCross2 } from "react-icons/rx";
+import { useNavigate } from "react-router-dom";
 
 export default function FormProduct({ product, type, id }) {
   const [successMessage, setSuccessMessage] = useState(false);
@@ -14,6 +15,9 @@ export default function FormProduct({ product, type, id }) {
   const [albumImageChanged, setAlbumImageChanged] = useState(false);
   const [featureValue, setFeatureValue] = useState("");
 
+  const navigate = useNavigate();
+  const clearSwitch = useRef(null);
+
   useEffect(() => {
     if (type === "edit") {
       setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
@@ -22,6 +26,8 @@ export default function FormProduct({ product, type, id }) {
       });
       setAlbumImageSelected(newAlbumImage);
     }
+
+    return () => clearTimeout(clearSwitch.current);
   }, []);
 
   const {
@@ -30,7 +36,6 @@ export default function FormProduct({ product, type, id }) {
     formState: { errors, isSubmitting },
     setValue,
     watch,
-    getValues,
   } = useForm({
     defaultValues: {
       title: type == "edit" ? product.title : "",
@@ -137,6 +142,7 @@ export default function FormProduct({ product, type, id }) {
           },
           onError(error) {
             setFailMessage(error);
+
             window.scrollTo({ top: 0, behavior: "instant" });
           },
         }
@@ -155,15 +161,20 @@ export default function FormProduct({ product, type, id }) {
       }
       data.albumImage = newAlbumImage;
       mutationCreate.mutate(data, {
-        onSuccess() {
+        onSuccess(data) {
           setSuccessMessage(
             "Congratulations, your Prodcut has been successfully created."
           );
+
           window.scrollTo({ top: 0, behavior: "instant" });
-          setTimeout(() => setSuccessMessage(""), 2000);
+          clearSwitch.current = setTimeout(
+            () => navigate(`/editProduct/${data.data.body._id}`),
+            4000
+          );
+          setTimeout(() => setSuccessMessage(""), 4000);
         },
-        onError() {
-          setFailMessage("Something Wrong");
+        onError(error) {
+          setFailMessage(error.response.data.message);
           window.scrollTo({ top: 0, behavior: "instant" });
         },
       });

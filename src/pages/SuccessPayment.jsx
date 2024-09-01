@@ -10,6 +10,7 @@ export default function SuccessPayment() {
   const params = new URLSearchParams(search);
   const payment_intent = params.get("payment_intent");
   const confirm = useOrderConfirm();
+  
 
   useEffect(() => {
     let timeOut;
@@ -24,8 +25,6 @@ export default function SuccessPayment() {
         },
         onError(error) {
           setFailMessage(error.response.data.message);
-          console.log(error);
-          // console.log("error...successPayment", error);
         },
       }
     );

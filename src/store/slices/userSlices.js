@@ -11,6 +11,7 @@ const initialState = {
     desc: "",
     country: "",
     unreadMsgs: 0,
+    unSeenOrders:0
   },
   isOpenMenu: false,
   isOpenUserMenu: false,

@@ -115,10 +115,12 @@ export default function Header() {
                       src={user.user.profileImg}
                       className="rounded-full border border-web2 w-6 h-6  mr-1 md:mr-2 md:w-9 md:h-9"
                     />
-                    {user.user.unreadMsgs > 0 && (
+                    {user.user.unreadMsgs > 0 || user.user.unSeenOrders > 0 ? (
                       <p className="absolute -top-2 -left-1">
                         <IoNotificationsCircleOutline className="text-red-800 text-xl" />
                       </p>
+                    ) : (
+                      ""
                     )}
                   </div>
                   <p className="text-web3 font-bold text-sm md:text-base">

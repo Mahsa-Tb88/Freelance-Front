@@ -6,7 +6,7 @@ import CartProduct from "../components/CartProduct";
 export default function MyProducts() {
   const params = useParams();
   const id = params.id;
-  const { isPending, isError, data } = useGetAllProductsOfSeller(id);
+  const { isPending, isError, data, error } = useGetAllProductsOfSeller(id);
 
   return (
     <div>
@@ -16,7 +16,7 @@ export default function MyProducts() {
         </div>
       ) : isError ? (
         <div className="flex justify-center items-center font-bold text-xl text-red-700 my-20">
-          <span>Error</span>
+          <span>{error.data.response.message}</span>
         </div>
       ) : (
         <div className="w-10/12 mx-auto my-32 ">

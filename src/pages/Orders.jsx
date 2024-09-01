@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
-import { useGetOrders } from "../utils/queries";
+import React, { useEffect, useState } from "react";
+import { useGetOrders, useSeenOrder } from "../utils/queries";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { FaCalendarCheck } from "react-icons/fa6";
+import { FaCalendar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/slices/userSlices";
+import { useQueryClient } from "@tanstack/react-query";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-
- 
-  
+  const orderMutation = useSeenOrder();
+  const [failMessage, setFailMessage] = useState(false);
 
   useEffect(() => {
     dispatch(userActions.setOpenUserMenu(false));
@@ -23,6 +25,28 @@ export default function Orders() {
     const month = date.getMonth() + 1; // Months are zero-based in JavaScript
     const day = date.getDate();
     return year + "/" + month + "/" + day;
+  }
+  const querryClient = useQueryClient();
+
+  function seenOrerHandler(id) {
+    dispatch(
+      userActions.setUser({ ...user, unSeenOrders: user.unSeenOrders - 1 })
+    );
+
+    orderMutation.mutate(
+      { id },
+      {
+        onSuccess() {
+          querryClient.invalidateQueries({
+            queryKey: ["orders"],
+          });
+        },
+        onError(error) {
+          console.log(error);
+          setFailMessage(error.data.data.message);
+        },
+      }
+    );
   }
 
   return (
@@ -60,6 +84,11 @@ export default function Orders() {
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
                   Message
                 </th>
+                {user.isSeller && (
+                  <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                    Seen Status
+                  </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -69,7 +98,7 @@ export default function Orders() {
                     <td className="border border-web2 text-web4 text-sm  hover:bg-web2 hover:text-web1 ">
                       <Link
                         to={`/product/` + item.productId}
-                        className=" flex justify-center items-center px-4 py-2 "
+                        className={`flex justify-center items-center px-4 py-2 `}
                       >
                         {item.title}
                       </Link>
@@ -102,6 +131,22 @@ export default function Orders() {
                         <IoChatbubbleEllipsesOutline />
                       </Link>
                     </td>
+                    {user.isSeller && (
+                      <td className="border border-web2 text-web3 px-4 py-2 text-lg ">
+                        {item.isSeen ? (
+                          <p className="text-emerald-600 flex justify-center items-center">
+                            <FaCalendarCheck />
+                          </p>
+                        ) : (
+                          <p
+                            className="flex justify-center items-center  text-red-500 cursor-pointer hover:text-emerald-600"
+                            onClick={() => seenOrerHandler(item._id)}
+                          >
+                            <FaCalendar />
+                          </p>
+                        )}
+                      </td>
+                    )}
                   </tr>
                 );
               })}

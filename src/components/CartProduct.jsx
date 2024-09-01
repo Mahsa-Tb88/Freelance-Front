@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
+  console.log("ppppp......", p);
 
   const mutationDelete = useRemoveProductById();
 
@@ -47,7 +48,7 @@ export default function CartProduct({ p }) {
           </div>
         </div>
         <p className="text-web4 text-justify mt-5">
-          {p.desc.substring(1, 70)}...
+          {p.desc.substring(1, 40)}...
         </p>
         <div className="text-web4 font-extrabold text-lg flex justify-between items-center mt-5">
           <h5>Price</h5>{" "}
@@ -73,7 +74,7 @@ export default function CartProduct({ p }) {
           </span>
         </div>
       </div>
-      {user.isSeller && (
+      {user.isSeller && p.sellerId == user.id ? (
         <button className="w-full flex justify-between items-center bg-web2 hover:text-web1   py-3 px-2 ">
           <div>
             <Link
@@ -91,6 +92,8 @@ export default function CartProduct({ p }) {
             <RiDeleteBin6Line />
           </div>
         </button>
+      ) : (
+        ""
       )}
     </div>
   );

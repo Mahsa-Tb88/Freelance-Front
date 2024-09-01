@@ -32,10 +32,8 @@ export function useInitialized() {
 }
 
 export function useSignOut(isSignOut) {
-  return useQuery({
-    queryKey: ["signOut"],
-    queryFn: () => axios.post("/auth/signOut"),
-    enabled: isSignOut,
+  return useMutation({
+    mutationFn: (variable) => axios.post("/auth/signOut", variable),
   });
 }
 export function useGetProductById(id) {
@@ -179,5 +177,12 @@ export function useGetMessageList(id) {
   return useQuery({
     queryKey: ["messageList"],
     queryFn: () => axios.get(`/api/msgList/${id}`),
+  });
+}
+
+export function useSeenOrder() {
+  return useMutation({
+    mutationFn: (variables) =>
+      axios.put(`/api/orders/${variables.id}`, variables),
   });
 }

@@ -3,7 +3,7 @@ import { useGetOrders, useGetProductById } from "../utils/queries";
 import { Link, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FaStar } from "react-icons/fa";
-
+import { IoInformationCircleSharp } from "react-icons/io5";
 import FormReviewSend from "../components/FormReviewSend";
 import ListOfReviews from "../components/ListOfReviews";
 import InfoProduct from "../components/InfoProduct";
@@ -15,7 +15,6 @@ export default function Product() {
   const { data, isPending, isError, error } = useGetProductById(params.id);
   const user = useSelector((state) => state.user.user);
   const orders = useGetOrders();
-
 
   let findOrder = [];
   if (orders.data) {
@@ -188,7 +187,6 @@ export default function Product() {
                     <div className="mb-3">
                       <span className="text-web4 font-bold">Language:</span>
                       <span className="text-web3 font-bold">
-                        {" "}
                         {data.data.body.sellerId.language || "English"}
                       </span>
                     </div>
@@ -207,9 +205,27 @@ export default function Product() {
                 {findOrder.length ? <FormReviewSend /> : ""}
               </div>
             </div>
-            <div className=" w-1/3">
-              <InfoProduct data={data.data.body} id={params.id} />
-            </div>
+            {!user.isSeller ? (
+              <div className=" w-1/3">
+                <InfoProduct data={data.data.body} id={params.id} />
+              </div>
+            ) : (
+              <div className=" w-1/3 ">
+                <div className="bg-web1 text-web3 px-3 pt-3 pb-11 text-xl font-bold rounded">
+                  <div className="flex items-center">
+                    <span>
+                      <IoInformationCircleSharp />
+                    </span>
+                    <span className=" ml-2">Notice:</span>
+                  </div>
+
+                  <p className="">
+                    If you would like to buy this product, you need to register
+                    as a buyer.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
