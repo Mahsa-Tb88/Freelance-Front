@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/slices/userSlices";
 import { useQueryClient } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
   const user = useSelector((state) => state.user.user);
@@ -51,6 +52,9 @@ export default function Orders() {
 
   return (
     <div className="w-5/6 mx-auto my-20 flex justify-center items-center">
+      <Helmet>
+        <title>Orders</title>
+      </Helmet>
       {isPending ? (
         <div className="text-xl text-web3 font-semibold">loading</div>
       ) : isError ? (

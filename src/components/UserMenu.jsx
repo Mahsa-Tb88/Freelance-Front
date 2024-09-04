@@ -6,12 +6,10 @@ import { useSignOut } from "../utils/queries";
 
 export default function UserMenu() {
   const user = useSelector((state) => state.user.user);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const signOutMutation = useSignOut();
-
   function handlerSignOut() {
     signOutMutation.mutate(
       {},

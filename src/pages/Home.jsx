@@ -1,12 +1,19 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { Outlet } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
 
 export default function Home() {
+  const user = useSelector((state) => state.user.user);
+  console.log(" home...", user);
+
   return (
     <div>
-      <div className="bg-web1 px-3 ">
+      <Helmet>
+        <title>Home</title>
+      </Helmet>
+      <div className="bg-web1 px-3 my-8">
         <div className=" md:max-w-5xl mx-auto pt-4  md:pt-7 flex justify-between items-center gap-12">
           <div className="w-3/5 md:mb-16">
             <h2 className="md:text-4xl font-semibold md:mb-20 text-web4">

@@ -14,6 +14,7 @@ import { TbMessageLanguage } from "react-icons/tb";
 import { FiPhone } from "react-icons/fi";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 export default function () {
   const [showPassword, setShowPassword] = useState(false);
@@ -93,6 +94,9 @@ export default function () {
 
   return (
     <div className="my-14 md:my-20  w-5/6 mx-auto ">
+      <Helmet>
+        <title>Sign Up</title>
+      </Helmet>
       <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
         {successMessage ? (
           <div className="bg-green-500 px-2 my-9 py-2 rounded text-center font-bold text-lg  md:text-3xl">

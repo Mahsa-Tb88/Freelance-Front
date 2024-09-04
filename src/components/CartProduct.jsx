@@ -9,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
-  console.log("ppppp......", p);
 
   const mutationDelete = useRemoveProductById();
 

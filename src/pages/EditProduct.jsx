@@ -2,6 +2,7 @@ import React from "react";
 import FormProduct from "./FormProduct";
 import { useParams } from "react-router-dom";
 import { useGetProductById } from "../utils/queries";
+import { Helmet } from "react-helmet";
 
 export default function EditProduct() {
   const params = useParams();
@@ -11,6 +12,9 @@ export default function EditProduct() {
 
   return (
     <div className="w-5/6 mx-auto my-20">
+      <Helmet>
+        <title>Edit Product</title>
+      </Helmet>
       {isPending ? (
         <div className="flex justify-start items-center font-bold text-xl text-web3">
           <span>Loading</span>
@@ -23,7 +27,6 @@ export default function EditProduct() {
         </div>
       ) : (
         <div>
-          
           <FormProduct product={data.data.body} type="edit" id={id} />
         </div>
       )}

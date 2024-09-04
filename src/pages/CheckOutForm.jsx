@@ -4,11 +4,11 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { Helmet } from "react-helmet";
 
 export default function CheckOutForm() {
   const stripe = useStripe();
   const elements = useElements();
-
 
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +82,9 @@ export default function CheckOutForm() {
   };
   return (
     <div>
+      <Helmet>
+        <title>Payment</title>
+      </Helmet>
       <form id="payment-form" onSubmit={handleSubmit}>
         <PaymentElement id="payment-element" options={paymentElementOptions} />
         <button disabled={isLoading || !stripe || !elements} id="submit">

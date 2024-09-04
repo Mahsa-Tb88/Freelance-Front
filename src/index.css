@@ -16,8 +16,8 @@ html {
 }
 
 .active {
-  background-color: #bec6a0;
-  color: #606676;
+  /* background-color: #bec6a0; */
+  color: #708871;
 }
 
 .transitionMenu {

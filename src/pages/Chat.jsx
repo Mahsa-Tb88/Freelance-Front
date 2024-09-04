@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../store/slices/userSlices";
+import { Helmet } from "react-helmet";
 
 export default function Chat() {
   const [text, setText] = useState("");
@@ -13,8 +14,12 @@ export default function Chat() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
+    if (data) {
+      dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
+    }
   }, []);
+
+  console.log("user chat...", user);
 
   const { data, isPending, isError, error } = usegetChatsById(params.id);
 
@@ -65,6 +70,9 @@ export default function Chat() {
   }
   return (
     <div className="w-5/6 mx-auto my-14 ">
+      <Helmet>
+        <title>Chat</title>
+      </Helmet>
       <div className="">
         {isPending ? (
           <div className="bg-web1  px-2 py-4 rounded">

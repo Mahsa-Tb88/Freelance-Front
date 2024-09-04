@@ -10,8 +10,8 @@ import { IoNotificationsCircleOutline } from "react-icons/io5";
 export default function Header() {
   const user = useSelector((state) => state.user);
 
-  const menuRef = useRef();
-  const userMenuRef = useRef();
+  const menuRef = useRef(null);
+  const userMenuRef = useRef(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function Header() {
   }, []);
 
   function handlerMenu(e) {
+
     if (
       !menuRef.current?.contains(e.target) &&
       !userMenuRef.current?.contains(e.target)
@@ -35,35 +36,37 @@ export default function Header() {
   }
 
   return (
-    <div className="bg-web1 text-web4 relative ">
+    <div className="bg-web1 text-web4 fixed w-full z-30">
       <div className="md:w-11/12 mx-auto px-3 md:px-0 ">
-        <nav className=" h-14 md:h-20 mx-auto  justify-between items-center flex ">
-          <div
-            ref={menuRef}
-            className={`flex lg:hidden flex-col transitionMenu   justify-center items-center gap-6 absolute top-14 py-5 bg-web3 text-web1
+        <nav className=" h-14u md:h-20 mx-auto  justify-between items-center flex ">
+          {
+            <div
+              ref={menuRef}
+              className={`flex lg:hidden flex-col transitionMenu   justify-center items-center gap-6 absolute top-14 py-5 bg-web3 text-web1
               ${user.isOpenMenu ? "left-0" : "-left-40"}`}
-          >
-            <NavLink to="/" className="relative rounded-md   ">
-              <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
-                Home
-              </span>
-            </NavLink>
-            <NavLink className="relative rounded-md  " to="AllProducts">
-              <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
-                Products
-              </span>
-            </NavLink>
-            <NavLink className="relative rounded-md  " to="contactUs">
-              <span className="px-3 text-md font-semibold h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
-                Contact us
-              </span>
-            </NavLink>
-            <NavLink className="relative rounded-md  " to="aboutUs">
-              <span className="px-3 text-md font-semibold h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
-                About us
-              </span>
-            </NavLink>
-          </div>
+            >
+              <NavLink to="/" className="relative rounded-md   ">
+                <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
+                  Home
+                </span>
+              </NavLink>
+              <NavLink className="relative rounded-md  " to="AllProducts">
+                <span className="px-3 text-md font-semibold  h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
+                  Products
+                </span>
+              </NavLink>
+              <NavLink className="relative rounded-md  " to="contactUs">
+                <span className="px-3 text-md font-semibold h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
+                  Contact us
+                </span>
+              </NavLink>
+              <NavLink className="relative rounded-md  " to="aboutUs">
+                <span className="px-3 text-md font-semibold h-full flex items-center before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web1 before:duration-300 before:transition-all before:ease-in-out">
+                  About us
+                </span>
+              </NavLink>
+            </div>
+          }
           <div className="flex justify-between items-center">
             <div
               className="lg:hidden mr-1"
@@ -79,24 +82,24 @@ export default function Header() {
               FREELANCE.
             </Link>
           </div>
-          <div className="hidden lg:flex justify-center items-center gap-10">
-            <NavLink to="/" className="relative rounded-md ">
-              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
+          <div className="hidden  h-20 lg:flex justify-center items-center gap-10">
+            <NavLink to="/" className="relative rounded-md h-full ">
+              <span className="px-3   font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:bottom-0 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
                 Home
               </span>
             </NavLink>
-            <NavLink className="relative rounded-md" to="AllProducts">
-              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
+            <NavLink className="relative rounded-md h-full" to="AllProducts">
+              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:bottom-0 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
                 Products
               </span>
             </NavLink>
-            <NavLink className="relative rounded-md" to="contactUs">
-              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
+            <NavLink className="relative rounded-md h-full" to="contactUs">
+              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:bottom-0 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
                 Contact us
               </span>
             </NavLink>
-            <NavLink className="relative rounded-md" to="aboutUs">
-              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:-bottom-2 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
+            <NavLink className="relative rounded-md h-full" to="aboutUs">
+              <span className="px-3 font-semibold h-full flex items-center text-lg before:hover:opacity-100 before:hover:w-full before:content-[''] before:h-0.5 before:w-0 before:absolute before:left-0 before:bottom-0 before:opacity-0 before:bg-web3 before:duration-300 before:transition-all before:ease-in-out">
                 About us
               </span>
             </NavLink>
@@ -129,7 +132,7 @@ export default function Header() {
                 </div>
 
                 <div
-                  className={`absolute top-14 md:top-20 right-3  md:right-10 bg-web2 w-36  px-1  rounded-md  transitionMenu
+                  className={`fixed top-14 md:top-20 right-3  md:right-10 bg-web2 w-36  px-1  rounded-md  transitionMenu
                     ${
                       user.isOpenUserMenu && user.user.isSeller
                         ? "h-40 md:h-60 overflow-hidden"

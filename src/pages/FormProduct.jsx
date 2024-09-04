@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { uploadFile, useCreateProduct, useEditProduct } from "../utils/queries";
 import { RxCross2 } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 export default function FormProduct({ product, type, id }) {
   const [successMessage, setSuccessMessage] = useState(false);

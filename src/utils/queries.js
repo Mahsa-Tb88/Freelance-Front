@@ -27,7 +27,8 @@ export function useInitialized() {
   return useQuery({
     queryKey: ["initialize"],
     queryFn: () => axios.get("/misc/initialize"),
-    // staleTime: Infinity,
+    
+    
   });
 }
 

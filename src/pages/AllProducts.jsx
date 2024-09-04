@@ -6,6 +6,7 @@ import Filter from "../components/Filter";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { productAction } from "../store/slices/productSlice";
+import { Helmet } from "react-helmet";
 
 export default function AllProducts() {
   const { category, star, search, sort, order, Min, Max } = useSelector(
@@ -45,7 +46,10 @@ export default function AllProducts() {
     hasNextPage,
   } = useInfinityProducts(limit, category, star, search, sort, order, Min, Max);
   return (
-    <div className="my-10 w-11/12 mx-auto">
+    <div className="my-20 w-11/12 mx-auto">
+      <Helmet>
+        <title>Products</title>
+      </Helmet>
       <h1 className="text-center text-3xl text-web3 my-10">Products</h1>
       <div className="flex flex-col md:flex-row justify-between items-start gap-9">
         <div className=" w-1/4">

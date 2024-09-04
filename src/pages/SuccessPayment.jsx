@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useOrderConfirm } from "../utils/queries";
+import { Helmet } from "react-helmet";
 
 export default function SuccessPayment() {
   const { search } = useLocation();
@@ -10,7 +11,6 @@ export default function SuccessPayment() {
   const params = new URLSearchParams(search);
   const payment_intent = params.get("payment_intent");
   const confirm = useOrderConfirm();
-  
 
   useEffect(() => {
     let timeOut;
@@ -56,6 +56,9 @@ export default function SuccessPayment() {
   }
   return (
     <div className="w-2/3 mx-auto  ">
+      <Helmet>
+        <title>Success Payment</title>
+      </Helmet>
       <div className=" rounded flex justify-center items-center mt-20   ">
         <div className="text-green-600 font-bold flex flex-col justify-center items-center">
           <p className="mb-2 text-xl">Paymet Successul.</p>

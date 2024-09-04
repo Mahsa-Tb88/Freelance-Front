@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePayment } from "../utils/queries";
 import CheckOutForm from "./CheckOutForm";
-import axios from "axios";
+import { useSelector } from "react-redux";
 
 const stripePromise = loadStripe(
   "pk_test_51PaJL9HQVpJWtZk8i2ClXk2rLzojU8607POTCMyMRNc6JogZS5UjrSUVZVCmqqLzRcxiryjOOGbNZxPNDfGFSBcu00xUHYbwMJ"
@@ -12,6 +12,7 @@ const stripePromise = loadStripe(
 
 export default function Pay() {
   const { id } = useParams();
+
   const [clientSecret, setClientSecret] = useState("");
   const [failMessage, setFailMessage] = useState(false);
   const mutationPayment = usePayment();
@@ -24,8 +25,7 @@ export default function Pay() {
           setClientSecret(data.data.body.clientSecret);
         },
         onError(error) {
-          setFailMessage(error);
-          console.log("error...", error);
+          setFailMessage(error.response.data.message);
         },
       }
     );
@@ -52,11 +52,12 @@ export default function Pay() {
 
   if (failMessage) {
     return (
-      <div className=" text-web3 flex items-center justify-center my-28 w-2/3 mx-auto text-3xl py-3">
+      <div className=" text-red-500 flex items-center justify-center my-28 w-2/3 mx-auto text-3xl py-3">
         {failMessage}
       </div>
     );
   }
+
   return (
     <div className="w-5/6 mx-auto my-20">
       {clientSecret && (

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import { userActions } from "../store/slices/userSlices";
+import { Helmet } from "react-helmet";
 
 export default function MessageList() {
   const { id } = useParams();
@@ -34,6 +35,9 @@ export default function MessageList() {
 
   return (
     <div className="w-5/6 mx-auto my-20 flex justify-center items-center">
+      <Helmet>
+        <title>Message's List</title>
+      </Helmet>
       {isPending ? (
         <div className="text-center">
           <h2 className="text-center text-lg font-bold text-web4">

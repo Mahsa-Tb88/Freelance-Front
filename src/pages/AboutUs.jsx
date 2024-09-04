@@ -1,7 +1,13 @@
-import React from 'react'
+import React from "react";
+import { Helmet } from "react-helmet";
 
 export default function AboutUs() {
   return (
-    <div>AboutUs</div>
-  )
+    <div>
+      <Helmet>
+        <title>About Us</title>
+      </Helmet>
+      AboutUs
+    </div>
+  );
 }

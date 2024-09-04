@@ -9,6 +9,7 @@ import ListOfReviews from "../components/ListOfReviews";
 import InfoProduct from "../components/InfoProduct";
 import { IoIosArrowForward } from "react-icons/io";
 import { useSelector } from "react-redux";
+import { Helmet } from "react-helmet";
 
 export default function Product() {
   const params = useParams();
@@ -54,6 +55,9 @@ export default function Product() {
     <div>
       {isPending ? (
         <div className="my-14">
+          <Helmet>
+            <title>Product</title>
+          </Helmet>
           <h2 className="text-web3 text-center font-bold text-3xl">
             Loading...
           </h2>

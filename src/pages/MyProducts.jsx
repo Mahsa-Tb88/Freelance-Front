@@ -2,6 +2,7 @@ import React from "react";
 import { useGetAllProductsOfSeller } from "../utils/queries";
 import { useParams } from "react-router-dom";
 import CartProduct from "../components/CartProduct";
+import { Helmet } from "react-helmet";
 
 export default function MyProducts() {
   const params = useParams();
@@ -10,6 +11,9 @@ export default function MyProducts() {
 
   return (
     <div>
+      <Helmet>
+        <title>Product</title>
+      </Helmet>
       {isPending ? (
         <div className="flex justify-center items-center font-bold text-xl text-web3 my-20">
           <span>Loading</span>
