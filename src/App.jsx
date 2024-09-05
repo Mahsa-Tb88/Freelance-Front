@@ -18,6 +18,7 @@ export default function App() {
       const unreadMsgs = data.data.body.unreadMsgs;
       const unSeenOrders = data.data.body.unSeenOrders;
       const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
+      console.log("app user...", user);
       dispatch(
         userActions.setUser({
           isLoggedIn: true,
@@ -35,7 +36,6 @@ export default function App() {
   }, []);
 
   // get message and order every 30 seconds
-
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -43,8 +43,9 @@ export default function App() {
       const newDate = new Date();
       if ((newDate.getTime() - timeFetch) / 1000 >= 5) {
         console.log("time...", (newDate.getTime() - timeFetch) / 1000);
-        refetch();
-        console.log("refetch data...", data);
+        const myRefetch = refetch();
+        console.log("myrefetch...", myRefetch);
+        console.log("refetch data...", { ...data.data.body });
         setTimeFetch(newDate);
         const unreadMsgs = data.data.body.unreadMsgs;
         const unSeenOrders = data.data.body.unSeenOrders;
