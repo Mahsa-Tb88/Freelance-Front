@@ -2,23 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { useInitialized } from "./utils/queries";
+import { useInitialized, useunreadMsg, useUnSeenOrder } from "./utils/queries";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/slices/userSlices";
 
 export default function App() {
   const dispatch = useDispatch();
-  const { isPending, isError, data, error, refetch } = useInitialized();
+  const { isPending, isError, data, error } = useInitialized();
+  const unSeenOrder = useUnSeenOrder();
+  const unreadMsg = useunreadMsg();
   const [timeFetch, setTimeFetch] = useState(new Date());
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if (data) {
-      const user = data.data.body.user;
-      const unreadMsgs = data.data.body.unreadMsgs;
-      const unSeenOrders = data.data.body.unSeenOrders;
+    if ((data, unreadMsg.data, unSeenOrder.data)) {
+      const user = data?.data.body.user;
       const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
-      console.log("app user...", user);
       dispatch(
         userActions.setUser({
           isLoggedIn: true,
@@ -28,29 +27,26 @@ export default function App() {
           country: user.country || "World",
           profileImg: user.profileImg ? SERVER_URL + user.profileImg : noImage,
           desc: user.desc,
-          unreadMsgs,
-          unSeenOrders,
+          unreadMsgs: unreadMsg.data?.data.body.unreadMsg,
+          unSeenOrders: unSeenOrder.data?.data.body.unSeenOrder,
         })
       );
     }
-  }, []);
+  }, [data, unreadMsg.data, unSeenOrder.data]);
 
   // get message and order every 30 seconds
   const { pathname } = useLocation();
+  console.log("every 5 sec fetch....");
 
   useEffect(() => {
-    if (data) {
+    if ((data, unreadMsg.data, unSeenOrder.data)) {
       const newDate = new Date();
       if ((newDate.getTime() - timeFetch) / 1000 >= 5) {
-        console.log("time...", (newDate.getTime() - timeFetch) / 1000);
-        const myRefetch = refetch();
-        console.log("myrefetch...", myRefetch);
-        console.log("refetch data...", { ...data.data.body });
+        if (user.isSeller) {
+          setTimeout(unSeenOrder.refetch, 100);
+        }
+        setTimeout(unreadMsg.refetch, 100);
         setTimeFetch(newDate);
-        const unreadMsgs = data.data.body.unreadMsgs;
-        const unSeenOrders = data.data.body.unSeenOrders;
-        console.log("unreadMsgs....", unreadMsgs);
-        dispatch(userActions.setUser({ ...user, unreadMsgs, unSeenOrders }));
       }
     }
   }, [pathname]);

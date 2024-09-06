@@ -34,7 +34,7 @@ export default function MessageList() {
   }, []);
 
   return (
-    <div className="w-5/6 mx-auto my-20 flex justify-center items-center">
+    <div className="w-5/6 mx-auto my-28 flex justify-center items-center">
       <Helmet>
         <title>Message's List</title>
       </Helmet>

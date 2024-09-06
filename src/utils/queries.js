@@ -27,8 +27,6 @@ export function useInitialized() {
   return useQuery({
     queryKey: ["initialize"],
     queryFn: () => axios.get("/misc/initialize"),
-    
-    
   });
 }
 
@@ -185,5 +183,21 @@ export function useSeenOrder() {
   return useMutation({
     mutationFn: (variables) =>
       axios.put(`/api/orders/${variables.id}`, variables),
+  });
+}
+
+export function useunreadMsg() {
+  return useQuery({
+    queryKey: ["unreadMsg"],
+    queryFn: () => axios.get("/api/msgList"),
+    refetchInterval: 5000,
+  });
+}
+
+export function useUnSeenOrder() {
+  return useQuery({
+    queryKey: ["unSeenOrder"],
+    queryFn: () => axios.get("/api/orders/unSeenOrder"),
+    refetchInterval: 5000,
   });
 }

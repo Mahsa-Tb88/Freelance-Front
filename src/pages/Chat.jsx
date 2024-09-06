@@ -12,16 +12,16 @@ export default function Chat() {
   const params = useParams();
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (data) {
-      dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
-    }
-  }, []);
-
-  console.log("user chat...", user);
-
   const { data, isPending, isError, error } = usegetChatsById(params.id);
+
+  console.log("component chat...");
+  if (data) {
+    console.log("data chat comp", data);
+  }
+  useEffect(() => {
+    console.log("useeffect chat comp");
+    dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
+  }, []);
 
   const querryClient = useQueryClient();
   const sentChat = usetextChat();
@@ -69,7 +69,7 @@ export default function Chat() {
     });
   }
   return (
-    <div className="w-5/6 mx-auto my-14 ">
+    <div className="w-5/6 mx-auto my-28 ">
       <Helmet>
         <title>Chat</title>
       </Helmet>
