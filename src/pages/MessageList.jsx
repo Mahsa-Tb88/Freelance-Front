@@ -7,6 +7,7 @@ import { userActions } from "../store/slices/userSlices";
 import { Helmet } from "react-helmet";
 
 export default function MessageList() {
+  console.log("meesgae comp");
   const { id } = useParams();
   const { data, isPending, isError, error } = useGetMessageList(id);
   const user = useSelector((state) => state.user.user);
@@ -34,7 +35,7 @@ export default function MessageList() {
   }, []);
 
   return (
-    <div className="w-5/6 mx-auto my-28 flex justify-center items-center">
+    <div className="w-5/6 mx-auto my-36 flex justify-center items-center">
       <Helmet>
         <title>Message's List</title>
       </Helmet>
@@ -62,6 +63,9 @@ export default function MessageList() {
                   to
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                  Product
+                </th>
+                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
                   Last Message
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
@@ -82,6 +86,9 @@ export default function MessageList() {
                     </td>
                     <td className="border text-center border-web2 text-web4 text-sm  ">
                       {item.to}
+                    </td>
+                    <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
+                      {item.product}
                     </td>
                     <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
                       {item.lastMsg}

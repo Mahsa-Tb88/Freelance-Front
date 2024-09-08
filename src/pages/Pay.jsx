@@ -59,7 +59,7 @@ export default function Pay() {
   }
 
   return (
-    <div className="w-5/6 mx-auto my-20">
+    <div className="w-5/6 mx-auto my-28">
       {clientSecret && (
         <Elements options={options} stripe={stripePromise}>
           <CheckOutForm />

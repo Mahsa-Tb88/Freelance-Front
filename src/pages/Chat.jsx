@@ -11,17 +11,25 @@ export default function Chat() {
   const [msg, setMsg] = useState(false);
   const params = useParams();
   const user = useSelector((state) => state.user.user);
+  const [newMsg, setNewMsg] = useState(user.unreadMsgs);
   const dispatch = useDispatch();
-  const { data, isPending, isError, error } = usegetChatsById(params.id);
+  const { data, isPending, isError, error, refetch } = usegetChatsById(
+    params.id
+  );
 
-  console.log("component chat...");
-  if (data) {
-    console.log("data chat comp", data);
-  }
   useEffect(() => {
-    console.log("useeffect chat comp");
-    dispatch(userActions.setUser({ ...user, unreadMsgs: 0 }));
-  }, []);
+    dispatch(
+      userActions.setUser({
+        ...user,
+        unreadMsgs: user.unreadMsgs > 0 && user.unreadMsgs - 1,
+      })
+    );
+    //we are in the chat page and update chatlist page when get new message at that time
+    if (newMsg != user.unreadMsgs) {
+      setNewMsg(user.unreadMsgs);
+      refetch();
+    }
+  }, [user.unreadMsgs]);
 
   const querryClient = useQueryClient();
   const sentChat = usetextChat();
@@ -57,14 +65,15 @@ export default function Chat() {
       setMsg("Please write your words, the filed is empty!");
     }
     sentChat.mutate(myData, {
-      onSuccess(data) {
+      onSuccess() {
         setText("");
         querryClient.invalidateQueries({
           queryKey: ["singleChat"],
         });
       },
       onError(error) {
-        console.log("error", error);
+        // setMsg(error.response.data.message);
+        console.log("error is ", error.response.data.message);
       },
     });
   }

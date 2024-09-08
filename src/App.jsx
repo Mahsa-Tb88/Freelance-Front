@@ -15,31 +15,53 @@ export default function App() {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
-    if ((data, unreadMsg.data, unSeenOrder.data)) {
-      const user = data?.data.body.user;
+    if (data) {
+      const userData = data.data.body.user;
       const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
       dispatch(
         userActions.setUser({
+          ...user,
           isLoggedIn: true,
-          id: user._id,
-          isSeller: user.isSeller,
-          username: user.username,
-          country: user.country || "World",
-          profileImg: user.profileImg ? SERVER_URL + user.profileImg : noImage,
-          desc: user.desc,
-          unreadMsgs: unreadMsg.data?.data.body.unreadMsg,
-          unSeenOrders: unSeenOrder.data?.data.body.unSeenOrder,
+          id: userData._id,
+          isSeller: userData.isSeller,
+          username: userData.username,
+          country: userData.country || "World",
+          profileImg: userData.profileImg
+            ? SERVER_URL + userData.profileImg
+            : noImage,
+          desc: userData.desc,
         })
       );
     }
-  }, [data, unreadMsg.data, unSeenOrder.data]);
-
-  // get message and order every 30 seconds
-  const { pathname } = useLocation();
-  console.log("every 5 sec fetch....");
+  }, [data]);
 
   useEffect(() => {
-    if ((data, unreadMsg.data, unSeenOrder.data)) {
+    if (unreadMsg.data) {
+      dispatch(
+        userActions.setUser({
+          ...user,
+          unreadMsgs: unreadMsg.data.data.body.unreadMsg,
+        })
+      );
+    }
+  }, [unreadMsg.data]);
+
+  useEffect(() => {
+    if (unSeenOrder.data) {
+      dispatch(
+        userActions.setUser({
+          ...user,
+          unSeenOrders: unSeenOrder.data.data.body.unSeenOrder,
+        })
+      );
+    }
+  }, [unSeenOrder.data]);
+
+  // get messages and orders after 5 seconds with the change of path
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (data && unreadMsg.data && unSeenOrder.data) {
       const newDate = new Date();
       if ((newDate.getTime() - timeFetch) / 1000 >= 5) {
         if (user.isSeller) {

@@ -93,17 +93,17 @@ export default function () {
   }
 
   return (
-    <div className="my-14 md:my-20  w-5/6 mx-auto ">
+    <div className="mb-14 mt-20 md:mb-20 md:mt-32  w-5/6 mx-auto ">
       <Helmet>
         <title>Sign Up</title>
       </Helmet>
       <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
         {successMessage ? (
-          <div className="bg-green-500 px-2 my-9 py-2 rounded text-center font-bold text-lg  md:text-3xl">
-            <p className="text-white">{successMessage}</p>
+          <div className="px-2 mt-9 mb-14 py-2 rounded text-center font-bold text-lg  md:text-3xl">
+            <p className="text-green-500">{successMessage}</p>
           </div>
         ) : failMessage ? (
-          <div className="bg-red-700 px-2 my-9 py-2 rounded text-center font-bold text-lg  md:text-3xl">
+          <div className="bg-red-700 px-2 mt-9 mb-14 py-2 rounded text-center font-bold text-lg  md:text-3xl">
             <p className="text-white">{failMessage}</p>
           </div>
         ) : (

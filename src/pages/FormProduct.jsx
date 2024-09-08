@@ -186,8 +186,8 @@ export default function FormProduct({ product, type, id }) {
     <div className="">
       <div className="my-10">
         {successMessage ? (
-          <div className="bg-green-500 px-2 py-2 my-20 rounded text-center font-bold text-lg  md:text-3xl">
-            <p className="text-white">{successMessage}</p>
+          <div className=" px-2 py-2 my-20 rounded text-center font-bold text-lg  md:text-3xl">
+            <p className="text-green-500">{successMessage}</p>
           </div>
         ) : failMessage ? (
           <div className="bg-red-700 px-2 py-2 my-20 rounded text-center font-bold text-lg  md:text-3xl">

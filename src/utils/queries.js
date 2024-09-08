@@ -190,7 +190,7 @@ export function useunreadMsg() {
   return useQuery({
     queryKey: ["unreadMsg"],
     queryFn: () => axios.get("/api/msgList"),
-    refetchInterval: 5000,
+    refetchInterval: 180000,
   });
 }
 
@@ -198,6 +198,6 @@ export function useUnSeenOrder() {
   return useQuery({
     queryKey: ["unSeenOrder"],
     queryFn: () => axios.get("/api/orders/unSeenOrder"),
-    refetchInterval: 5000,
+    refetchInterval: 180000,
   });
 }

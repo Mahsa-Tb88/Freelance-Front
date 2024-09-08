@@ -51,7 +51,7 @@ export default function Orders() {
   }
 
   return (
-    <div className="w-5/6 mx-auto my-28 flex justify-center items-center">
+    <div className="w-5/6 mx-auto my-36 flex justify-center items-center">
       <Helmet>
         <title>Orders</title>
       </Helmet>
@@ -66,8 +66,8 @@ export default function Orders() {
           There is no order!
         </div>
       ) : (
-        <div>
-          <table className="border-collapse table-auto  border border-web3 ">
+        <div className="w-full">
+          <table className="border-collapse table-auto w-full  border border-web3 ">
             <thead>
               <tr>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">

@@ -55,7 +55,7 @@ export default function SuccessPayment() {
     );
   }
   return (
-    <div className="w-2/3 mx-auto  ">
+    <div className="w-2/3 mx-auto my-10 ">
       <Helmet>
         <title>Success Payment</title>
       </Helmet>

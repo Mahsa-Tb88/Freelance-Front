@@ -24,19 +24,6 @@ export default function Product() {
     );
   }
 
-  // useEffect(() => {
-  //   let order;
-  //   console.log("orderrr",orders.data);
-  //   if (orders.data) {
-  //     console.log("dataorders", orders.data.data.body);
-  //     order = orders.data.data.body.filter(
-  //       (order) => order.productId == params.id
-  //     );
-  //
-  //      setIsAllowAedReview(findOrder);
-  //   }
-  // }, []);
-
   function dateMembership(dateString) {
     const myDate = new Date(dateString);
     const options = { day: "2-digit", month: "short", year: "numeric" };
@@ -54,7 +41,7 @@ export default function Product() {
   return (
     <div>
       {isPending ? (
-        <div className="my-14">
+        <div className="mt-32">
           <Helmet>
             <title>Product</title>
           </Helmet>
@@ -63,13 +50,13 @@ export default function Product() {
           </h2>
         </div>
       ) : isError ? (
-        <div className="my-14 ">
+        <div className="mt-32">
           <h2 className="text-web3 text-center font-bold text-3xl">
             {error.response.data.message}
           </h2>
         </div>
       ) : (
-        <div>
+        <div className="mt-28">
           <div className="px-20 mt-5 flex items-center gap-2 text-web2 font-extrabold">
             <span>Product</span>
             <span>
@@ -93,7 +80,7 @@ export default function Product() {
                       width={35}
                       className="rounded-full mr-2"
                       src={
-                        data.data.body.sellerId.profileImg ||
+                        SERVER_URL + data.data.body.sellerId.profileImg ||
                         SERVER_URL +
                           "/uploads/profiles/profile1722016584144.png"
                       }
@@ -115,15 +102,24 @@ export default function Product() {
                   </div>
                 </div>
               </div>
-              <Slider {...settings}>
-                {data.data.body.albumImage.map((s) => {
-                  return (
-                    <div key={s}>
-                      <img src={SERVER_URL + s} />
-                    </div>
-                  );
-                })}
-              </Slider>
+              {data.data.body.albumImage.length ? (
+                <Slider {...settings}>
+                  <div>
+                    <img src={SERVER_URL + data.data.body.coverImage} />
+                  </div>
+                  {data.data.body.albumImage.map((s) => {
+                    return (
+                      <div key={s}>
+                        <img src={SERVER_URL + s} />
+                      </div>
+                    );
+                  })}
+                </Slider>
+              ) : (
+                <div>
+                  <img src={SERVER_URL + data.data.body.coverImage} />
+                </div>
+              )}
 
               <div className="bg-web1 px-2 py-3 mt-24 mb-12 rounded-md">
                 <h3 className=" text-web3 font-bold">About This Product</h3>
@@ -136,7 +132,7 @@ export default function Product() {
                     width={70}
                     className="rounded-full mr-3"
                     src={
-                      data.data.body.sellerId.profileImg ||
+                      SERVER_URL + data.data.body.sellerId.profileImg ||
                       SERVER_URL + "/uploads/profiles/profile1722016584144.png"
                     }
                   />
@@ -206,7 +202,11 @@ export default function Product() {
 
               <div className="my-9">
                 <ListOfReviews />
-                {findOrder.length ? <FormReviewSend /> : ""}
+                {findOrder.length && user.username && !user.isSeller ? (
+                  <FormReviewSend />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             {!user.isSeller ? (

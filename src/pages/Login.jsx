@@ -27,7 +27,6 @@ export default function Login() {
       },
       onSuccess(data) {
         const user = data.data.body.user;
-        console.log("login... data", data.data.body);
         const unreadMsgs = data.data.body.unreadMsgs;
         const unSeenOrders = data.data.body.unSeenOrders;
         const noImage =
@@ -51,15 +50,17 @@ export default function Login() {
       },
     });
   }
+
+
   useEffect(() => {
     if (user.username) {
       navigate("/");
     }
   }, []);
- 
+  
 
   return (
-    <div className="flex flex-col justify-center items-center py-16 px-7 md:px-0 md:w-2/4 lg:w-1/3 mx-auto">
+    <div className="flex flex-col justify-center items-center py-36 px-7 md:px-0 md:w-2/4 lg:w-1/3 mx-auto">
       <Helmet>
         <title>Home</title>
       </Helmet>

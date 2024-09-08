@@ -38,7 +38,9 @@ export default function CartProduct({ p }) {
       </Link>
       <div className="px-2 py-4 mt-auto">
         <div className="flex justify-between items-center">
-          <h3 className="text-web4 font-bold text-xl">{p.title}</h3>
+          <h3 className="text-web4 font-bold text-xl hover:text-web3">
+            <Link to={`/product/${p._id}`}>{p.title}</Link>
+          </h3>
           <div className="flex justify-start items-center">
             <span>
               <FaStar className=" text-yellow-300" />
@@ -47,16 +49,13 @@ export default function CartProduct({ p }) {
           </div>
         </div>
         <p className="text-web4 text-justify mt-5">
-          {p.desc.substring(1, 40)}...
+          {p.desc.substring(1, 100)}...
         </p>
-        <div className="text-web4 font-extrabold text-lg flex justify-between items-center mt-5">
-          <h5>Price</h5>{" "}
-          <span>
-            $ {p.price} {p.category}
-            {}
-          </span>
+        <div className="text-web4 font-extrabold text-lg flex justify-between items-center mt-10">
+          <h5>Price</h5>
+          <span>$ {p.price}</span>
         </div>
-        <div className="flex justify-start items-center mt-3">
+        {/* <div className="flex justify-start items-center mt-8">
           <h5 className="text-web3 text-sm font-semibold mr-2">
             Revision Number
           </h5>
@@ -71,7 +70,7 @@ export default function CartProduct({ p }) {
           <span className="text-web3 text-sm font-semibold">
             {p.deliveryTime}
           </span>
-        </div>
+        </div> */}
       </div>
       {user.isSeller && p.sellerId == user.id ? (
         <button className="w-full flex justify-between items-center bg-web2 hover:text-web1   py-3 px-2 ">

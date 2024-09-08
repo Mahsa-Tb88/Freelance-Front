@@ -40,7 +40,7 @@ export default function ListOfReviews() {
           });
         },
         onError(error) {
-          console.log(error);
+          console.log(error.response.data.message);
         },
       }
     );
@@ -51,7 +51,7 @@ export default function ListOfReviews() {
       {isPending ? (
         <div> loading...</div>
       ) : isError ? (
-        <div>error...</div>
+        <div>{error}</div>
       ) : (
         <div>
           {data.data.body.length ? (
