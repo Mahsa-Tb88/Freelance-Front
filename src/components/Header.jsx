@@ -14,7 +14,7 @@ export default function Header() {
   const dispatch = useDispatch();
   useEffect(() => {
     document.addEventListener("mousedown", handlerMenu);
-    return () => removeEventListener("mousedown", handlerMenu);
+    return () => document.removeEventListener("mousedown", handlerMenu);
   }, []);
 
   function handlerMenu(e) {
@@ -26,7 +26,7 @@ export default function Header() {
   return (
     <div className="bg-web1 text-web4 fixed w-full z-30">
       <div className="md:w-11/12 mx-auto px-3 md:px-0 ">
-        <nav className=" h-14u md:h-20 mx-auto  justify-between items-center flex ">
+        <nav className=" h-14 md:h-20 mx-auto  justify-between items-center flex ">
           <div
             ref={menuRef}
             className={`flex lg:hidden flex-col transitionMenu   justify-center items-center gap-6 absolute top-14 py-5 bg-web3 text-web1

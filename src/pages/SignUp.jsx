@@ -88,7 +88,6 @@ export default function () {
     } else {
       data.profileImg = "";
     }
-    console.log("data submite", data);
     mutation.mutate(data);
   }
 

@@ -16,6 +16,7 @@ import AllProducts from "../pages/AllProducts";
 import Product from "../pages/Product";
 import Pay from "../pages/Pay";
 import SuccessPayment from "../pages/SuccessPayment";
+import SellerInfo from "../pages/SellerInfo";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ const router = createBrowserRouter([
       { path: "editProduct/:id", element: <EditProduct /> },
       { path: "pay/:id", element: <Pay /> },
       { path: "successPayment", element: <SuccessPayment /> },
+      { path: "seller/:id", element: <SellerInfo /> },
     ],
   },
 ]);

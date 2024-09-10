@@ -201,3 +201,16 @@ export function useUnSeenOrder() {
     refetchInterval: 180000,
   });
 }
+
+export function useGetSellers() {
+  return useQuery({
+    queryKey: ["sellers"],
+    queryFn: () => axios.get("/api/sellers/"),
+  });
+}
+export function useGetSeller(id) {
+  return useQuery({
+    queryKey: ["seller"],
+    queryFn: () => axios.get("/api/sellers/" + id),
+  });
+}

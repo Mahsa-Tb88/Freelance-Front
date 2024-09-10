@@ -35,7 +35,9 @@ export default function Login() {
           userActions.setUser({
             isLoggedIn: true,
             isSeller: user.isSeller,
-            username: user.username,
+            username: user.username.replace(/(^\w|[\s_]\w)/g, (match) =>
+              match.toUpperCase()
+            ),
             id: user._id,
             profileImg: user.profileImg
               ? SERVER_URL + user.profileImg
@@ -51,13 +53,11 @@ export default function Login() {
     });
   }
 
-
   useEffect(() => {
     if (user.username) {
       navigate("/");
     }
   }, []);
-  
 
   return (
     <div className="flex flex-col justify-center items-center py-36 px-7 md:px-0 md:w-2/4 lg:w-1/3 mx-auto">

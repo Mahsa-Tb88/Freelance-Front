@@ -24,7 +24,9 @@ export default function App() {
           isLoggedIn: true,
           id: userData._id,
           isSeller: userData.isSeller,
-          username: userData.username,
+          username: userData.username.replace(/(^\w|[\s_]\w)/g, (match) =>
+            match.toUpperCase()
+          ),
           country: userData.country || "World",
           profileImg: userData.profileImg
             ? SERVER_URL + userData.profileImg

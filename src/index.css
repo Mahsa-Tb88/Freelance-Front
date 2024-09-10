@@ -19,6 +19,18 @@ html {
   background-color: #fef3e2;
   color: #708871;
 }
+.slick-prev::before,
+.slick-next::before {
+  color: #bec6a0 !important;
+}
+.slick-prev:hover,
+.slick-next:hover {
+  color: #708871 !important;
+}
+
+.slick-list {
+  padding-bottom: 30px !important;
+}
 
 .transitionMenu {
   transition: all 1s ease-in-out;

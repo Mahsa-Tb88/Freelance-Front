@@ -1,12 +1,51 @@
 import React from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
+import { useGetSellers } from "../utils/queries";
+import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const user = useSelector((state) => state.user.user);
+  const { data, isPending, isError, error } = useGetSellers();
 
+  let settings = {
+    dots: true,
+    infinite: true,
+    speed: 2000,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  if (data) {
+    console.log("slider.... home", data.data.body);
+  }
+  function dateMembership(dateString) {
+    const myDate = new Date(dateString);
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    const formattedDate = myDate.toLocaleDateString("en-GB", options);
+    return formattedDate;
+  }
   return (
     <div>
       <Helmet>
@@ -164,7 +203,55 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="mt-40"></div>
+      <div className="mt-40 ">
+        {isPending ? (
+          <div className="text-center font-bold text-xl text-web3">
+            Loading...
+          </div>
+        ) : isError ? (
+          <div className="text-center font-bold text-xl text-red-500">
+            {error.response.data.message}error
+          </div>
+        ) : (
+          <div className="lg:w-5/6 mx-auto pb-7 mb-10 ">
+            <Slider {...settings}>
+              {data.data.body.map((slider) => {
+                return (
+                  <div className="px-3 flex flex-col ">
+                    <Link
+                      className="bg-web2 border-web2 border rounded flex flex-col h-full py-7 cursor-pointer"
+                      to={`/seller/${slider.sellerId}`}
+                    >
+                      <div className=" flex flex-col justify-center items-center w-full">
+                        <img
+                          className="w-14 h-14 text-center rounded-full border"
+                          src={SERVER_URL + slider.profileImg}
+                        />
+                        <div className="text-web1 text-lg font-bold mt-4">
+                          {slider.username.replace(/(^\w|[\s_]\w)/g, (match) =>
+                            match.toUpperCase()
+                          )}
+                        </div>
+                      </div>
+                      <div className="mb-auto w-full">
+                        <div className="px-2 text-justify mb-3 my-5 h-24 text-web4">
+                          {slider.desc.substring(1, 100)}...
+                        </div>
+                        <div className="px-2 text-web1 text-sm">
+                          {slider.country}
+                        </div>
+                        <div className="px-2 text-web1 text-sm">
+                          {dateMembership(slider.joinDate)}
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </Slider>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

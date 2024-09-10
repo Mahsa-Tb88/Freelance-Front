@@ -13,18 +13,19 @@ export default function UserMenu() {
 
   useEffect(() => {
     document.addEventListener("mousedown", handlerUserMenu);
-    return () => removeEventListener("mousedown", handlerUserMenu);
+    return () => document.removeEventListener("mousedown", handlerUserMenu);
   }, []);
 
   function handlerUserMenu(e) {
-    console.log("userMenuRef.current is: ", userMenuRef.current);
     if (!userMenuRef.current?.contains(e.target)) {
       dispatch(userActions.setOpenUserMenu(false));
     }
   }
 
   function handlerSignOut() {
-    signOutMutation.mutate({},{
+    signOutMutation.mutate(
+      {},
+      {
         onSuccess() {
           dispatch(
             userActions.setUser({
@@ -39,6 +40,7 @@ export default function UserMenu() {
               unSeenOrders: 0,
             })
           );
+          dispatch(userActions.setOpenUserMenu(false));
           navigate("/");
         },
 

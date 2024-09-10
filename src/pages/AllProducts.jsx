@@ -52,10 +52,10 @@ export default function AllProducts() {
       </Helmet>
       <h1 className="text-center text-3xl text-web3 my-10">Products</h1>
       <div className="flex flex-col md:flex-row justify-between items-start gap-9">
-        <div className=" w-1/4">
+        <div className="w-full md:w-1/4">
           <Filter />
         </div>
-        <div className="w-3/4">
+        <div className="md:w-3/4">
           {isPending ? (
             <div>
               <h2>Loading</h2>
@@ -66,10 +66,13 @@ export default function AllProducts() {
             </div>
           ) : (
             <div>
-              <div>
+              <div className="mt-24 md:mt-0">
                 {data.pages.map((page, i) => {
                   return (
-                    <div key={i} className="grid  grid-cols-3  gap-6">
+                    <div
+                      key={i}
+                      className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  gap-6"
+                    >
                       {page.data.body.map((p, i) => (
                         <CartProduct p={p} key={i} />
                       ))}
