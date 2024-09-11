@@ -8,13 +8,11 @@ export default function SellerInfo() {
   const { data, isPending, isError, error } = useGetSeller(id);
   const [sellerStar, setSellerStar] = useState(1);
 
-  if (data) {
-    console.log(data);
-  }
+
 
   useEffect(() => {
     let sumTotalStar = 0;
-    if (data) {
+    if (data && data.data.body.sellerProducts.length > 0) {
       data.data.body.sellerProducts.forEach((element) => {
         sumTotalStar = sumTotalStar + element.totalStar;
       });
@@ -30,7 +28,9 @@ export default function SellerInfo() {
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
-
+  if (data) {
+    console.log(data.data.body);
+  }
   return (
     <div className="my-32">
       <div className="lg:w-5/6 mx-auto px-4 lg:px-2 ">
@@ -99,9 +99,14 @@ export default function SellerInfo() {
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 ">
-                {data.data.body.sellerProducts.map((product) => {
-                  return <CartProduct p={product} />;
-                })}
+                {data.data.body.sellerProducts.length > 0 &&
+                  data.data.body.sellerProducts.map((product) => {
+                    return (
+                      <div key={product.title}>
+                        <CartProduct p={product} />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </div>

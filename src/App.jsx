@@ -13,29 +13,34 @@ export default function App() {
   const unreadMsg = useunreadMsg();
   const [timeFetch, setTimeFetch] = useState(new Date());
   const user = useSelector((state) => state.user.user);
-
+  
   useEffect(() => {
     if (data) {
-      const userData = data.data.body.user;
-      const noImage = SERVER_URL + "/uploads/profiles/profile1722016584144.png";
-      dispatch(
-        userActions.setUser({
-          ...user,
-          isLoggedIn: true,
-          id: userData._id,
-          isSeller: userData.isSeller,
-          username: userData.username.replace(/(^\w|[\s_]\w)/g, (match) =>
-            match.toUpperCase()
-          ),
-          country: userData.country || "World",
-          profileImg: userData.profileImg
-            ? SERVER_URL + userData.profileImg
-            : noImage,
-          desc: userData.desc,
-        })
-      );
+      if (Object.keys(data.data.body.user).length !== 0) {
+        const userData = data.data.body.user;
+        const noImage =
+          SERVER_URL + "/uploads/profiles/profile1722016584144.png";
+        dispatch(
+          userActions.setUser({
+            ...user,
+            isLoggedIn: true,
+            id: userData._id,
+            isSeller: userData.isSeller,
+            username: userData.username.replace(/(^\w|[\s_]\w)/g, (match) =>
+              match.toUpperCase()
+            ),
+            country: userData.country || "World",
+            profileImg: userData.profileImg
+              ? SERVER_URL + userData.profileImg
+              : noImage,
+            desc: userData.desc,
+          })
+        );
+      }
     }
   }, [data]);
+
+ 
 
   useEffect(() => {
     if (unreadMsg.data) {

@@ -54,16 +54,16 @@ export default function UserMenu() {
     <div>
       <div ref={userMenuRef}>
         <div
-          className={`w-36 rounded-md  px-1 transitionMenu  ${
+          className={`w-36 rounded-md  px-1 transitionMenu ${
             user.isOpenUserMenu && !user.user.isSeller
-              ? " bg-web2 h-40"
+              ? " bg-web2 h-32 md:h-36 lg:h-40"
               : user.isOpenUserMenu && user.user.isSeller
-              ? "bg-web2 h-60"
-              : "h-0"
+              ? "bg-web2 h-44 md:h-56  lg:h-60 opacity-100"
+              : "h-0 opacity-0"
           }`}
         >
-          {user.isOpenUserMenu && (
-            <div className="flex flex-col gap-2 py-4 ">
+          {
+            <div className={`flex flex-col gap-2 py-4 transitionMenu`}>
               {user.user.isSeller && (
                 <div className=" flex flex-col items-center justify-center gap-1 md:gap-3">
                   <Link
@@ -111,7 +111,7 @@ export default function UserMenu() {
                 SignOut
               </Link>
             </div>
-          )}
+          }
         </div>
       </div>
     </div>

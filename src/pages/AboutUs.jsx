@@ -31,7 +31,7 @@ export default function AboutUs() {
               rerum laboriosam et quisquam iste.
             </p>
 
-            <div className="grid grid-cols-4 my-20 bg-web1 rounded-md">
+            <div className="grid grid-cols-2  lg:grid-cols-4 my-20 bg-web1 rounded-md">
               <div className="text-web3  py-7 flex flex-col text-center ">
                 <span className="text-lg font-extrabold"> Projects</span>
                 <span className="text-web3 font-bold text-2xl mt-4">300 +</span>

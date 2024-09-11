@@ -116,6 +116,13 @@ export function useInfinityProducts(
   });
 }
 
+export function useGetAllProducts(){
+  return useQuery({
+    queryKey: ["sliderProducts"],
+    queryFn: () => axios.get("/api/products/"),
+  });
+}
+
 export function usePayment() {
   return useMutation({
     mutationFn: (variable) =>

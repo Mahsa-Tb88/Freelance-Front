@@ -103,7 +103,7 @@ export default function Chat() {
                     getDate(data.data.body[index - 1]?.createdAt) ? (
                       ""
                     ) : (
-                      <div className="flex justify-center items-center">
+                      <div className="flex justify-center items-center my-5">
                         <span className="bg-gray-200 w-full h-px "></span>
                         <span className="w-1/4 text-center text-gray-400">
                           {getDate(chat.createdAt)}

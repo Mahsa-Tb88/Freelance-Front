@@ -29,16 +29,16 @@ export default function ContactUs() {
         <title>Contact Us</title>
       </Helmet>
       <div className=" py-52 ">
-        <div className="w-5/6 mx-auto flex justify-between items-center">
+        <div className="w-5/6 mx-auto flex flex-col lg:flex-row justify-between items-center">
           <div className="w-full">
             <h3 className="text-web2 font-bold">How can I help you?</h3>
             <h1 className="text-web3 text-5xl font-bold mt-4 mb-10">
               Contact Us
             </h1>
-            <p className="text-web4 clear-start text-lg">
+            <p className="text-web4 clear-start text-lg ">
               We are here to help and answer any quetions you might have,
             </p>
-            <p className="text-web4 text-lg">
+            <p className="text-web4 text-lg mb-14 lg:mb-0">
               We look forward to hearing from you!
             </p>
           </div>

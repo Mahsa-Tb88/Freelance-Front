@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Helmet } from "react-helmet";
 import { useSelector } from "react-redux";
-import { useGetSellers } from "../utils/queries";
+import { FaStar } from "react-icons/fa";
+import { useGetAllProducts, useGetSellers } from "../utils/queries";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
 
 export default function Home() {
   const user = useSelector((state) => state.user.user);
+  const [inputSearch, setInputSearch] = useState("");
   const { data, isPending, isError, error } = useGetSellers();
+  const products = useGetAllProducts();
 
   let settings = {
     dots: true,
@@ -24,8 +27,9 @@ export default function Home() {
       {
         breakpoint: 800,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
       {
@@ -33,53 +37,106 @@ export default function Home() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
     ],
   };
-  if (data) {
-    console.log("slider.... home", data.data.body);
-  }
+  let productSettings = {
+    dots: true,
+    infinite: true,
+    speed: 2000,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 800,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 500,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 380,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
+  };
+
   function dateMembership(dateString) {
     const myDate = new Date(dateString);
     const options = { day: "2-digit", month: "short", year: "numeric" };
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
+
   return (
     <div>
       <Helmet>
         <title>Home</title>
       </Helmet>
-      <div className="bg-web1 px-3 my-8">
+      <div className="bg-web1 px-3 my-12">
         <div className=" md:max-w-5xl mx-auto pt-4  md:pt-7 flex justify-between items-center gap-12">
           <div className="w-3/5 md:mb-16">
             <h2 className="md:text-4xl font-semibold md:mb-20 text-web4">
               Find the perfect freelance services for your business
             </h2>
-            <div className=" my-4 md:mt-8 w-full flex justify-center items-center border rounded-md border-web4 overflow-hidden">
-              <input className="w-full h-5 text-xs px-1 md:h-10 rounded-l-sm md:rounded-l-md" />
-              <button className="text-xxs text-web4 h-5 md:text-base px-1 md:px-2  md:h-10 font-bold bg-web2 rounded-r-md hover:bg-web3 hover:text-web1">
+            <div className=" my-4 md:mt-8 w-full flex justify-center items-center border rounded-md border-web4 overflow-hidden focus-within:border-web3">
+              <input
+                className="w-full h-5 text-xs md:text-base px-1 md:h-10 rounded-l-sm md:rounded-l-md outline-none"
+                onChange={(e) => setInputSearch(e.target.value)}
+              />
+
+              <Link
+                className="text-xxs  md:text-base h-5  md:h-10 font-bold  rounded-r-md flex items-center justify-center px-1 md:px-2  text-web4  bg-web2 hover:bg-web3 hover:text-web1"
+                to={`/AllProducts?search=${inputSearch}`}
+              >
                 Search
-              </button>
+              </Link>
             </div>
             <div className="flex justify-start  items-center my-8 ">
-              <h3 className="text-xxs md:text-sm  font-semibold mr-1  md:mr-3">
-                popular:
-              </h3>
               <div className="grid grid-cols-2 md:flex justify-start gap-2 ">
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm  md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
+                <Link
+                  className="border text-center font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm  md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl"
+                  to="/AllProducts?category=Design"
+                >
                   Desing
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Fronend
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
-                  Backend
-                </button>
-                <button className="border font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl">
+                </Link>
+                <Link
+                  className="border text-center font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl"
+                  to="/AllProducts?category=Programming"
+                >
+                  Programming
+                </Link>
+                <Link
+                  className="border text-center font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl"
+                  to="/AllProducts?category=Photography"
+                >
+                  Photography
+                </Link>
+                <Link
+                  className="border text-center font-semibold border-web4 hover:bg-web3 hover:border-web3 hover:text-web1 text-web4 px-2 text-xxs md:text-xs lg:text-sm md:px-6 py-0.5 md:py-1 rounded-xl md:rounded-2xl"
+                  to="/AllProducts?category=Logo"
+                >
                   Logo
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -102,6 +159,64 @@ export default function Home() {
           <span className="text-gray-400 px-1">Paypal</span>
           <span className="text-gray-400 px-1">Meta</span>
         </div>
+      </div>
+      <div className="mt-40">
+        {products.isPending ? (
+          <div className="text-center font-bold text-xl text-web3">
+            Loading...
+          </div>
+        ) : products.isError ? (
+          <div className="text-center font-bold text-xl text-red-500">
+            {products.error.response.data.message}
+          </div>
+        ) : (
+          <div className="lg:w-5/6 mx-auto pb-7 mb-10 ">
+            <Slider {...productSettings}>
+              {products.data.data.body.map((product) => {
+                return (
+                  <div className="px-3 flex flex-col" key={product._id}>
+                    <Link
+                      className="bg-web1 border-web1 border rounded flex flex-col h-full pb-7 cursor-pointer overflow-hidden"
+                      to={`/product/${product._id}`}
+                    >
+                      <div className=" flex flex-col justify-center items-center w-full">
+                        <img
+                          className="w-full h-40 "
+                          src={SERVER_URL + product.coverImage}
+                        />
+                        <div className="text-web3 lg:text-lg font-bold mt-4">
+                          {product.title}
+                        </div>
+                      </div>
+                      <div className="mb-auto w-full">
+                        <div className="px-2 text-sm lg:text-base text-justify mb-3 my-5 h-24 text-web4">
+                          {product.desc.substring(1, 100)}...
+                        </div>
+                        <div className="px-2 mt-9  text-web3 text-sm">
+                          {product.category}
+                        </div>
+                        <div className="px-2 text-web3 text-sm flex items-center mt-2">
+                          {Array(product.totalStar)
+                            .fill("0")
+                            .map((i, index) => {
+                              return (
+                                <span
+                                  className=" text-yellow-500 mx-px"
+                                  key={index}
+                                >
+                                  <FaStar />
+                                </span>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </Slider>
+          </div>
+        )}
       </div>
       <div className=" mt-40">
         <div className="lg:w-5/6 mx-auto py-14 px-4 lg:px-0">
@@ -210,14 +325,14 @@ export default function Home() {
           </div>
         ) : isError ? (
           <div className="text-center font-bold text-xl text-red-500">
-            {error.response.data.message}error
+            {error.response.data.message}
           </div>
         ) : (
           <div className="lg:w-5/6 mx-auto pb-7 mb-10 ">
             <Slider {...settings}>
               {data.data.body.map((slider) => {
                 return (
-                  <div className="px-3 flex flex-col ">
+                  <div className="px-3 flex flex-col " key={slider.username}>
                     <Link
                       className="bg-web2 border-web2 border rounded flex flex-col h-full py-7 cursor-pointer"
                       to={`/seller/${slider.sellerId}`}

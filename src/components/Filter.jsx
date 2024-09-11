@@ -13,7 +13,7 @@ export default function Filter() {
   const [isFilterBySort, setIsFilterBySort] = useState(false);
   const [categories, setCategories] = useState([]);
 
-  const { category, star, search, sort, order, Min, Max } = useSelector(
+  const { star, search, sort, order, Min, Max } = useSelector(
     (state) => state.product
   );
   useEffect(() => {
@@ -22,9 +22,9 @@ export default function Filter() {
       setCategories(categoryGroup);
     }
   }, []);
+
   function handlerSelectCategories(value) {
     let newCategories;
-
     if (categories.includes(value)) {
       newCategories = categories.filter((c) => c != value);
       setCategories(newCategories);
@@ -99,7 +99,7 @@ export default function Filter() {
     }
   }
 
-  const categoriesList = ["Web Design", "Logo", "Programming"];
+  const categoriesList = ["Design", "Logo", "Programming", "Photography"];
   return (
     <div>
       <div className="border flex justify-between items-center px-2 py-1 rounded-md border-web2 focus-within:border-web3">
@@ -118,13 +118,18 @@ export default function Filter() {
             onClick={() => setIsOpenCat(!isOpenCat)}
           >
             <span className="">Categories</span>
-            <span className="transitionMenu">
-              {isOpenCat ? <IoIosArrowUp /> : <IoIosArrowDown />}
+            <span>
+              <IoIosArrowDown
+                style={{
+                  rotate: isOpenCat ? "180deg" : "0deg",
+                  transition: "all 0.5s ease-out",
+                }}
+              />
             </span>
           </div>
           <div
-            className={`text-web4  transitionMenu  ${
-              isOpenCat ? "h-16 block" : "h-0 hidden "
+            className={`text-web4   transitionMenu  ${
+              isOpenCat ? "h-20  opacity-100 " : "h-0 opacity-0 "
             }`}
           >
             {categoriesList.map((c) => {
@@ -145,17 +150,24 @@ export default function Filter() {
           </div>
         </div>
 
-        <div className="my-8">
+        <div className="my-8 ">
           <div
-            className="flex justify-between items-center text-web4 font-semibold text-xl border-b pb-1 mb-4 cursor-pointer hover:border-b-web3"
+            className="flex  justify-between items-center text-web4 font-semibold text-xl border-b pb-1 mb-4 cursor-pointer hover:border-b-web3"
             onClick={() => setIsOpenPrice(!isOpenPrice)}
           >
             <span>Filter by Price</span>
-            <span>{isOpenPrice ? <IoIosArrowUp /> : <IoIosArrowDown />}</span>
+            <span>
+              <IoIosArrowDown
+                style={{
+                  rotate: isOpenPrice ? "180deg" : "0deg",
+                  transition: "all 0.5s ease-out",
+                }}
+              />
+            </span>
           </div>
           <div
-            className={`text-web4 transitionMenu   ${
-              isOpenPrice ? "h-16 block" : "h-0 hidden"
+            className={`text-web4 transitionMenu    ${
+              isOpenPrice ? " opacity-100 h-16" : " opacity-0 h-0"
             }`}
           >
             {["Min", "Max"].map((p) => {
@@ -180,13 +192,18 @@ export default function Filter() {
             onClick={() => setIsFilterByStar(!isFilterByStar)}
           >
             <span>Filter By Star</span>
-            <span>
-              {isFilterByStar ? <IoIosArrowUp /> : <IoIosArrowDown />}
-            </span>
+            <p >
+              <IoIosArrowDown
+                style={{
+                  rotate: isFilterByStar ? "180deg" : "0deg",
+                  transition: "all 0.5s ease-out",
+                }}
+              />
+            </p>
           </div>
           <div
             className={`text-web4  transitionMenu  ${
-              isFilterByStar ? "h-3 block" : "h-0 hidden "
+              isFilterByStar ? "h-5 opacity-100 " : "h-0 opacity-0 "
             }`}
           >
             <div className="text-web4 mb-4">
@@ -207,13 +224,19 @@ export default function Filter() {
             onClick={() => setIsFilterBySort(!isFilterBySort)}
           >
             <span>Sort By</span>
+
             <span>
-              {isFilterBySort ? <IoIosArrowUp /> : <IoIosArrowDown />}
+              <IoIosArrowDown
+                style={{
+                  rotate: isFilterBySort ? "180deg" : "0deg",
+                  transition: "all 0.5s ease-out",
+                }}
+              />
             </span>
           </div>
           <div
             className={`text-web4  transitionMenu  ${
-              isFilterBySort ? "h-3 block" : "h-0 hidden "
+              isFilterBySort ? "h-3 opacity-100" : "h-0 opacity-0 "
             }`}
           >
             {["The most Expensive", "Cheapest", "Newest", "Oldest"].map((s) => {

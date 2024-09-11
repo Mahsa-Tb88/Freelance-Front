@@ -35,7 +35,7 @@ export default function MessageList() {
   }, []);
 
   return (
-    <div className="w-5/6 mx-auto my-36 flex justify-center items-center">
+    <div className="px-2 lg:px-0 lg:w-5/6 mx-auto my-36 flex justify-center items-center">
       <Helmet>
         <title>Message's List</title>
       </Helmet>
@@ -56,23 +56,23 @@ export default function MessageList() {
           <table className="border-collapse w-full  border border-web3 ">
             <thead>
               <tr>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   From
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   to
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Product
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Last Message
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Date
                 </th>
 
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Message
                 </th>
               </tr>
@@ -81,25 +81,25 @@ export default function MessageList() {
               {data.data.body.map((item) => {
                 return (
                   <tr key={item._id}>
-                    <td className="border text-center border-web2 text-web4 text-sm  ">
+                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  ">
                       {item.from}
                     </td>
-                    <td className="border text-center border-web2 text-web4 text-sm  ">
+                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  ">
                       {item.to}
                     </td>
-                    <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
                       {item.product}
                     </td>
-                    <td className="border text-center  rounded-full border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
                       {item.lastMsg}
                     </td>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
                       <span className="flex justify-center items-center">
                         {timeOrder(item.updatedAt)}
                         {dateOrder(item.updatedAt)}
                       </span>
                     </td>
-                    <td className="border border-web2 text-web3 px-4 py-2 text-lg">
+                    <td className="border border-web2 text-web3 px-4 py-2 text-base md:text-lg">
                       <Link
                         to={"/chat/" + item.chatId}
                         className="flex justify-center items-center transform transition-transform duration-300 hover:scale-110  cursor-pointer"
