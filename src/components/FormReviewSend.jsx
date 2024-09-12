@@ -22,11 +22,13 @@ export default function FormReviewSend() {
     formData.id = params.id;
     mutation.mutate(formData, {
       onSuccess(data) {
+        setFailMessage("")
         setValue("rateStar", "1");
         setValue("desc", "");
         querryClient.invalidateQueries({
           queryKey: ["reviews"],
         });
+        // change star rate
         querryClient.invalidateQueries({
           queryKey: ["product",params.id],
         });

@@ -51,7 +51,7 @@ export default function Orders() {
   }
 
   return (
-    <div className="w-5/6 mx-auto my-36 flex justify-center items-center">
+    <div className="px-2 lg:px-0 lg:w-5/6 lg:mx-auto my-36 flex justify-center items-center">
       <Helmet>
         <title>Orders</title>
       </Helmet>
@@ -66,30 +66,33 @@ export default function Orders() {
           There is no order!
         </div>
       ) : (
-        <div className="w-full">
-          <table className="border-collapse table-auto w-full  border border-web3 ">
+        <div className="w-full flex flex-col justify-center items-center">
+          <h1 className=" font-bold text-web3 text-lg lg:text-3xl mb-8">
+            Orders
+          </h1>
+          <table className="border-collapse table-autvo w-full  border border-web3 ">
             <thead>
               <tr>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Title
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Image
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   {user.isSeller ? "Buyer" : "Seller"}
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Payment Id
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Date
                 </th>
-                <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Message
                 </th>
                 {user.isSeller && (
-                  <th className="border border-web2 font-bold text-web3 py-4 text-xl px-2">
+                  <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                     Seen Status
                   </th>
                 )}
@@ -99,7 +102,7 @@ export default function Orders() {
               {data.data.body.map((item) => {
                 return (
                   <tr key={item._id}>
-                    <td className="border border-web2 text-web4 text-sm  hover:bg-web2 hover:text-web1 ">
+                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2  hover:bg-web2 hover:text-web1 ">
                       <Link
                         to={`/product/` + item.productId}
                         className={`flex justify-center items-center px-4 py-2 `}
@@ -107,27 +110,33 @@ export default function Orders() {
                         {item.title}
                       </Link>
                     </td>
-                    <td className="border  rounded-full border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <img src={SERVER_URL + item.img} className="w-10" />
                     </td>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <span className="flex justify-center items-center">
                         {user.isSeller
-                          ? item.buyerId.username
-                          : item.sellerId.username}
+                          ? item.buyerId.username.replace(
+                              /(^\w|[\s_]\w)/g,
+                              (match) => match.toUpperCase()
+                            )
+                          : item.sellerId.username.replace(
+                              /(^\w|[\s_]\w)/g,
+                              (match) => match.toUpperCase()
+                            )}
                       </span>
                     </td>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <span className="flex justify-center items-center">
                         {item.payment_intent.slice(3)}
                       </span>
                     </td>
-                    <td className="border border-web2 text-web4 text-sm px-4 py-2">
+                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <span className="flex justify-center items-center">
                         {dateOfOrder(item.createdAt)}
                       </span>
                     </td>
-                    <td className="border border-web2 text-web3 px-4 py-2 text-lg">
+                    <td className="border border-web2 text-web3 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <Link
                         to={"/chat/" + (item.productId + item.buyerId._id)}
                         className="flex justify-center items-center transform transition-transform duration-300 hover:scale-150 cursor-pointer"
@@ -136,7 +145,7 @@ export default function Orders() {
                       </Link>
                     </td>
                     {user.isSeller && (
-                      <td className="border border-web2 text-web3 px-4 py-2 text-lg ">
+                      <td className="border border-web2 text-web3 px-4 py-2 text-sm lg:text-lg ">
                         {item.isSeen ? (
                           <p className="text-emerald-600 flex justify-center items-center">
                             <FaCalendarCheck />

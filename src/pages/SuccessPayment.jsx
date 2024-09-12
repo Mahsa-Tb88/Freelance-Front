@@ -32,21 +32,6 @@ export default function SuccessPayment() {
     return () => clearTimeout(timeOut);
   }, []);
 
-  // useEffect(() => {
-  //   const makeRequest = async () => {
-  //     try {
-  //       const { data } = await axios.put("/api/orders", { payment_intent });
-  //       console.log(data);
-  //       const orderTime = setTimeout(() => {
-  //         navigate("/Orders");
-  //       }, 5000);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   makeRequest();
-  //   // return () => clearTimeout(orderTime);
-  // }, []);
   if (failMessage) {
     return (
       <div className="my-14 text-center">

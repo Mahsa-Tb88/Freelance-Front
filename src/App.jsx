@@ -13,7 +13,7 @@ export default function App() {
   const unreadMsg = useunreadMsg();
   const [timeFetch, setTimeFetch] = useState(new Date());
   const user = useSelector((state) => state.user.user);
-  
+
   useEffect(() => {
     if (data) {
       if (Object.keys(data.data.body.user).length !== 0) {
@@ -40,8 +40,6 @@ export default function App() {
     }
   }, [data]);
 
- 
-
   useEffect(() => {
     if (unreadMsg.data) {
       dispatch(
@@ -63,7 +61,9 @@ export default function App() {
       );
     }
   }, [unSeenOrder.data]);
-
+  if (unreadMsg.data) {
+    console.log("app...unSennMSgs", unreadMsg.data.data.body);
+  }
   // get messages and orders after 5 seconds with the change of path
   const { pathname } = useLocation();
 
@@ -71,6 +71,7 @@ export default function App() {
     if (data && unreadMsg.data && unSeenOrder.data) {
       const newDate = new Date();
       if ((newDate.getTime() - timeFetch) / 1000 >= 5) {
+        console.log("every 5 seconds change route");
         if (user.isSeller) {
           setTimeout(unSeenOrder.refetch, 100);
         }

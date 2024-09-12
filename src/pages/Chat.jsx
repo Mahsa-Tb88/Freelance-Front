@@ -24,7 +24,7 @@ export default function Chat() {
         unreadMsgs: user.unreadMsgs > 0 && user.unreadMsgs - 1,
       })
     );
-    //we are in the chat page and update chatlist page when get new message at that time
+    //we are in the chat page and update chatlist page when get new message after 3 mins
     if (newMsg != user.unreadMsgs) {
       setNewMsg(user.unreadMsgs);
       refetch();
@@ -111,22 +111,52 @@ export default function Chat() {
                         <span className="bg-gray-200 w-full h-px "></span>
                       </div>
                     )}
-                    {chat.userId == user.id ? (
-                      <div className="text-right ">
-                        <div className="inline-block px-4 rounded-xl text-web4 py-1 my-1 bg-web2">
-                          <span className="">{chat.desc}</span>
-                          <p className="text-xs text-web1 mt-1">
-                            {getTime(chat.createdAt)}
-                          </p>
+                    {chat.userId._id == user.id ? (
+                      <div className="my-5">
+                        <span className="flex justify-end">
+                          <img
+                            src={user.profileImg}
+                            className="w-10 h-10 rounded-full"
+                          />
+                        </span>
+                        <div className=" mt-2 ">
+                          <div className="flex flex-col justify-end items-end  text-web4 ">
+                            <div className="bg-web2 py-1 px-4 rounded-xl ">
+                              <p>{chat.desc}</p>
+                              <span className="text-xs  text-web1 pt-1 bg-web2">
+                                {getTime(chat.createdAt)}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ) : (
                       <div>
-                        <div className="bg-web3 inline-block px-4 rounded-xl text-web1 py-1 my-1">
-                          <span className="">{chat.desc}</span>
-                          <p className="text-xs text-web2 mt-1">
-                            {getTime(chat.createdAt)}
-                          </p>
+                        <div className="my-5">
+                          <span className="flex justify-start">
+                            {chat.userId.profileImg ? (
+                              <img
+                                src={SERVER_URL + chat.userId.profileImg}
+                                className="w-10 h-10 rounded-full"
+                              />
+                            ) : (
+                              <p className="w-10 h-10 bg-slate-200 rounded-full flex justify-center items-center text-web4 font-bold">
+                                {chat.userId.username
+                                  .toUpperCase()
+                                  .substring(0, 1)}
+                              </p>
+                            )}
+                          </span>
+                          <div className=" mt-2 ">
+                            <div className="flex flex-col justify-start items-start  text-web1 ">
+                              <div className="bg-web3 py-1 px-4 rounded-xl ">
+                                <p>{chat.desc}</p>
+                                <span className="text-xs  text-web1 pt-1">
+                                  {getTime(chat.createdAt)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     )}

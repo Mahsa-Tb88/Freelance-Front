@@ -7,7 +7,6 @@ import { userActions } from "../store/slices/userSlices";
 import { Helmet } from "react-helmet";
 
 export default function MessageList() {
-  console.log("meesgae comp");
   const { id } = useParams();
   const { data, isPending, isError, error } = useGetMessageList(id);
   const user = useSelector((state) => state.user.user);
@@ -52,7 +51,11 @@ export default function MessageList() {
           </h2>
         </div>
       ) : data.data.body.length ? (
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center justify-center">
+          <h1 className=" font-bold text-web3 text-lg lg:text-3xl mb-8">
+            Messages
+          </h1>
+
           <table className="border-collapse w-full  border border-web3 ">
             <thead>
               <tr>
@@ -60,7 +63,7 @@ export default function MessageList() {
                   From
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
-                  to
+                  To
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Product
@@ -81,35 +84,46 @@ export default function MessageList() {
               {data.data.body.map((item) => {
                 return (
                   <tr key={item._id}>
-                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  ">
-                      {item.from}
+                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  lg:px-4 py-2">
+                      {item.from.replace(/(^\w|[\s_]\w)/g, (match) =>
+                        match.toUpperCase()
+                      )}
                     </td>
-                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  ">
-                      {item.to}
+                    <td className="border text-center border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm  lg:px-4 py-2">
+                      {item.to.replace(/(^\w|[\s_]\w)/g, (match) =>
+                        match.toUpperCase()
+                      )}
                     </td>
-                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
+                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       {item.product}
                     </td>
-                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
-                      {item.lastMsg}
+                    <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
+                      {item.lastMsg.substring(1, 20)}...
                     </td>
-                    <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm px-4 py-2">
-                      <span className="flex justify-center items-center">
-                        {timeOrder(item.updatedAt)}
-                        {dateOrder(item.updatedAt)}
-                      </span>
+                    <td className="border border-web2 text-web4 text-xxxs  md:text-xs lg:text-sm lg:px-4 py-2">
+                      <div className="flex justify-center items-center">
+                        <span className="mr-2">
+                          {timeOrder(item.updatedAt)}{" "}
+                        </span>
+                        <span>{dateOrder(item.updatedAt)}</span>
+                      </div>
                     </td>
                     <td className="border border-web2 text-web3 px-4 py-2 text-base md:text-lg">
                       <Link
                         to={"/chat/" + item.chatId}
                         className="flex justify-center items-center transform transition-transform duration-300 hover:scale-110  cursor-pointer"
                       >
-                        {!item.isSeen && item.to == user.username ? (
+                        {!item.isSeen &&
+                        item.to.replace(/(^\w|[\s_]\w)/g, (match) =>
+                          match.toUpperCase()
+                        ) == user.username ? (
                           <span className="text-red-700 text-base">
                             New Message
                           </span>
                         ) : (
-                          <IoChatbubbleEllipsesOutline />
+                          <span>
+                            <IoChatbubbleEllipsesOutline />
+                          </span>
                         )}
                       </Link>
                     </td>

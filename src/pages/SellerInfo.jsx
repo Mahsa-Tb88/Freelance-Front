@@ -28,9 +28,7 @@ export default function SellerInfo() {
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
-  if (data) {
-    console.log(data.data.body);
-  }
+ 
   return (
     <div className="my-32">
       <div className="lg:w-5/6 mx-auto px-4 lg:px-2 ">

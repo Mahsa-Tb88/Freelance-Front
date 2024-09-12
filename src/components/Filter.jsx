@@ -134,7 +134,7 @@ export default function Filter() {
           >
             {categoriesList.map((c) => {
               return (
-                <div key={c}>
+                <div key={c} className={`${isOpenCat ? "flex" : "hidden"}`}>
                   <input
                     id={c}
                     type="checkbox"
@@ -172,7 +172,12 @@ export default function Filter() {
           >
             {["Min", "Max"].map((p) => {
               return (
-                <div className="text-web4 mb-3" key={p}>
+                <div
+                  className={`text-web4 mb-3 ${
+                    isOpenPrice ? "flex" : "hidden"
+                  }`}
+                  key={p}
+                >
                   <label className="mr-2">{p} Price: $</label>
                   <input
                     className="border rounded-md w-1/3 outline-none px-1"
@@ -192,7 +197,7 @@ export default function Filter() {
             onClick={() => setIsFilterByStar(!isFilterByStar)}
           >
             <span>Filter By Star</span>
-            <p >
+            <p>
               <IoIosArrowDown
                 style={{
                   rotate: isFilterByStar ? "180deg" : "0deg",
@@ -206,7 +211,11 @@ export default function Filter() {
               isFilterByStar ? "h-5 opacity-100 " : "h-0 opacity-0 "
             }`}
           >
-            <div className="text-web4 mb-4">
+            <div
+              className={` text-web4 mb-4 ${
+                isFilterByStar ? "flex" : "hidden"
+              }`}
+            >
               <label className="mr-2">Num of Star:</label>
               <input
                 className="border rounded-md w-1/3 outline-none px-1"

@@ -66,7 +66,12 @@ export default function Product() {
             <span>
               <IoIosArrowForward />
             </span>
-            <span>{data.data.body.sellerId.username}</span>
+            <span>
+              {data.data.body.sellerId.username.replace(
+                /(^\w|[\s_]\w)/g,
+                (match) => match.toUpperCase()
+              )}
+            </span>
           </div>
           <div className="flex flex-col md:flex-row px-20 justify-between gap-20 my-14">
             <div className=" w-2/3">
@@ -87,7 +92,10 @@ export default function Product() {
                     />
                   </span>
                   <span className="text-web3 mr-2">
-                    {data.data.body.sellerId.username}
+                    {data.data.body.sellerId.username.replace(
+                      /(^\w|[\s_]\w)/g,
+                      (match) => match.toUpperCase()
+                    )}
                   </span>
                   <div className="flex ">
                     {Array(data.data.body.totalStar)

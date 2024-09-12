@@ -9,10 +9,10 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
+  const querryClient = useQueryClient();
 
   const mutationDelete = useRemoveProductById();
 
-  const querryClient = useQueryClient();
   function removeCartHandler() {
     if (!confirm("Are you sure for deleting the product?")) {
       return;
@@ -24,8 +24,8 @@ export default function CartProduct({ p }) {
         });
         window.scrollTo({ top: 0, behavior: "instant" });
       },
-      onError() {
-        console.log("error");
+      onError(error) {
+        console.log(error);
         window.scrollTo({ top: 0, behavior: "instant" });
       },
     });

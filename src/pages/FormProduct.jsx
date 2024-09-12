@@ -55,7 +55,6 @@ export default function FormProduct({ product, type, id }) {
 
   function addFeature() {
     if (featureValue) {
-      console.log(watch("features"));
       setFeatureValue("");
       setValue("features", [...watch("features"), featureValue]);
     }
@@ -245,9 +244,10 @@ export default function FormProduct({ product, type, id }) {
                     {" "}
                     Select a Category
                   </option>
-                  <option className="my-2  ">Web Design</option>
+                  <option className="my-2  ">Design</option>
                   <option className="my-2  ">Programming</option>
                   <option className="my-2  ">Logo</option>
+                  <option className="my-2  ">Photography</option>
                 </select>
                 {errors.category && (
                   <div className="bg-red-700 text-white py-1 px-2 rounded-md my-3">
