@@ -6,6 +6,7 @@ import { FaStar } from "react-icons/fa";
 import { useGetAllProducts, useGetSellers } from "../utils/queries";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
+import { MdImportantDevices } from "react-icons/md";
 
 export default function Home() {
   const user = useSelector((state) => state.user.user);
@@ -25,7 +26,17 @@ export default function Home() {
     pauseOnHover: true,
     responsive: [
       {
-        breakpoint: 800,
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 500,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
@@ -33,7 +44,7 @@ export default function Home() {
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 380,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -54,10 +65,12 @@ export default function Home() {
     pauseOnHover: true,
     responsive: [
       {
-        breakpoint: 800,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
           arrows: false,
         },
       },
@@ -80,6 +93,10 @@ export default function Home() {
     ],
   };
 
+  if (data) {
+    console.log("home seller...", data.data.body);
+  }
+
   function dateMembership(dateString) {
     const myDate = new Date(dateString);
     const options = { day: "2-digit", month: "short", year: "numeric" };
@@ -93,7 +110,7 @@ export default function Home() {
         <title>Home</title>
       </Helmet>
       <div className="bg-web1 px-3 my-12">
-        <div className=" md:max-w-5xl mx-auto pt-4  md:pt-7 flex justify-between items-center gap-12">
+        <div className=" lg:max-w-5xl mx-auto pt-4  md:pt-7 flex justify-between items-center gap-12">
           <div className="w-3/5 md:mb-16">
             <h2 className="md:text-4xl font-semibold md:mb-20 text-web4">
               Find the perfect freelance services for your business
@@ -170,7 +187,7 @@ export default function Home() {
             {products.error.response.data.message}
           </div>
         ) : (
-          <div className="lg:w-5/6 mx-auto pb-7 mb-10 ">
+          <div className="px-3 lg:w-5/6 lg:px-0 mx-auto pb-7 mb-10 ">
             <Slider {...productSettings}>
               {products.data.data.body.map((product) => {
                 return (
@@ -328,7 +345,7 @@ export default function Home() {
             {error.response.data.message}
           </div>
         ) : (
-          <div className="lg:w-5/6 mx-auto pb-7 mb-10 ">
+          <div className="px-3 lg:px-0 lg:w-5/6 mx-auto pb-7 mb-10 ">
             <Slider {...settings}>
               {data.data.body.map((slider) => {
                 return (
@@ -340,7 +357,11 @@ export default function Home() {
                       <div className=" flex flex-col justify-center items-center w-full">
                         <img
                           className="w-14 h-14 text-center rounded-full border"
-                          src={SERVER_URL + slider.profileImg}
+                          src={
+                            SERVER_URL + slider.profileImg ||
+                            SERVER_URL +
+                              "/uploads/profiles/profile1722016584144.png"
+                          }
                         />
                         <div className="text-web1 text-lg font-bold mt-4">
                           {slider.username.replace(/(^\w|[\s_]\w)/g, (match) =>

@@ -29,7 +29,7 @@ export default function Header() {
         <nav className=" h-14 md:h-20 mx-auto  justify-between items-center flex ">
           <div
             ref={menuRef}
-            className={`flex lg:hidden flex-col transitionMenu  justify-center items-center gap-6 absolute top-14 py-5 bg-web3 text-web1
+            className={`flex lg:hidden flex-col transitionMenu  justify-center items-center gap-6 absolute top-14 py-5 px-3  bg-web3 text-web1
               ${user.isOpenMenu ? "left-0" : "-left-40"}`}
           >
             <NavLink to="/" className="relative rounded-md   ">

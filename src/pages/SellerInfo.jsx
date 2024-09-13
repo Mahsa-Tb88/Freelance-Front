@@ -8,8 +8,6 @@ export default function SellerInfo() {
   const { data, isPending, isError, error } = useGetSeller(id);
   const [sellerStar, setSellerStar] = useState(1);
 
-
-
   useEffect(() => {
     let sumTotalStar = 0;
     if (data && data.data.body.sellerProducts.length > 0) {
@@ -28,7 +26,7 @@ export default function SellerInfo() {
     const formattedDate = myDate.toLocaleDateString("en-GB", options);
     return formattedDate;
   }
- 
+
   return (
     <div className="my-32">
       <div className="lg:w-5/6 mx-auto px-4 lg:px-2 ">
@@ -45,7 +43,10 @@ export default function SellerInfo() {
             <div className="flex items-center gap-6">
               <img
                 className="w-28 h-28 border rounded-full"
-                src={SERVER_URL + data.data.body.sellerInfo.profileImg}
+                src={
+                  SERVER_URL + data.data.body.sellerInfo.profileImg ||
+                  SERVER_URL + "/uploads/profiles/profile1722016584144.png"
+                }
               />
               <div>
                 <p className="text-web3 font-bold text-xl">

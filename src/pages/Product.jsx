@@ -38,13 +38,14 @@ export default function Product() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <div>
+      <Helmet>
+        <title>Product</title>
+      </Helmet>
       {isPending ? (
         <div className="mt-32">
-          <Helmet>
-            <title>Product</title>
-          </Helmet>
           <h2 className="text-web3 text-center font-bold text-3xl">
             Loading...
           </h2>
@@ -56,8 +57,8 @@ export default function Product() {
           </h2>
         </div>
       ) : (
-        <div className="mt-28">
-          <div className="px-20 mt-5 flex items-center gap-2 text-web2 font-extrabold">
+        <div className="mt-20 md:mt-28">
+          <div className="px-3 text-sm md:text-base lg:px-20 mt-5 flex items-center gap-2 text-web2 font-extrabold">
             <span>Product</span>
             <span>
               <IoIosArrowForward />
@@ -73,17 +74,16 @@ export default function Product() {
               )}
             </span>
           </div>
-          <div className="flex flex-col md:flex-row px-20 justify-between gap-20 my-14">
-            <div className=" w-2/3">
+          <div className="flex flex-col md:flex-row px-3 lg:px-20 justify-between gap-20 my-6 md:my-14">
+            <div className=" lg:w-2/3">
               <div>
-                <h1 className="mb-4 text-3xl text-web4">
+                <h1 className="mb-4 text-lg md:text-3xl text-web4">
                   {data.data.body.title}
                 </h1>
                 <div className="flex items-center mb-3">
                   <span>
                     <img
-                      width={35}
-                      className="rounded-full mr-2"
+                      className="rounded-full mr-2 h-12 w-12"
                       src={
                         SERVER_URL + data.data.body.sellerId.profileImg ||
                         SERVER_URL +
@@ -137,8 +137,7 @@ export default function Product() {
                 <h3 className="mb-4 text-web4 font-bold">About this Seller</h3>
                 <div className="flex items-center">
                   <img
-                    width={70}
-                    className="rounded-full mr-3"
+                    className="rounded-full mr-3 h-16 w-16"
                     src={
                       SERVER_URL + data.data.body.sellerId.profileImg ||
                       SERVER_URL + "/uploads/profiles/profile1722016584144.png"
@@ -218,11 +217,11 @@ export default function Product() {
               </div>
             </div>
             {!user.isSeller ? (
-              <div className=" w-1/3">
+              <div className=" lg:w-1/3">
                 <InfoProduct data={data.data.body} id={params.id} />
               </div>
             ) : (
-              <div className=" w-1/3 ">
+              <div className=" lg:w-1/3 ">
                 <div className="bg-web1 text-web3 px-3 pt-3 pb-11 text-xl font-bold rounded">
                   <div className="flex items-center">
                     <span>

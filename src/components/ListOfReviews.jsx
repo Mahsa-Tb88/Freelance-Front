@@ -67,11 +67,12 @@ export default function ListOfReviews() {
               <div className="border-b pb-3 mb-5" key={review._id}>
                 <div className="bg-web1 px-2 py-3 mb-3 rounded-md">
                   <div className="flex items-center">
-                    <div>
+                    <div className="">
                       <img
-                        width={25}
-                        className="rounded-full mr-3"
+                        
+                        className="rounded-full mr-3 w-10 h-10"
                         src={SERVER_URL + review.imgBuyer}
+
                       />
                     </div>
                     <div className="flex flex-col">

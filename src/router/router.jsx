@@ -17,6 +17,7 @@ import Product from "../pages/Product";
 import Pay from "../pages/Pay";
 import SuccessPayment from "../pages/SuccessPayment";
 import SellerInfo from "../pages/SellerInfo";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
       { path: "pay/:id", element: <Pay /> },
       { path: "successPayment", element: <SuccessPayment /> },
       { path: "seller/:id", element: <SellerInfo /> },
+      { path: "/*", element: <NotFound /> },
     ],
   },
 ]);
