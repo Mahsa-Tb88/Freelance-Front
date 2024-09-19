@@ -10,9 +10,9 @@ const initialState = {
     profileImg: "",
     desc: "",
     country: "",
-    unreadMsgs: 0,
-    unSeenOrders:0
   },
+  unreadMsgs: [],
+  unseenOrders: 0,
   isOpenMenu: false,
   isOpenUserMenu: false,
 };
@@ -24,6 +24,13 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
+    setUnreadMsgs(state, action) {
+      state.unreadMsgs = action.payload;
+    },
+    setUnseenOrders(state, action) {
+      state.unseenOrders = action.payload;
+    },
+
     setOpenMenu(state, action) {
       state.isOpenMenu = action.payload;
     },

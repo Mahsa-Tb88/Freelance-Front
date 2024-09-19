@@ -10,26 +10,22 @@ export default function Chat() {
   const [text, setText] = useState("");
   const [msg, setMsg] = useState(false);
   const params = useParams();
-  const user = useSelector((state) => state.user.user);
-  const [newMsg, setNewMsg] = useState(user.unreadMsgs);
+  const user = useSelector((state) => state.user);
+  const [newMsg, setNewMsg] = useState(user.unreadMsgs.length);
+
   const dispatch = useDispatch();
   const { data, isPending, isError, error, refetch } = usegetChatsById(
     params.id
   );
-
   useEffect(() => {
-    dispatch(
-      userActions.setUser({
-        ...user,
-        unreadMsgs: user.unreadMsgs > 0 && user.unreadMsgs - 1,
-      })
-    );
-    //we are in the chat page and update chatlist page when get new message after 3 mins
-    if (newMsg != user.unreadMsgs) {
-      setNewMsg(user.unreadMsgs);
-      refetch();
+    if (user.unreadMsgs.length) {
+      const newUnreadMsgs = user.unreadMsgs.filter((msg) => {
+        return msg.chatId != params.id;
+      });
+      setNewMsg(newUnreadMsgs.length);
+      dispatch(userActions.setUnreadMsgs(newUnreadMsgs));
     }
-  }, [user.unreadMsgs]);
+  }, []);
 
   const querryClient = useQueryClient();
   const sentChat = usetextChat();
@@ -111,13 +107,21 @@ export default function Chat() {
                         <span className="bg-gray-200 w-full h-px "></span>
                       </div>
                     )}
-                    {chat.userId._id == user.id ? (
+                    {chat.userId._id == user.user.id ? (
                       <div className="my-5">
                         <span className="flex justify-end">
-                          <img
-                            src={user.profileImg}
-                            className="w-10 h-10 rounded-full"
-                          />
+                          {chat.userId.profileImg ? (
+                            <img
+                              src={SERVER_URL + chat.userId.profileImg}
+                              className="w-10 h-10 rounded-full"
+                            />
+                          ) : (
+                            <p className="w-10 h-10 bg-slate-200 rounded-full flex justify-center items-center text-web4 font-bold">
+                              {chat.userId.username
+                                .toUpperCase()
+                                .substring(0, 1)}
+                            </p>
+                          )} 
                         </span>
                         <div className=" mt-2 ">
                           <div className="flex flex-col justify-end items-end  text-web4 ">

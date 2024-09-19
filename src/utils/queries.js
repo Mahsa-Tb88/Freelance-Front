@@ -193,18 +193,18 @@ export function useSeenOrder() {
   });
 }
 
-export function useunreadMsg() {
+export function useUnReadMsg() {
   return useQuery({
     queryKey: ["unreadMsg"],
     queryFn: () => axios.get("/api/msgList"),
-    refetchInterval: 180000,
+    refetchInterval: 60000,
   });
 }
 
 export function useUnSeenOrder() {
   return useQuery({
-    queryKey: ["unSeenOrder"],
-    queryFn: () => axios.get("/api/orders/unSeenOrder"),
+    queryKey: ["unseenOrder"],
+    queryFn: () => axios.get("/api/orders/unseenOrder"),
     refetchInterval: 180000,
   });
 }

@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Helmet } from "react-helmet";
 export default function Orders() {
   const { data, isPending, isError, error } = useGetOrders();
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const orderMutation = useSeenOrder();
   const [failMessage, setFailMessage] = useState(false);
@@ -30,9 +30,7 @@ export default function Orders() {
   const querryClient = useQueryClient();
 
   function seenOrerHandler(id) {
-    dispatch(
-      userActions.setUser({ ...user, unSeenOrders: user.unSeenOrders - 1 })
-    );
+    dispatch(userActions.setUnseenOrders(user.unseenOrders - 1));
 
     orderMutation.mutate(
       { id },
@@ -80,7 +78,7 @@ export default function Orders() {
                   Image
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
-                  {user.isSeller ? "Buyer" : "Seller"}
+                  {user.user.isSeller ? "Buyer" : "Seller"}
                 </th>
                 <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Payment Id
@@ -91,7 +89,7 @@ export default function Orders() {
                 <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                   Message
                 </th>
-                {user.isSeller && (
+                {user.user.isSeller && (
                   <th className="border border-web2 font-bold text-web3 py-4 text-xxxs md:text-base lg:text-xl px-1 md:px-2">
                     Seen Status
                   </th>
@@ -115,7 +113,7 @@ export default function Orders() {
                     </td>
                     <td className="border border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
                       <span className="flex justify-center items-center">
-                        {user.isSeller
+                        {user.user.isSeller
                           ? item.buyerId.username.replace(
                               /(^\w|[\s_]\w)/g,
                               (match) => match.toUpperCase()
@@ -144,7 +142,7 @@ export default function Orders() {
                         <IoChatbubbleEllipsesOutline />
                       </Link>
                     </td>
-                    {user.isSeller && (
+                    {user.user.isSeller && (
                       <td className="border border-web2 text-web3 px-4 py-2 text-sm lg:text-lg ">
                         {item.isSeen ? (
                           <p className="text-emerald-600 flex justify-center items-center">

@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { useSelector } from "react-redux";
 
 export default function AboutUs() {
+  const user = useSelector((state) => state.user.user);
+ 
+
   return (
     <div>
       <Helmet>

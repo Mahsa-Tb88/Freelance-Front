@@ -10,7 +10,6 @@ import { useQueryClient } from "@tanstack/react-query";
 export default function CartProduct({ p }) {
   const user = useSelector((state) => state.user.user);
   const querryClient = useQueryClient();
-
   const mutationDelete = useRemoveProductById();
 
   function removeCartHandler() {
@@ -52,7 +51,7 @@ export default function CartProduct({ p }) {
           </div>
         </div>
         <p className="text-web4 text-justify h-28 bg-red-20m0">
-          {p.desc.substring(1, 100)}...
+          {p.desc.substring(0, 100)}...
         </p>
         <div className="text-web4 font-extrabold text-lg flex justify-between items-center mt-10">
           <h5>Price</h5>

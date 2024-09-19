@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { useInitialized, useunreadMsg, useUnSeenOrder } from "./utils/queries";
+import { useInitialized, useUnReadMsg, useUnSeenOrder } from "./utils/queries";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./store/slices/userSlices";
 
@@ -10,7 +10,7 @@ export default function App() {
   const dispatch = useDispatch();
   const { isPending, isError, data, error } = useInitialized();
   const unSeenOrder = useUnSeenOrder();
-  const unreadMsg = useunreadMsg();
+  const unReadMsg = useUnReadMsg();
   const [timeFetch, setTimeFetch] = useState(new Date());
   const user = useSelector((state) => state.user.user);
 
@@ -22,7 +22,6 @@ export default function App() {
           SERVER_URL + "/uploads/profiles/profile1722016584144.png";
         dispatch(
           userActions.setUser({
-            ...user,
             isLoggedIn: true,
             id: userData._id,
             isSeller: userData.isSeller,
@@ -41,41 +40,33 @@ export default function App() {
   }, [data]);
 
   useEffect(() => {
-    if (unreadMsg.data) {
-      dispatch(
-        userActions.setUser({
-          ...user,
-          unreadMsgs: unreadMsg.data.data.body.unreadMsg,
-        })
-      );
+    if (unReadMsg.data) {
+      console.log("app...unReadMSgs useEffect", unReadMsg.data.data.body);
+      dispatch(userActions.setUnreadMsgs(unReadMsg.data.data.body.unreadMsgs));
     }
-  }, [unreadMsg.data]);
+  }, [unReadMsg.data]);
 
   useEffect(() => {
     if (unSeenOrder.data) {
       dispatch(
-        userActions.setUser({
-          ...user,
-          unSeenOrders: unSeenOrder.data.data.body.unSeenOrder,
-        })
+        userActions.setUnseenOrders(unSeenOrder.data.data.body.unseenOrders)
       );
     }
   }, [unSeenOrder.data]);
-  if (unreadMsg.data) {
-    console.log("app...unSennMSgs", unreadMsg.data.data.body);
-  }
-  // get messages and orders after 5 seconds with the change of path
+
+  // get messages and orders after 5 seconds if the path was changed
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (data && unreadMsg.data && unSeenOrder.data) {
+    if (data && unReadMsg.data && unSeenOrder.data) {
       const newDate = new Date();
-      if ((newDate.getTime() - timeFetch) / 1000 >= 5) {
+      if ((newDate.getTime() - timeFetch) / 1000 >= 10) {
         console.log("every 5 seconds change route");
+        // it needs a delay using setTimeout() because when enter the chat page  it will be send several requsets at the same time and here I need updated data
         if (user.isSeller) {
           setTimeout(unSeenOrder.refetch, 100);
         }
-        setTimeout(unreadMsg.refetch, 100);
+        setTimeout(unReadMsg.refetch, 100);
         setTimeFetch(newDate);
       }
     }

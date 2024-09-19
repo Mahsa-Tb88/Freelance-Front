@@ -6,6 +6,7 @@ import { useSignOut } from "../utils/queries";
 
 export default function UserMenu() {
   const user = useSelector((state) => state.user);
+  console.log("userMenu...", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const signOutMutation = useSignOut();
@@ -36,10 +37,10 @@ export default function UserMenu() {
               profileImg: "",
               desc: "",
               country: "",
-              unreadMsgs: 0,
-              unSeenOrders: 0,
             })
           );
+          dispatch(userActions.setUnreadMsgs({ unreadMsgs: [] }));
+          dispatch(userActions.setUnseenOrders({ unseenOrders: 0 }));
           dispatch(userActions.setOpenUserMenu(false));
           navigate("/");
         },
@@ -89,9 +90,9 @@ export default function UserMenu() {
                 className="text-web1 text-xs md:text-base hover:text-web4 hover:bg-web1 px-2 py-1 w-full rounded-md flex justify-between items-center"
               >
                 <span>Orders</span>
-                {user.user.unSeenOrders ? (
+                {user.unseenOrders ? (
                   <span className="bg-red-500 text-web1 w-4 h-4 flex justify-center items-center rounded-full">
-                    {user.user.unSeenOrders}
+                    {user.unseenOrders}
                   </span>
                 ) : (
                   ""
@@ -102,9 +103,9 @@ export default function UserMenu() {
                 className="flex group items-center justify-between text-web1 text-xs md:text-base  hover:bg-web1 px-2 py-1 w-full rounded-md"
               >
                 <span className="group-hover:text-web4">Messages</span>
-                {user.user.unreadMsgs > 0 && (
+                {user.unreadMsgs.length > 0 && (
                   <span className="bg-red-500 h-4 w-4 rounded-full flex items-center justify-center text-sm ">
-                    {user.user.unreadMsgs}
+                    {user.unreadMsgs.length}
                   </span>
                 )}
               </Link>
@@ -120,17 +121,4 @@ export default function UserMenu() {
       </div>
     </div>
   );
-}
-
-{
-  /* 
-className={`transitionMenu ${
-  user.isOpenUserMenu && user.user.isSeller
-    ? "h-40 bg-web2  md:h-60 overflow-hidden flex flex-col justify-center items-start gap-1 md:gap-3 py-3 w-36  px-1  rounded-md"
-    : "h-0 hidden "
-}${
-  user.isOpenUserMenu && !user.user.isSeller
-    ? "h-105 bg-web2 md:h-40  overflow-hidden flex flex-col justify-center items-start gap-1 md:gap-3 py-3 w-36  px-1  rounded-md"
-    : "h-0 hidden"
-}` */
 }

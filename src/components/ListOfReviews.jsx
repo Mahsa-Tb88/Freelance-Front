@@ -69,10 +69,13 @@ export default function ListOfReviews() {
                   <div className="flex items-center">
                     <div className="">
                       <img
-                        
                         className="rounded-full mr-3 w-10 h-10"
-                        src={SERVER_URL + review.imgBuyer}
-
+                        src={
+                          review.imgBuyer
+                            ? SERVER_URL + review.imgBuyer
+                            : SERVER_URL +
+                              "/uploads/profiles/profile1722016584144.png"
+                        }
                       />
                     </div>
                     <div className="flex flex-col">

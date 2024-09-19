@@ -98,12 +98,12 @@ export default function MessageList() {
                       {item.product}
                     </td>
                     <td className="border text-center  rounded-full border-web2 text-web4 text-xxxs px-1 md:text-xs lg:text-sm lg:px-4 py-2">
-                      {item.lastMsg.substring(1, 20)}...
+                      {item.lastMsg.substring(0, 20)}...
                     </td>
                     <td className="border border-web2 text-web4 text-xxxs  md:text-xs lg:text-sm lg:px-4 py-2">
                       <div className="flex justify-center items-center">
                         <span className="mr-2">
-                          {timeOrder(item.updatedAt)}{" "}
+                          {timeOrder(item.updatedAt)}
                         </span>
                         <span>{dateOrder(item.updatedAt)}</span>
                       </div>

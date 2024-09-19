@@ -20,6 +20,7 @@ export default function FormProduct({ product, type, id }) {
   const clearSwitch = useRef(null);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
     if (type === "edit") {
       setCoverImageSelected(SERVER_URL + `${product.coverImage}`);
       const newAlbumImage = product.albumImage.map((p) => {
@@ -125,10 +126,10 @@ export default function FormProduct({ product, type, id }) {
     setFailMessage("");
     setSuccessMessage("");
     if (type == "edit") {
-      data.coverImage = coverImageSelected.substring(21);
+      data.coverImage = coverImageSelected.replace(SERVER_URL, "");
       let newAlbumImage;
       newAlbumImage = albumImageSelected.map((p) => {
-        return p.substring(21);
+        return p.replace(SERVER_URL, "");
       });
       data.albumImage = newAlbumImage;
       mutateEdit.mutate(
@@ -149,14 +150,14 @@ export default function FormProduct({ product, type, id }) {
       );
     } else {
       if (data.coverImage?.length) {
-        data.coverImage = coverImageSelected.substring(21);
+        data.coverImage = coverImageSelected.replace(SERVER_URL, "");
       } else {
         data.coverImage = "";
       }
       let newAlbumImage = [];
       if (data.albumImage.length) {
         newAlbumImage = data.albumImage.map((p) => {
-          return p.substring(21);
+          return p.replace(SERVER_URL, "");
         });
       }
       data.albumImage = newAlbumImage;

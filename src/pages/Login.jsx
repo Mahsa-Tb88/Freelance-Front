@@ -28,7 +28,7 @@ export default function Login() {
       onSuccess(data) {
         const user = data.data.body.user;
         const unreadMsgs = data.data.body.unreadMsgs;
-        const unSeenOrders = data.data.body.unSeenOrders;
+        const unseenOrders = data.data.body.unseenOrders;
         const noImage =
           SERVER_URL + "/uploads/profiles/profile1722016584144.png";
         dispatch(
@@ -44,10 +44,11 @@ export default function Login() {
               : noImage,
             desc: user.desc,
             country: user.country || "World",
-            unreadMsgs,
-            unSeenOrders,
           })
         );
+        dispatch(userActions.setUnreadMsgs(unreadMsgs));
+        dispatch(userActions.setUnseenOrders(unseenOrders));
+
         navigate("/");
       },
     });

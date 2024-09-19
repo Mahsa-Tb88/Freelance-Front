@@ -9,6 +9,7 @@ import { IoNotificationsCircleOutline } from "react-icons/io5";
 
 export default function Header() {
   const user = useSelector((state) => state.user);
+  
 
   const menuRef = useRef(null);
   const dispatch = useDispatch();
@@ -104,7 +105,7 @@ export default function Header() {
                       src={user.user.profileImg}
                       className="rounded-full border border-web2 w-6 h-6  mr-1 md:mr-2 md:w-9 md:h-9"
                     />
-                    {user.user.unreadMsgs > 0 || user.user.unSeenOrders > 0 ? (
+                    {user.unreadMsgs.length > 0 || user.unseenOrders > 0 ? (
                       <p className="absolute -top-2 -left-1">
                         <IoNotificationsCircleOutline className="text-red-800 text-base lg:text-xl" />
                       </p>

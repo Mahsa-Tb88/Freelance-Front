@@ -44,8 +44,9 @@ export default function SellerInfo() {
               <img
                 className="w-28 h-28 border rounded-full"
                 src={
-                  SERVER_URL + data.data.body.sellerInfo.profileImg ||
-                  SERVER_URL + "/uploads/profiles/profile1722016584144.png"
+                  data.data.body.sellerInfo.profileImg
+                    ? SERVER_URL + data.data.body.sellerInfo.profileImg
+                    : SERVER_URL + "/uploads/profiles/profile1722016584144.png"
                 }
               />
               <div>

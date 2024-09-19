@@ -16,13 +16,13 @@ export default function FormReviewSend() {
   const querryClient = useQueryClient();
 
   function onSubmit(formData) {
-    formData.imgBuyer = user.profileImg.substring(21);
+    formData.imgBuyer = user.profileImg.replace(SERVER_URL, "");
     formData.buyer = user.username;
     formData.buyerCountry = user.country;
     formData.id = params.id;
     mutation.mutate(formData, {
       onSuccess(data) {
-        setFailMessage("")
+        setFailMessage("");
         setValue("rateStar", "1");
         setValue("desc", "");
         querryClient.invalidateQueries({
@@ -30,7 +30,7 @@ export default function FormReviewSend() {
         });
         // change star rate
         querryClient.invalidateQueries({
-          queryKey: ["product",params.id],
+          queryKey: ["product", params.id],
         });
       },
       onError(error) {

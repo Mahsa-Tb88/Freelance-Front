@@ -84,7 +84,7 @@ export default function () {
 
   async function onSubmit(data) {
     if (data.profileImg?.length) {
-      data.profileImg = selectedImage.substring(21);
+      data.profileImg = selectedImage.replace(SERVER_URL, "");
     } else {
       data.profileImg = "";
     }

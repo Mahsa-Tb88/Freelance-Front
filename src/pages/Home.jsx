@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { MdImportantDevices } from "react-icons/md";
 
 export default function Home() {
-  const user = useSelector((state) => state.user.user);
   const [inputSearch, setInputSearch] = useState("");
   const { data, isPending, isError, error } = useGetSellers();
   const products = useGetAllProducts();
@@ -92,10 +91,6 @@ export default function Home() {
       },
     ],
   };
-
-  if (data) {
-    console.log("home seller...", data.data.body);
-  }
 
   function dateMembership(dateString) {
     const myDate = new Date(dateString);
@@ -207,7 +202,7 @@ export default function Home() {
                       </div>
                       <div className="mb-auto w-full">
                         <div className="px-2 text-sm lg:text-base text-justify mb-3 my-5 h-24 text-web4">
-                          {product.desc.substring(1, 100)}...
+                          {product.desc.substring(0, 100)}...
                         </div>
                         <div className="px-2 mt-9  text-web3 text-sm">
                           {product.category}
@@ -358,9 +353,10 @@ export default function Home() {
                         <img
                           className="w-14 h-14 text-center rounded-full border"
                           src={
-                            SERVER_URL + slider.profileImg ||
-                            SERVER_URL +
-                              "/uploads/profiles/profile1722016584144.png"
+                            slider.profileImg
+                              ? SERVER_URL + slider.profileImg
+                              : SERVER_URL +
+                                "/uploads/profiles/profile1722016584144.png"
                           }
                         />
                         <div className="text-web1 text-lg font-bold mt-4">
@@ -371,7 +367,7 @@ export default function Home() {
                       </div>
                       <div className="mb-auto w-full">
                         <div className="px-2 text-justify mb-3 my-5 h-24 text-web4">
-                          {slider.desc.substring(1, 100)}...
+                          {slider.desc.substring(0, 100)}...
                         </div>
                         <div className="px-2 text-web1 text-sm">
                           {slider.country}
